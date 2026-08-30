@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Návrhový list — Agent na příchozí faktury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Literata:opsz,wght@7..72,300;7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --base:#EAEEE9;
+  --base-2:#F4F6F3;
+  --ink:#1B2A24;
+  --ink-soft:#54655D;
+  --rule:#C3CCC5;
+  --model:#9A6E0A;      /* co dělá jazykový model */
+  --code:#2E5A7A;       /* co dělá deterministický kód */
+  --gate:#8F2A1E;       /* kde rozhoduje člověk */
+  --disp:'Archivo',system-ui,sans-serif;
+  --body:'Literata',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--base);color:var(--ink);
+  font-family:var(--body);font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 22px}
+h2{
+  font-family:var(--disp);font-variation-settings:'wdth' 112,'wght' 700;
+  font-size:15px;letter-spacing:.06em;text-transform:uppercase;
+  margin:0 0 18px;padding-bottom:8px;border-bottom:2px solid var(--ink);
+}
+section{padding:44px 0}
+section+section{border-top:1px solid var(--rule)}
+
+/* ---------- hlavička: teze jako dva pruhy ---------- */
+header{padding:56px 0 0}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+h1{
+  font-family:var(--disp);font-variation-settings:'wdth' 118,'wght' 800;
+  font-size:clamp(34px,6vw,60px);line-height:1;letter-spacing:-.02em;
+  margin:16px 0 18px;max-width:15ch;
+}
+.thesis{font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:56ch;margin:0 0 40px;font-weight:300}
+.legend{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule)}
+.legend div{padding:14px 0 16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.legend div:first-child{color:var(--model);border-right:1px solid var(--rule);padding-right:16px}
+.legend div:last-child{color:var(--code);padding-left:16px}
+.legend b{display:block;font-family:var(--body);font-size:26px;font-weight:600;letter-spacing:0;text-transform:none;margin-top:6px;color:var(--ink)}
+
+/* ---------- identifikační blok ---------- */
+.idblock{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px;background:var(--rule);margin-top:2px}
+.idblock div{background:var(--base);padding:16px 18px}
+.idblock dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
+.idblock dd{margin:0;font-size:15.5px}
+
+/* ---------- dvouproudý tok = signature ---------- */
+.flow{margin-top:6px}
+.lane{
+  display:grid;grid-template-columns:1fr 24px 1fr;align-items:stretch;
+  opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease;
+}
+.lane.in{opacity:1;transform:none}
+.spine{border-left:1px solid var(--rule);border-right:1px solid var(--rule);background:var(--base-2)}
+.step{padding:14px 0 16px}
+.step .n{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em}
+.step .t{font-family:var(--disp);font-variation-settings:'wdth' 105,'wght' 600;font-size:16.5px;margin:4px 0 4px}
+.step .d{font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+.side-model .step{padding-right:20px;border-right:3px solid var(--model)}
+.side-model .n{color:var(--model)}
+.side-code .step{padding-left:20px;border-left:3px solid var(--code)}
+.side-code .n{color:var(--code)}
+.empty{}
+
+.gate{
+  grid-column:1 / -1;background:var(--gate);color:#F6EDEB;
+  padding:13px 18px;margin:8px 0;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;
+}
+.gate .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;white-space:nowrap}
+.gate .txt{font-size:15px;line-height:1.45}
+
+/* ---------- tabulky ---------- */
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  text-align:left;color:var(--ink-soft);font-weight:500;
+  padding:0 12px 8px 0;border-bottom:1px solid var(--ink);
+}
+td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td:last-child,th:last-child{padding-right:0}
+.tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border:1px solid currentColor;white-space:nowrap;
+}
+.t-auto{color:var(--code)}
+.t-gate{color:var(--gate)}
+.t-model{color:var(--model)}
+
+ul.plain{margin:0;padding:0;list-style:none}
+ul.plain li{padding:8px 0 8px 22px;position:relative;border-bottom:1px solid var(--rule);font-size:15.5px}
+ul.plain li:last-child{border-bottom:0}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--ink-soft)}
+code{font-family:var(--mono);font-size:.85em;background:var(--base-2);border:1px solid var(--rule);padding:1px 5px}
+.note{font-size:14.5px;color:var(--ink-soft);margin-top:18px;max-width:62ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+
+footer{border-top:2px solid var(--ink);padding:26px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);line-height:1.8}
+
+@media (max-width:700px){
+  .lane{grid-template-columns:1fr}
+  .spine{display:none}
+  .side-model .step{border-right:0;border-left:3px solid var(--model);padding-left:16px;padding-right:0}
+  .side-code .step{padding-left:16px}
+  .empty{display:none}
+  .two{grid-template-columns:1fr;gap:28px}
+  .legend{grid-template-columns:1fr}
+  .legend div:first-child{border-right:0;border-bottom:1px solid var(--rule);padding-right:0}
+  .legend div:last-child{padding-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .lane{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <p class="kicker">Návrhový list · vyplněný příklad</p>
+  <h1>Agent na příchozí faktury</h1>
+  <p class="thesis">Jedenáct kroků od e-mailu k příkazu k úhradě. Model se jich dotkne třikrát —
+  pozná, že jde o fakturu, a dvakrát nezávisle přepíše její obsah. Zaplatit ji nesmí.</p>
+  <div class="legend">
+    <div>Jazykový model<b>3 kroky</b></div>
+    <div>Deterministický kód<b>8 kroků</b></div>
+  </div>
+  <dl class="idblock">
+    <div><dt>K čemu je</dt><dd>Zaplatit opakující se faktury bez ručního přepisování</dd></div>
+    <div><dt>Vstupní kanál</dt><dd>E-mailová schránka <code>faktury@</code></dd></div>
+    <div><dt>Kdo smí</dt><dd>Whitelist odesílatelů + ruční vklad z chatu</dd></div>
+    <div><dt>Vypínač</dt><dd><code>/stop</code> v chatu, zastaví frontu</dd></div>
+  </dl>
+</header>
+
+<main class="wrap">
+
+<section>
+  <h2>Průchod systémem</h2>
+  <div class="flow" id="flow">
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">01 · KÓD</div>
+        <div class="t">Přijetí zprávy</div>
+        <div class="d">Webhook ze schránky. Klíč z ID zprávy, opakované doručení se zahodí.</div>
+      </div></div></div>
+
+    <div class="lane">
+      <div class="side-model"><div class="step">
+        <div class="n">02 · MODEL</div>
+        <div class="t">Rozpoznání záměru</div>
+        <div class="d">Je to pokyn k platbě, nebo něco jiného? Odpověď je jedna z pěti hodnot, ne volný text.</div>
+      </div></div>
+      <div class="spine"></div><div class="side-code empty"></div></div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">03 · KÓD</div>
+        <div class="t">Vytažení přílohy</div>
+        <div class="d">PDF nebo obrázek do úložiště. Kontrola typu podle obsahu, ne podle přípony.</div>
+      </div></div></div>
+
+    <div class="lane">
+      <div class="side-model"><div class="step">
+        <div class="n">04 · MODEL A</div>
+        <div class="t">Přepis dokumentu</div>
+        <div class="d">OCR do pevné struktury: dodavatel, číslo účtu, částka, variabilní symbol, splatnost.</div>
+      </div></div>
+      <div class="spine"></div><div class="side-code empty"></div></div>
+
+    <div class="lane">
+      <div class="side-model"><div class="step">
+        <div class="n">05 · MODEL B</div>
+        <div class="t">Nezávislý přepis</div>
+        <div class="d">Druhý model, tentýž dokument, žádná znalost výsledku prvního.</div>
+      </div></div>
+      <div class="spine"></div><div class="side-code empty"></div></div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">06 · KÓD</div>
+        <div class="t">Porovnání polí</div>
+        <div class="d">Shoda na číslu účtu, částce a symbolu se porovnává znak po znaku. Ne modelem.</div>
+      </div></div></div>
+
+    <div class="lane">
+      <div class="gate">
+        <span class="lbl">Brána 1</span>
+        <span class="txt">Přepisy se v některém poli liší → dotaz do chatu s výřezem dokumentu.
+        Faktura čeká, dokud člověk neurčí správnou hodnotu.</span>
+      </div>
+    </div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">07 · KÓD</div>
+        <div class="t">Párování dodavatele</div>
+        <div class="d">Číslo účtu proti seznamu schválených. Rozhoduje účet, ne název firmy — ten se dá napsat jakkoli.</div>
+      </div></div></div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">08 · KÓD</div>
+        <div class="t">Kontrola limitu</div>
+        <div class="d">Částka proti stropu dodavatele a proti měsíčnímu součtu.</div>
+      </div></div></div>
+
+    <div class="lane">
+      <div class="gate">
+        <span class="lbl">Brána 2</span>
+        <span class="txt">Neznámý účet, částka nad limit, nebo druhá faktura se stejným symbolem
+        → schválení v chatu. Bez odpovědi do 72 hodin se úkol zahodí a oznámí.</span>
+      </div>
+    </div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">09 · KÓD</div>
+        <div class="t">Příkaz k úhradě</div>
+        <div class="d">Zápis do bankovního API. Idempotenční klíč z čísla faktury — dvojí spuštění nezaplatí dvakrát.</div>
+      </div></div></div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">10 · KÓD</div>
+        <div class="t">Zápis do evidence</div>
+        <div class="d">Faktura, oba přepisy, rozhodnutí bran, výsledek. Uloženo i to, co člověk opravil.</div>
+      </div></div></div>
+
+    <div class="lane"><div class="side-model empty"></div><div class="spine"></div>
+      <div class="side-code"><div class="step">
+        <div class="n">11 · KÓD</div>
+        <div class="t">Potvrzení</div>
+        <div class="d">Zpráva do chatu. Odejde vždy — i když proces spadl, zvlášť když spadl.</div>
+      </div></div></div>
+
+  </div>
+  <p class="note">Krok 02 rozhoduje, <em>co</em> se spustí. Kroky 04 a 05 převádějí obraz na text.
+  Nic víc model nedělá. Rozhodnutí „zaplatit" nepadá v žádném z nich.</p>
+</section>
+
+<section>
+  <h2>Scénáře</h2>
+  <table>
+    <thead><tr><th style="width:16%">Kód</th><th style="width:34%">Spouštěč</th><th>Co se stane</th></tr></thead>
+    <tbody>
+      <tr><td><code>S1</code></td><td>E-mail s přílohou</td><td>Průchod výše. Konec: zaplaceno, nebo čeká na bráně.</td></tr>
+      <tr><td><code>S2</code></td><td>Dotaz „zaplatili jsme X?"</td><td>Čtení z evidence. Jen čtení, žádný zápis.</td></tr>
+      <tr><td><code>S3</code></td><td>Ruční vklad dokumentu z chatu</td><td>Vstoupí do S1 od kroku 03.</td></tr>
+      <tr><td><code>S4</code></td><td>Nedělní přehled</td><td>Co prošlo, co čeká, co spadlo.</td></tr>
+      <tr><td><code>—</code></td><td>Cokoli jiného</td><td>Neimprovizuje. Přepošle člověku s poznámkou, že nerozpoznal záměr.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Seznam je uzavřený. Rozšíření znamená přidat scénář a proces k němu —
+  ne dát modelu víc volnosti.</p>
+</section>
+
+<section>
+  <h2>Brány podle vratnosti</h2>
+  <table>
+    <thead><tr><th style="width:34%">Akce</th><th style="width:30%">Když se splete</th><th>Režim</th></tr></thead>
+    <tbody>
+      <tr><td>Zařadit fakturu do fronty</td><td>Smaže se za vteřinu</td><td><span class="tag t-auto">Automaticky</span></td></tr>
+      <tr><td>Platba schválenému účtu v limitu</td><td>Dodavatel peníze vrátí</td><td><span class="tag t-auto">Automaticky</span></td></tr>
+      <tr><td>Platba novému účtu</td><td>Peníze jsou pryč</td><td><span class="tag t-gate">Schválení</span></td></tr>
+      <tr><td>Platba nad limit</td><td>Vymáhání, ne oprava</td><td><span class="tag t-gate">Schválení</span></td></tr>
+      <tr><td>Změna seznamu dodavatelů</td><td>Otevře cestu všem dalším</td><td><span class="tag t-gate">Schválení</span></td></tr>
+      <tr><td>Odpověď na dotaz o stavu</td><td>Nic, jen čte</td><td><span class="tag t-auto">Automaticky</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Sloupec uprostřed určuje ten vpravo. Ne to, jak moc se modelu věří —
+  platba schválenému dodavateli projde sama proto, že se dá vrátit.</p>
+</section>
+
+<div class="two">
+<section style="border-top:1px solid var(--rule)">
+  <h2>Paměť</h2>
+  <ul class="plain">
+    <li><b>Trvalá</b> — seznam dodavatelů, limity, oprávnění. V repozitáři, verzovaná.</li>
+    <li><b>Faktická</b> — historie faktur a plateb. V databázi.</li>
+    <li><b>Pracovní</b> — jedna faktura, kterou právě zpracovává.</li>
+    <li><b>Neukládá se</b> — přístup do banky. Ten drží jiná vrstva.</li>
+  </ul>
+</section>
+
+<section style="border-top:1px solid var(--rule)">
+  <h2>Když to spadne</h2>
+  <ul class="plain">
+    <li>Chyba jde do chatu do minuty. Ticho není povolený stav.</li>
+    <li>Nedoručený přepis se zkusí třikrát, pak eskaluje.</li>
+    <li>Výpadek banky frontu drží, nezahazuje.</li>
+    <li>Log obsahuje i to, proč se agent rozhodl, ne jen jak dopadl.</li>
+  </ul>
+</section>
+</div>
+
+<section>
+  <h2>Moduly</h2>
+  <table>
+    <thead><tr><th style="width:12%">ID</th><th style="width:30%">Modul</th><th>Kontrakt</th></tr></thead>
+    <tbody>
+      <tr><td><code>M1</code></td><td>Příjem e-mailu</td><td><code>zpráva → {odesílatel, text, přílohy[]}</code></td></tr>
+      <tr><td><code>M2</code></td><td>Rozpoznání záměru</td><td><code>text → záměr | neznámý</code></td></tr>
+      <tr><td><code>M3</code></td><td>Přepis dokumentu</td><td><code>soubor → struktura | neshoda[]</code></td></tr>
+      <tr><td><code>M4</code></td><td>Pravidla a limity</td><td><code>struktura → auto | brána | odmítnuto</code></td></tr>
+      <tr><td><code>M5</code></td><td>Platba</td><td><code>struktura → potvrzení</code></td></tr>
+      <tr><td><code>M6</code></td><td>Chat</td><td><code>zpráva ↔ odpověď, whitelist</code></td></tr>
+    </tbody>
+  </table>
+  <p class="note">M4 je čistá logika bez vstupů a výstupů — testuje se nejsnáz a rozhoduje nejvíc.
+  Stavěl bych ho první.</p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  Vyplněno podle metodiky „Principy stavby agentů", kapitola 14<br>
+  Stejný list jde použít na jakéhokoli dalšího agenta
+</footer>
+
+<script>
+(function(){
+  var lanes = document.querySelectorAll('.lane');
+  if(!('IntersectionObserver' in window)){
+    lanes.forEach(function(l){ l.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e,i){
+      if(e.isIntersecting){
+        setTimeout(function(){ e.target.classList.add('in'); }, i*45);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.15});
+  lanes.forEach(function(l){ io.observe(l); });
+})();
+</script>
+</body>
+</html>
