@@ -20,6 +20,10 @@ než napíšeš první řádek kódu.
 Když ho pak stavíš, drž se **[sablony/BUILD-PREDPIS.md](sablony/BUILD-PREDPIS.md)** —
 fáze F0–F8, každá s bránou, kterou musíš projít, než začne další.
 
+Jak předpis dopadl v ostrém provozu, ukazuje
+**[02-pripady/AUDIT-job-watch.md](02-pripady/AUDIT-job-watch.md)** — na běžícím agentovi
+našel tři vady, které testy nenašly.
+
 ---
 
 ## Obsah
@@ -28,7 +32,7 @@ fáze F0–F8, každá s bránou, kterou musíš projít, než začne další.
 |---|---|
 | `00-zdroje/` | Odkud metodika pochází — citace, mapa časů v rozhovoru. |
 | `01-principy/` | Obecná metodika. Platí pro libovolnou doménu. |
-| `02-pripady/` | Vyplněný návrhový list — agent na příchozí faktury (HTML). |
+| `02-pripady/` | Vyplněný návrhový list (faktury) a **audit běžícího agenta** proti předpisu. |
 | `03-projekty/gwalarn/` | Agent na obsah pro kapelu: scénář, moduly, zadání modulu M1. |
 | `03-projekty/prepisovac/` | Desktopová aplikace na přepis audia: zadání + funkční kód. |
 | `04-firemni/` | Portfolio agentů pro malou kancelář a pro velkou firmu. |
@@ -77,6 +81,7 @@ Digital Omnibus v platnost 27. července 2026. Termíny se mění, ověřuj.
 
 Repozitář drží [project-standard](https://github.com/Anamax443/project-standard):
 
+- [STATUS.html](STATUS.html) — stavový list ke čtení v prohlížeči (přehled, fáze, zdroje)
 - [HANDOFF.md](HANDOFF.md) — deník stavu (hotové / rozpracované / zbývá)
 - [CONTRIBUTING.md](CONTRIBUTING.md) — konvence commitů, „prompt je kód"
 - [ZALOZENI-REPO.md](ZALOZENI-REPO.md) — jak repozitář vznikl a co je nastavené

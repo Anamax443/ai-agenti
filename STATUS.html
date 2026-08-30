@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-AGENTI — Status</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<style>
+  :root{--bg:#0c0f15;--panel:#141925;--panel2:#1b2233;--line:#2a3346;--fg:#e9edf5;--mut:#8b97ad;--acc:#4f9cf9;--good:#3ecf8e;--warn:#f0b35b;--danger:#e5766b}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15.5px/1.65 system-ui,'Segoe UI',Roboto,sans-serif}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px}
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#111725,#0c0f15)}
+  header .wrap{padding:26px 22px}
+  h1{margin:0;font-size:1.9rem;letter-spacing:.01em}
+  .sub{color:var(--mut);font-size:.95rem;margin-top:.3rem}
+  h2{font-size:1.25rem;margin:2rem 0 .7rem;padding-top:.6rem;border-top:1px solid var(--line)}
+  .pill{display:inline-block;padding:.15rem .7rem;border-radius:999px;font-size:.78rem;font-weight:700}
+  .prep{background:#4a3a1f;color:#f0d6a8;border:1px solid #6b5324}
+  .live{background:#12351f;color:#8ff0b8;border:1px solid #276b45}
+  a{color:var(--acc)}
+  code{background:var(--panel2);border:1px solid var(--line);padding:.1rem .4rem;border-radius:5px;font-size:.88em}
+  table{border-collapse:collapse;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{text-align:left;padding:.62rem .9rem;border-bottom:1px solid var(--line);vertical-align:top;font-size:.95rem}
+  th{width:32%;color:var(--mut);font-weight:600}
+  tr:last-child th,tr:last-child td{border-bottom:0}
+  ul{margin:.4rem 0 0;padding-left:1.2rem}li{margin:.28rem 0}
+  .ok::before{content:"✅ "}.todo::before{content:"⏳ "}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem}
+  .card.todo-card{border-left:4px solid var(--warn)}
+  .note{background:#13241d;border:1px solid #27543f;border-radius:10px;padding:.7rem 1rem;color:#bfe8d4;margin:.8rem 0}
+  .note.warnbox{background:#2a2115;border-color:#6b5324;color:#f0d6a8}
+  .quote{border-left:3px solid var(--acc);padding:.2rem 0 .2rem 1rem;color:var(--mut);margin:.9rem 0}
+  footer{color:var(--mut);font-size:.85rem;margin-top:2.5rem;border-top:1px solid var(--line);padding-top:1rem}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}th{width:42%}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>📐 AI-AGENTI — Status metodiky</h1>
+  <div class="sub">Jak stavět AI agenty, aby se dali provozovat · snapshot k 30. 8. 2026</div>
+</div></header>
+
+<div class="wrap">
+
+  <h2>Přehled</h2>
+  <table>
+    <tr><th>Co to je</th><td>Metodická báze pro stavbu AI agentů: principy, návrhový list, fázový build předpis a kostra repozitáře. Není to framework ani knihovna — je to <b>zadání, podle kterého se agent staví</b>.</td></tr>
+    <tr><th>Jádro v jedné větě</th><td><b>AI rozpoznává, kód vykonává.</b> Model dostává jen tři typy úloh: rozpoznání záměru, extrakci struktury, syntézu textu. Všechno ostatní je deterministický kód.</td></tr>
+    <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · založeno 30. 8. 2026</td></tr>
+    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch) a našel tři reálné vady.</td></tr>
+    <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks) + kontrola odkazů v <code>*.md</code> (lychee).</td></tr>
+  </table>
+
+  <h2>Co v repu je</h2>
+  <table>
+    <tr><th><code>01-principy/</code></th><td>Metodika v 16 kapitolách — anatomie agenta, osobnost, oprávnění, brány, křížová kontrola, paměť, proaktivita, selhání, antivzory.</td></tr>
+    <tr><th><code>sablony/BUILD-PREDPIS.md</code></th><td><b>Fázový postup F0–F8</b>, každá fáze s bránou. Obecný — platí pro libovolného agenta.</td></tr>
+    <tr><th><code>sablony/navrhovy-list.md</code></th><td>Návrhový list. Vyplnit dřív, než vznikne první řádek kódu. Včetně nepřátelského vstupu a regulace (AI Act, osobní údaje, retence).</td></tr>
+    <tr><th><code>sablony/kostra-agenta/</code></th><td>Kostra repozitáře: prompty jako kód, evaly s metrikami, runbook.</td></tr>
+    <tr><th><code>02-pripady/</code></th><td>Vyplněný návrhový list (faktury) a <a href="02-pripady/AUDIT-job-watch.md">audit běžícího agenta</a>.</td></tr>
+    <tr><th><code>03-projekty/</code>, <code>04-firemni/</code></th><td>Rozpracované návrhy a portfolia agentů pro kancelář i velkou firmu.</td></tr>
+    <tr><th><code>00-zdroje/</code></th><td>Odkud metodika pochází — citace a mapa časů/kapitol. Samotné zdroje v repu nejsou.</td></tr>
+  </table>
+
+  <h2>Build předpis: F0–F8</h2>
+  <p><b>Brána</b> = seznam podmínek na konci fáze. Dokud neplatí všechny, další fáze se nezačíná.</p>
+  <table>
+    <tr><th>F0 · návrh na papíře</th><td>Uzavřený seznam scénářů, dělba model/kód, měřitelné „hotovo".</td></tr>
+    <tr><th>F1 · ověření jádra</th><td>Nejrizikovější krok změřen <b>na reálném vzorku</b> — přesnost, cena, čas jako čísla. Krátký a syntetický vzorek systematicky lže ve tvůj prospěch.</td></tr>
+    <tr><th>F2 · kostra a kontrakty</th><td>Moduly se spustí samostatně, testovací prostředí fyzicky nemá odesílací kanály.</td></tr>
+    <tr><th>F3 · deterministická páteř</th><td>Proces projde s ručním vstupem, ještě bez modelu. Jen dva konce: selhalo a víš o tom, nebo dopadlo dobře.</td></tr>
+    <tr><th>F4 · model a evaly</th><td>Model dělá jen svoje tři úlohy. Evaly v CI, metriky tool recall/precision, parameter accuracy. Nepřátelský vstup neposune agenta mimo scénář.</td></tr>
+    <tr><th>F5 · brány a limity</th><td>Režim podle vratnosti chyby, ne podle důvěry. Identita z kanálu. Nejmenší možná moc nástrojů. Autonomie roste v čase a jde odebrat.</td></tr>
+    <tr><th>F6 · selhání a vypínač</th><td>Hlášení jde <b>člověku</b>, ne jen do logu. Vypínač = jeden úkon, vyzkoušený.</td></tr>
+    <tr><th>F7 · nasazení</th><td>Vidět běžící verzi, znát náklady, první týden kontrolovat ručně. Chyba vs. rozptyl: 3–5 běhů, práh 80 %.</td></tr>
+    <tr><th>F8 · provoz a růst</th><td>Každá chyba i každý povedený průchod do evalů. Sledovat posun rozdělení, ne jen chybovost.</td></tr>
+  </table>
+  <div class="note">
+    <b>Nepřeskočitelné minimum</b> i u nejmenšího agenta: <b>F1</b> reálný vzorek · <b>F3</b> dva konce procesu · <b>F6</b> vypínač.
+    To jsou ty tři věci, jejichž chybějící verze se pozná až podle škody.
+  </div>
+
+  <h2>První ostré použití: JobWatch</h2>
+  <p>Předpis se pustil na <a href="https://github.com/Anamax443/job-watch">JobWatch</a> — denního agenta,
+  který běží naostro na Cloudflare. Výsledek je záznam o tom, že předpis funguje: našel <b>tři vady,
+  které roky testů nenašly</b>, protože se ptal na jiné otázky než testy.</p>
+  <table>
+    <tr><th>Vypínač</th><td>Tlačítko Stop uzavřelo záznam běhu, ale pipeline žádný stop příznak nečetla a běžela dál. <span class="pill prep">F6</span></td></tr>
+    <tr><th>Tichý pád</th><td>Výjimka skončila v logu; notifikace se posílaly jen na nálezy, takže „nic nenašel" a „spadlo to" vypadaly zvenčí stejně. <span class="pill prep">F6</span></td></tr>
+    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. <span class="pill prep">F4</span></td></tr>
+  </table>
+  <p>Celý rozbor včetně toho, co naopak obstálo: <a href="02-pripady/AUDIT-job-watch.md"><code>02-pripady/AUDIT-job-watch.md</code></a>.</p>
+
+  <h2>Odkud metodika pochází</h2>
+  <table>
+    <tr><th>Rozhovor s Markem Bartošem</th><td>Podcast <i>Keci a politika</i>, speciál „Umělá inteligence je naše UFO". Zdroj principu „AI rozpoznává, kód vykonává", bran, křížové kontroly a ekonomiky procesu. Mapa 19 časů → kapitoly v <code>00-zdroje/ZDROJE.md</code>.</td></tr>
+    <tr><th>Michael Albada</th><td><i>Building Applications with AI Agents</i> (O'Reilly 2025). Doplnilo měřicí metriky, rozlišení chyby od rozptylu, růst autonomie a čtyři způsoby selhání lidského dohledu.</td></tr>
+    <tr><th>Veřejné předpisy</th><td>Anthropic <i>Building effective agents</i> (workflow vs. agent, pět vzorů) · <a href="https://github.com/humanlayer/12-factor-agents">12-Factor Agents</a> (vlastni si smyčku, kontext i prompty).</td></tr>
+  </table>
+  <div class="quote">
+    Bartošův přístup má ve veřejné taxonomii jméno: podle Anthropicu je to <b>workflow</b>, ne agent —
+    model a nástroje řízené předem napsaným kódem. Tedy ta kategorie, kterou i Anthropic doporučuje jako první volbu,
+    protože je předvídatelná.
+  </div>
+
+  <h2>Hotové vs. zbývá</h2>
+  <div class="grid">
+    <div class="card">
+      <strong>✅ Hotové</strong>
+      <ul>
+        <li class="ok">Metodika v 16 kapitolách</li>
+        <li class="ok">Build předpis F0–F8 s branami</li>
+        <li class="ok">Návrhový list vč. nepřátelského vstupu a regulace</li>
+        <li class="ok">Kostra agenta: prompty, evaly s metrikami, runbook</li>
+        <li class="ok">Citace zdrojů s mapou „co odkud"</li>
+        <li class="ok">CI: sken tajemství + kontrola odkazů</li>
+        <li class="ok">První ostrý audit běžícího agenta</li>
+      </ul>
+    </div>
+    <div class="card todo-card">
+      <strong>⏳ Zbývá</strong>
+      <ul>
+        <li class="todo"><b>Kapitola o UX agenta</b> — autonomy slider, sdělování nejistoty, synchronní vs. asynchronní návrh</li>
+        <li class="todo">Projít Vorla (<i>NoOps</i>) a Lanhama (<i>AI Agents in Action</i>)</li>
+        <li class="todo">Slovník k veřejným předpisům (workflow vs. agent, pět vzorů, faktory 5 a 6)</li>
+        <li class="todo">Rozhodnout duplicity: <code>03-projekty/prepisovac/kod/</code> vs. repo <code>mp3totxt</code>; <code>03-projekty/gwalarn/</code> vs. repo <code>gwalarn</code></li>
+        <li class="todo"><code>AGENTS.md</code> pro tenhle i ostatní repozitáře</li>
+        <li class="todo">Vybrat prvního agenta z <code>04-firemni/</code> a postavit ho podle předpisu od F0</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Součást rolling dokumentace projektu AI-AGENTI. Metodika: <code>01-principy/</code>, předpis: <code>sablony/BUILD-PREDPIS.md</code>, deník stavu: <code>HANDOFF.md</code>.
+    Repo: <a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a>
+  </footer>
+
+</div>
+</body>
+</html>

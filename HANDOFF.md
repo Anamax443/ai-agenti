@@ -2,6 +2,22 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-08-30 — první ostré použití předpisu + stavový list
+- **Hotové:** předpis pustěn na [`Anamax443/job-watch`](https://github.com/Anamax443/job-watch),
+  jediného agenta, který běží naostro. Našel **tři vady, které testy nenašly**: vypínač,
+  který uzavře záznam běhu, ale pipeline nezastaví; pád běhu, o kterém se nikdo nedozví,
+  protože notifikace se posílají jen na nálezy; a text inzerátu od cizích lidí jdoucí do
+  modelu bez obalu. Rozbor v [`02-pripady/AUDIT-job-watch.md`](02-pripady/AUDIT-job-watch.md),
+  záznam nálezu a diagram běhu v repu projektu.
+- **Co to říká o předpisu:** nálezy padly do F4 a F6 — tedy do fází doplněných naposled
+  (z Albady a rozboru zdrojů). Fáze, které v metodice byly od začátku — determinismus,
+  limity, identita — obstály. Slabý, ale reálný důkaz, že se doplňovalo správným směrem.
+- **Přidán `STATUS.html`** — stavový list podle „klasiky": přehled, obsah repa, fáze F0–F8
+  s branami, zdroje metodiky, hotové vs. zbývá. Vizuálně sjednocený se `STATUS.html`
+  v job-watch, ať to drží jednu řeč napříč projekty.
+- **Zbývá:** kapitola o UX agenta (z Albady zatím nevyužitá), Vorel a Lanham,
+  slovník k veřejným předpisům, `AGENTS.md`.
+
 ## 2026-08-30 — rozbor Albady, doplnění předpisu
 - **Hotové:** přečten celý text Albada, *Building Applications with AI Agents*
   (O'Reilly 2025, 355 s.). Do `sablony/BUILD-PREDPIS.md` doplněno sedm věcí,
