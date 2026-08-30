@@ -44,6 +44,11 @@ od lidí, kteří ho nepsali pro něj. Část z nich se pokusí ho přesměrovat
 
 Pravidlo: čím víc oprávnění agent má, tím míň smí věřit tomu, co čte.
 
+Než tohle budeš navrhovat poprvé, zkus si útok na vlastní kůži — zdarma a za
+půl hodiny: [Gandalf](https://gandalf.lakera.ai) (Lakera),
+[Red](https://red.giskard.ai) (Giskard), [Prompt Airlines](https://promptairlines.com) (Wiz).
+Napsat obranu proti něčemu, co jsi nikdy nezkusil prolomit, je hádání.
+
 ---
 
 ## Regulace a data

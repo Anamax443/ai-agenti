@@ -2,6 +2,22 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-08-30 — rozbor Albady, doplnění předpisu
+- **Hotové:** přečten celý text Albada, *Building Applications with AI Agents*
+  (O'Reilly 2025, 355 s.). Do `sablony/BUILD-PREDPIS.md` doplněno sedm věcí,
+  které nám chyběly: discoverability textového rozhraní (F0), vypínání nástrojů
+  konfigurací (F2), měřicí metriky tool recall/precision + parameter accuracy (F4),
+  rozpočet na eskalace ~10 %, princip nejmenší moci a růst autonomie (F5),
+  čtyři způsoby selhání lidského dohledu (F6), pravidlo chyba-vs-rozptyl
+  a běh naslepo (F7), PSI na posun rozdělení a zlaté cesty (F8).
+- **Šablona evalů** přepsána: očekávaný koncový stav místo očekávaného textu,
+  tabulka metrik, návod na výrobu okrajových případů, ukázka s útokem.
+- **Návrhový list:** odkaz na tréninkové CTF na prompt injection.
+- **Citace knihy** v `00-zdroje/ZDROJE.md` včetně mapy kapitola → co jsme převzali.
+  Text knihy v repu není (warez balík, viz pravidlo u přepisů).
+- **Zbývá:** projít Vorla (NoOps) a Lanhama; z Albady nevyužito UX kapitola
+  jako celek a kapitoly o multiagentní koordinaci a fine-tuningu (mimo náš záběr).
+
 ## 2026-08-30 — build předpis a úprava šablon
 - **Hotové:** `sablony/BUILD-PREDPIS.md` — obecný fázový postup F0–F8, každá
   fáze s bránou. Doplňuje mezeru mezi návrhovým listem (co navrhnout)

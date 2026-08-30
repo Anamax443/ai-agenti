@@ -36,6 +36,12 @@ fáze jinak narazila — a to dráž.
 > Nejde-li vyplnit sekce Scénáře, agent není promyšlený. To není důvod
 > začít kódovat a doplnit to potom. To je důvod nezačínat.
 
+**Jak pozná uživatel, co agent umí?** Textové rozhraní nemá tlačítka ani menu.
+Uživatel netuší, co si smí říct, a hádá — a když se netrefí, dostane odmítnutí
+bez vysvětlení. Agent to musí říct sám: při prvním kontaktu a znovu pokaždé,
+když něco odmítne („tohle neumím; umím A, B, C"). Bez toho zůstane půlka
+funkcí nepoužitá a uživatel má pocit, že to nefunguje.
+
 ---
 
 ## F1 — Ověření jádra na reálném vzorku
@@ -83,6 +89,8 @@ Měř tři věci, každou číslem:
 - [ ] `NAVRH.md` je v repozitáři vyplněný, ne prázdná šablona
 - [ ] Každý modul jde spustit samostatně z příkazové řádky
 - [ ] V testovacím prostředí není fyzicky možné odeslat e-mail ani platbu
+- [ ] Volání nástrojů jde v testu vypnout **konfigurací** (u API je to parametr
+      `tool_choice: none`), ne podmínkou v kódu
 - [ ] Žádné tajemství v gitu, jen `*.example`
 
 ---
@@ -115,12 +123,30 @@ Nic jiného.
 - Naplnit [evaly](kostra-agenta/evals/) — 20–40 reálných vstupů
 - Kde záleží na číslech, zapojit křížovou kontrolu dvěma nezávislými průchody
 
+**Metriky, které u agenta dávají smysl.** „Prošlo / neprošlo" je málo — potřebuješ
+vědět, *co* se pokazilo:
+
+| Metrika | Co měří | Co znamená nízká hodnota |
+|---|---|---|
+| **tool recall** | zavolal všechny kroky, které měl? | krok vynechal |
+| **tool precision** | nezavolal navíc něco zbytečného? | špatně pochopil záměr |
+| **parameter accuracy** | předal správné argumenty? | správná akce, špatné číslo |
+| **phrase recall** | obsahuje výstup, co obsahovat musí? | chybí povinná formulace |
+| **task success** | dopadl celý scénář? | souhrn všeho výše |
+
+Rozdíl mezi „zavolal špatný nástroj" a „zavolal správný nástroj se špatnou
+částkou" je rozdíl mezi zmatením a škodou. Jedno číslo ti ho neřekne.
+U extrakce hodnoť pole po poli, ne celý výstup jako jeden test.
+
 **Brána**
 
 - [ ] Evaly běží v CI a jsou nad prahem (klasifikace 90 %+, extrakce po polích)
 - [ ] Změna promptu bez běhu evalů neprojde
 - [ ] Model nemá přístup k žádné nevratné akci napřímo — jen přes proces z F3
 - [ ] Nepřátelský vstup neposune agenta mimo scénář (viz návrhový list)
+- [ ] U sporných výstupů vrací model **vlastní míru jistoty** a pod prahem se ptá
+- [ ] Podíl případů, které padnou na člověka, drží pod ~10 % — nad tím člověk
+      otupí a začne odklikávat
 
 ---
 
@@ -132,6 +158,18 @@ Nic jiného.
 - Limity: částky, počty, frekvence — a co se stane při překročení
 - Identita z kanálu (číslo, ID, podpis webhooku), nikdy ze jména v textu
 - Agent se přiznává, že je AI, když píše ven — vyžaduje to i AI Act
+
+**Princip nejmenší moci.** Nástroj je úzce vymezená operace
+(`vystav_doklad(id)`), ne obecná brána (`spust_sql(dotaz)`). Doložený případ:
+agent dostal přístup k databázi, „optimalizoval výkon" a smazal půlku řádků
+produkční tabulky. Model si nemá co skládat dotazy — dostane tlačítka, ne klávesnici.
+
+**Autonomie roste, nezačíná nahoře.** Role člověka se posouvá
+*vykonavatel → kontrolor → spolupracovník → správce* a s ní i to, co agent smí sám.
+Nový agent nejdřív připraví návrh, teprve po čase ho odesílá. Opačný postup se
+trestá: Klarna v roce 2024 nahradila kolem 700 lidí v podpoře chatbotem, objem
+stížností vyletěl a v roce 2025 nabírala lidi zpět. Stejně důležitá je cesta
+zpátky — způsob, jak agentovi pravomoc odebrat, když se ukáže, že na ni nemá.
 
 **Brána**
 
@@ -150,6 +188,19 @@ Nic jiného.
 - Hlášení o pádu jde **člověku**, ne jen do logu
 - Vypínač = jeden úkon. Vyzkoušený, ne teoretický
 
+**Čtyři způsoby, jak selže dohled člověka.** Jsou popsané a počítá se s nimi:
+
+| Selhání | Jak se projeví |
+|---|---|
+| **Slepá důvěra v automat** | člověk přestane výstup číst, „zatím to vždycky sedělo" |
+| **Únava z hlášení** | důležité upozornění zapadne mezi deseti nedůležitými |
+| **Ztráta dovednosti** | po roce automatiky už člověk neumí zasáhnout ručně |
+| **Rozejité zájmy** | agent tlačí na rychlost, člověk potřebuje jistotu |
+
+Proto: hlásit málo a adresně. A u každé eskalace dodat kontext — co agent zkusil,
+proč to vzdal a co přesně má člověk rozhodnout. Eskalace bez kontextu je jen
+přehození práce.
+
 **Brána**
 
 - [ ] Agent se zastaví jedním úkonem a ověřil jsi to
@@ -166,6 +217,14 @@ Nic jiného.
 - Do buildu commit hash, ať je poznat běžící verze
 - Pozorovatelnost: kolik průchodů, kolik selhání, kolik stálo
 - **První týden každý výstup ručně zkontroluj** dřív, než odejde ven
+- Novou verzi pusť napřed **naslepo vedle ostré** — stejné vstupy, výstup se
+  zahodí a jen porovná. Teprve pak na malý podíl provozu
+
+**Chyba, nebo rozptyl?** Model je pravděpodobnostní, takže odlišný výstup ještě
+není porucha. Pravidlo: pusť tentýž vstup **3–5×**. Selže-li nad 80 % běhů, je to
+systematická chyba a jde do opravy. Selže-li jednou ze čtyř, je to rozptyl —
+zaloguj a sleduj trend. Bez tohohle pravidla se buď honí duchové, nebo se
+přehlédne skutečná regrese.
 
 **Brána**
 
@@ -181,8 +240,19 @@ Nic jiného.
 
 - Každá chyba v provozu → nový případ do evalů. Po roce máš materiál, který
   se nedá koupit
+- **Ukládej i povedené průchody**, nejen selhání — z nich vznikne referenční
+  „zlatá cesta", proti které se pozná regrese
 - Uč se z vlastních zásahů, ne z metrik
 - Prompt se **nikdy nepřepisuje automaticky**
+- Každá změna promptu nebo nástroje má zapsané: co se pozorovalo, co se změnilo,
+  jak se pozná, že to pomohlo
+
+**Agent málokdy spadne — spíš tiše zhorší.** Proto sleduj i posun rozdělení, ne
+jen chybovost. Nejlevnější měřítko: podíly kategorií (které scénáře se spouštějí,
+které nástroje se volají) proti výchozímu týdnu.
+Rozdíl **pod 0,1 klid · 0,1–0,25 sleduj · nad 0,25 zasáhni** (index PSI).
+K tomu implicitní signály od lidí: jak často se ptají znovu jinými slovy a jak
+často to vzdají uprostřed. Obojí přijde dřív než stížnost.
 
 **Brána (opakovaně, ne jednorázově)**
 

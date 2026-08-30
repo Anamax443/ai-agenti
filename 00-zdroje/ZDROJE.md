@@ -66,6 +66,34 @@ Do repozitáře jde jen tenhle rozbor: časy, parafráze a krátké citace.
 
 ---
 
+## Knižní zdroj
+
+**Michael Albada — _Building Applications with AI Agents: Designing and
+Implementing Multiagent Systems_** (O'Reilly, září 2025, ISBN 978-1-098-17650-1).
+
+355 stran, 13 kapitol podle životního cyklu agenta. Nejbližší strukturní
+protějšek našeho build předpisu; kapitoly 9–13 (měření, monitoring, zlepšovací
+smyčky, bezpečnost, spolupráce s člověkem) pokrývají fáze, které se u nás
+odbývaly jednou odrážkou.
+
+Co jsme si z ní vzali do `sablony/BUILD-PREDPIS.md`:
+
+| Odkud | Co konkrétně |
+|---|---|
+| kap. 3 | textové rozhraní nemá menu — agent musí sám říct, co umí |
+| kap. 4 | princip nejmenší moci u nástrojů; vypnutí nástrojů konfigurací v testu |
+| kap. 9 | metriky tool recall / precision, parameter accuracy, phrase recall, task success |
+| kap. 10 | rozlišení chyby od rozptylu (3–5 běhů, práh 80 %); běh naslepo vedle ostré; PSI na posun rozdělení |
+| kap. 11 | rozpočet na eskalace (~10 % případů); dokumentovat každou změnu promptu |
+| kap. 12 | doložený případ agenta, který „optimalizoval" produkční databázi mazáním řádků |
+| kap. 13 | růst autonomie vykonavatel → kontrolor → spolupracovník → správce; čtyři způsoby selhání lidského dohledu; Klarna jako varování před opačným postupem |
+
+Kniha stojí na LangGraphu a na týmech s ML inženýry a SRE. Pro sólo provoz
+nad Cloudflare je půlka obsahu (GPU škálování, multiagentní koordinace,
+fine-tuning) mimo záběr — vzali jsme principy, ne stack.
+
+---
+
 ## Doplňkové zdroje
 
 - **Anthropic** — *Building effective agents* a navazující materiály
