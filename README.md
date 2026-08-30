@@ -17,6 +17,9 @@ Když potřebuješ navrhnout nového agenta, vezmi
 **[sablony/navrhovy-list.md](sablony/navrhovy-list.md)** a vyplň ho dřív,
 než napíšeš první řádek kódu.
 
+Když ho pak stavíš, drž se **[sablony/BUILD-PREDPIS.md](sablony/BUILD-PREDPIS.md)** —
+fáze F0–F8, každá s bránou, kterou musíš projít, než začne další.
+
 ---
 
 ## Obsah
@@ -30,7 +33,7 @@ než napíšeš první řádek kódu.
 | `03-projekty/prepisovac/` | Desktopová aplikace na přepis audia: zadání + funkční kód. |
 | `04-firemni/` | Portfolio agentů pro malou kancelář a pro velkou firmu. |
 | `05-html/` | Vizuální roadmapa postupu stavby. |
-| `sablony/` | Prázdný návrhový list a kostra repozitáře agenta. |
+| `sablony/` | **Build předpis** (fáze a brány), prázdný návrhový list a kostra repozitáře agenta. |
 
 ---
 

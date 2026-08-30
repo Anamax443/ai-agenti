@@ -2,6 +2,19 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-08-30 — build předpis a úprava šablon
+- **Hotové:** `sablony/BUILD-PREDPIS.md` — obecný fázový postup F0–F8, každá
+  fáze s bránou. Doplňuje mezeru mezi návrhovým listem (co navrhnout)
+  a `05-html/postup-stavby.html` (konkrétní plán jednoho projektu).
+  Nepřeskočitelné minimum: F1 reálný vzorek, F3 dva konce procesu, F6 vypínač.
+- **Návrhový list** rozšířen o dvě sekce: *Nepřátelský vstup* (prompt injection
+  u agentů, co čtou cizí texty) a *Regulace a data* (AI Act, osobní údaje, retence).
+- **Odstraněna duplicita:** `sablony/kostra-agenta/NAVRH.md` byl bajt po bajtu
+  kopií návrhového listu. Teď je z něj ukazatel na jediný zdroj pravdy —
+  dvě kopie by se rozešly a nikdo by si nevšiml které.
+- **Zbývá:** porovnat předpis s veřejnými (12-factor agents, Anthropic
+  workflows-vs-agents) a doplnit, co z nich dává smysl převzít.
+
 ## 2026-08-30 — doplněn zdroj metodiky
 - **Hotové:** `00-zdroje/ZDROJE.md` — citace pořadu (Keci a politika, speciál
   s Markem Bartošem „Umělá inteligence je naše UFO"), parametry přepisu

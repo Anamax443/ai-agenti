@@ -23,8 +23,12 @@ otestovat jednotkovým testem a potřebují evaluační sadu.
 
 1. Přečti `01-principy/PRINCIPY-stavby-agentu.md`
 2. Vyplň `sablony/navrhovy-list.md`
-3. Zafixuj kontrakty modulů
-4. Teprve pak piš kód
+3. Ověř jádro na reálném vzorku (fáze F1)
+4. Zafixuj kontrakty modulů
+5. Teprve pak piš kód
+
+Pořadí fází i s branami je v `sablony/BUILD-PREDPIS.md`. Brána není
+formalita — je to seznam podmínek, bez kterých další fáze stojí na písku.
 
 ## Než něco nasadíš
 

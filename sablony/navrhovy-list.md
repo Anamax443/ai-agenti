@@ -28,6 +28,39 @@ nikdy na jméno v textu.
 
 ---
 
+## Nepřátelský vstup
+
+Agent, který čte e-maily, dokumenty nebo webové stránky, dostává text
+od lidí, kteří ho nepsali pro něj. Část z nich se pokusí ho přesměrovat.
+
+| Kanál | Kdo tam může psát | Co s obsahem nesmí jít |
+|---|---|---|
+| | | |
+
+- [ ] Obsah z vnějšku je pro model **data, ne instrukce** — odděleno v promptu
+- [ ] Skrytý text (bílé písmo, metadata, komentáře) se odstraňuje před modelem
+- [ ] Nevratná akce se nikdy nespouští z toho, co bylo napsáno ve vstupu
+- [ ] Podezřelý vstup má vlastní konec scénáře: zastavit a zeptat se
+
+Pravidlo: čím víc oprávnění agent má, tím míň smí věřit tomu, co čte.
+
+---
+
+## Regulace a data
+
+| Otázka | Odpověď |
+|---|---|
+| Označuje se AI při komunikaci ven? | povinné (AI Act) |
+| Zpracovává osobní údaje? | jaké, čí, na jakém základě |
+| Riziková kategorie (AI Act) | minimální / omezená / **vysoká** |
+| Retence — co se maže a kdy | |
+| Kde data fyzicky leží | |
+
+Vysoké riziko je mimo jiné výběr lidí, hodnocení a přístup ke službám.
+U toho se předpis nezkracuje.
+
+---
+
 ## Scénáře
 
 Uzavřený seznam. Rozšíření znamená přidat scénář a proces k němu,
