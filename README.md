@@ -23,6 +23,7 @@ než napíšeš první řádek kódu.
 
 | Složka | Co v ní je |
 |---|---|
+| `00-zdroje/` | Odkud metodika pochází — citace, mapa časů v rozhovoru. |
 | `01-principy/` | Obecná metodika. Platí pro libovolnou doménu. |
 | `02-pripady/` | Vyplněný návrhový list — agent na příchozí faktury (HTML). |
 | `03-projekty/gwalarn/` | Agent na obsah pro kapelu: scénář, moduly, zadání modulu M1. |
@@ -56,9 +57,13 @@ Třetí větev, kdy udělá něco, co nikdo nechtěl, je odstraněná návrhem.
 
 ## Poznámky ke zdrojům
 
-Podcast byl přepsán lokálně přes faster-whisper. Přepis obsahuje
-zkomolená vlastní jména a pokrývá jen první polovinu pořadu — druhá
-je za předplatným.
+Podcast byl přepsán lokálně přes [mp3totxt](https://github.com/Anamax443/mp3totxt)
+(faster-whisper, model `medium`). Přepis komolí vlastní jména a pokrývá
+jen první polovinu pořadu — druhá je za předplatným. Samotný přepis
+v repozitáři není, drží se lokálně mimo git.
+
+Citace, metoda přepisu a mapa „co zaznělo v kterém čase → kam se to
+v metodice promítlo" jsou v **[00-zdroje/ZDROJE.md](00-zdroje/ZDROJE.md)**.
 
 Odkazy na regulaci (AI Act) odpovídají stavu k srpnu 2026, po vstupu
 Digital Omnibus v platnost 27. července 2026. Termíny se mění, ověřuj.

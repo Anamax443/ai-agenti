@@ -38,3 +38,6 @@ id_rsa
 *.log
 bin/
 obj/
+
+# Prepisy zdroju - drzet lokalne, NEPUBLIKOVAT (autorska prava podcastu)
+00-zdroje/prepisy/
