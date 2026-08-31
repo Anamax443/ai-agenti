@@ -2,6 +2,31 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-08-31 — AGENTS.md
+- **Hotové:** [`AGENTS.md`](AGENTS.md) — pravidla pro AI asistenty pracující v repu.
+  Podstatné je první z nich: **kód sem nepatří**. Když z návrhu vznikne funkční věc,
+  založí se jí vlastní repo a odsud vede odkaz; rozpracovaný kód, který tu zůstane
+  ležet, se rozejde s tím, co běží, a nikdo nepozná, která kopie je pravda. Dál:
+  česky s diakritikou, odkaž nekopíruj, přepisy cizích zdrojů do veřejného repa
+  nikdy, `HANDOFF.md` a `STATUS.html` držet v souladu, návrhový list před prvním
+  řádkem kódu, nepřeskočitelné F1/F3/F6. Zmíněno v `README.md` (Standard projektu)
+  a v `STATUS.html` (obsah repa + hotové).
+- **Rozpracované:** —
+- **Zbývá:**
+  - **Duplicita přepisovače** — rozhodnuto smazat `03-projekty/prepisovac/kod/`
+    a nechat tu jen `ZADANI-prepisovac.md` jako návrhový artefakt s ukazatelem na
+    [mp3totxt](https://github.com/Anamax443/mp3totxt). Důvod není jen „dvě kopie":
+    ten prototyp **neprošel vlastní bránou**. Zadání označuje `preflight.py` za
+    klíčový modul a „nic se nesmí spustit naslepo" za klíčový požadavek — v kódu
+    žádný `preflight.py`, `validators.py` ani `appstate.py` není a testy taky ne.
+    Zbyl GUI prototyp ze tří souborů s jedinou kontrolou `audio.exists()`.
+    Co `mp3totxt` oproti zadání **nepokrývá**: GUI, stahování z URL přes yt-dlp
+    a preflight. Ta mezera se smazáním kódu neztratí — je popsaná v zadání.
+    *Samotné smazání zatím neproběhlo, blokuje ho oprávnění.*
+  - `AGENTS.md` do ostatních repozitářů.
+  - Beze změny: UX kapitola z Albady, Vorel a Lanham, slovník k veřejným předpisům,
+    gwalarn, první agent z `04-firemni/`.
+
 ## 2026-08-30 — první ostré použití předpisu + stavový list
 - **Hotové:** předpis pustěn na [`Anamax443/job-watch`](https://github.com/Anamax443/job-watch),
   jediného agenta, který běží naostro. Našel **tři vady, které testy nenašly**: vypínač,

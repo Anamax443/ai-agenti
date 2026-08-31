@@ -84,6 +84,7 @@ Repozitář drží [project-standard](https://github.com/Anamax443/project-stand
 - [STATUS.html](STATUS.html) — stavový list ke čtení v prohlížeči (přehled, fáze, zdroje)
 - [HANDOFF.md](HANDOFF.md) — deník stavu (hotové / rozpracované / zbývá)
 - [CONTRIBUTING.md](CONTRIBUTING.md) — konvence commitů, „prompt je kód"
+- [AGENTS.md](AGENTS.md) — pravidla pro AI asistenty pracující v repu (kód sem nepatří, odkaž nekopíruj)
 - [ZALOZENI-REPO.md](ZALOZENI-REPO.md) — jak repozitář vznikl a co je nastavené
 - `LICENSE` — zdroje jsou veřejně čitelné jako ukázka práce, ne open source
 
