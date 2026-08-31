@@ -2,6 +2,44 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-08-31 — vizuální výstupy, dvojjazyčnost, kontrola dvojic
+
+- **Hotové — čtyři nové stránky v `05-html/`,** česky i anglicky, ve stejném vizuálním
+  jazyce jako `postup-stavby.html` (stejná paleta i písmo, aby to drželo jednu řeč):
+  - [`manazerske-shrnuti.html`](05-html/manazerske-shrnuti.html) — **jedna A4 na výšku
+    k vytištění pro vedení.** Jádro, dva konce procesu s výslovně odstraněným třetím,
+    co to znamená provozně (náklady, odpovědnost, identita, dohled, regulace),
+    devět fází s vyznačenými třemi nepřeskočitelnými, důkaz z auditu JobWatch a tři čísla.
+    `@page A4 portrait`, ověřeno, že se to na jednu stranu vejde.
+  - [`mapa-mysleni.html`](05-html/mapa-mysleni.html) — myšlenková mapa: jádro uprostřed,
+    pět větví (základ, stavba, kontakt s okolím, kontrola, provoz), pod nimi antivzory
+    a vstupní bod. Levá strana odpovídá „z čeho to je", pravá „jak se to provozuje".
+  - [`tok-informaci.html`](05-html/tok-informaci.html) — tok informací agentem: u každého
+    úseku je vidět, co vstupuje a co vychází, kdo krok dělá (model / kód / člověk),
+    a kde leží **hranice důvěry**, za kterou je cizí text jen data. Na konci tři reálné
+    vady z auditu namapované na úseky trasy.
+  - [`vyvojovy-diagram.html`](05-html/vyvojovy-diagram.html) — vývojový diagram F0–F8 v SVG:
+    fáze → brána → podmínky → další fáze, s čárkovanou větví „ne" zpět na tutéž fázi.
+    Souřadnice jsou na pravidelné mřížce, takže jde editovat ručně.
+- **Repozitář je nově dvojjazyčný.** Konvence `<jméno>.en.md` / `<jméno>.en.html`,
+  při rozporu platí česká verze. Přeloženo jádro: principy, build předpis, návrhový list,
+  zdroje, audit job-watch, kostra agenta, README, AGENTS, CONTRIBUTING, ZALOZENI-REPO,
+  STATUS, portfolia v `04-firemni/`.
+- **Nová funkce nese vlastní kontrolu:** [`kontrola/dvojice.py`](kontrola/dvojice.py) ověří,
+  že ke každému českému dokumentu existuje anglické dvojče a naopak. Výjimky se zapisují
+  ručně do `kontrola/bez-prekladu.txt` — chybějící překlad má být vidět, ne tiše zmizet.
+  Zapojeno do CI vedle gitleaks a lychee. Skript zároveň hlásí *zbytečnou* výjimku,
+  takže se seznam sám uklidí, až soubor zmizí.
+- **Rozpracované:** —
+- **Zbývá:**
+  - Dopřeložit `03-projekty/` (gwalarn, zadání přepisovače) a
+    `02-pripady/navrhovy-list-faktury.html`, `05-html/postup-stavby.html`.
+    Kontrola dvojic je vypisuje jmenovitě.
+  - **Smazání `03-projekty/prepisovac/kod/` pořád visí na oprávnění.** Rozhodnutí platí
+    (viz záznam níž), příkaz je `git rm -r 03-projekty/prepisovac/kod`.
+  - Beze změny: UX kapitola z Albady, Vorel a Lanham, slovník k veřejným předpisům,
+    gwalarn, první agent z `04-firemni/`.
+
 ## 2026-08-31 — AGENTS.md
 - **Hotové:** [`AGENTS.md`](AGENTS.md) — pravidla pro AI asistenty pracující v repu.
   Podstatné je první z nich: **kód sem nepatří**. Když z návrhu vznikne funkční věc,

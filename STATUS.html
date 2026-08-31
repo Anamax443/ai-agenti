@@ -40,6 +40,7 @@
 <header><div class="wrap">
   <h1>📐 AI-AGENTI — Status metodiky</h1>
   <div class="sub">Jak stavět AI agenty, aby se dali provozovat · snapshot k 31. 8. 2026</div>
+  <div class="sub" style="margin-top:.5rem">Jazyk: <b>Čeština</b> · <a href="STATUS.en.html">English</a></div>
 </div></header>
 
 <div class="wrap">
@@ -50,7 +51,7 @@
     <tr><th>Jádro v jedné větě</th><td><b>AI rozpoznává, kód vykonává.</b> Model dostává jen tři typy úloh: rozpoznání záměru, extrakci struktury, syntézu textu. Všechno ostatní je deterministický kód.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · založeno 30. 8. 2026</td></tr>
     <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch) a našel tři reálné vady.</td></tr>
-    <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks) + kontrola odkazů v <code>*.md</code> (lychee).</td></tr>
+    <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks), kontrola odkazů v <code>*.md</code> (lychee) a kontrola jazykových dvojic (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 
   <h2>Co v repu je</h2>
@@ -63,6 +64,8 @@
     <tr><th><code>03-projekty/</code>, <code>04-firemni/</code></th><td>Rozpracované návrhy a portfolia agentů pro kancelář i velkou firmu.</td></tr>
     <tr><th><code>00-zdroje/</code></th><td>Odkud metodika pochází — citace a mapa časů/kapitol. Samotné zdroje v repu nejsou.</td></tr>
     <tr><th><code>AGENTS.md</code></th><td>Pravidla pro AI asistenty pracující v repu: kód sem nepatří, odkaž nekopíruj, přepisy cizích zdrojů ven, deník a stavový list drž v souladu.</td></tr>
+    <tr><th><code>05-html/</code></th><td><b>Vizuální výstupy</b> — <a href="05-html/manazerske-shrnuti.html">manažerské shrnutí</a> (A4 na výšku), <a href="05-html/mapa-mysleni.html">myšlenková mapa</a>, <a href="05-html/tok-informaci.html">tok informací</a>, <a href="05-html/vyvojovy-diagram.html">vývojový diagram F0–F8</a>. Každý i anglicky.</td></tr>
+    <tr><th><code>kontrola/</code></th><td>Kontrola jazykových dvojic. Co se vědomě nepřekládá, je vypsané v <code>bez-prekladu.txt</code> — chybějící překlad má být vidět.</td></tr>
   </table>
 
   <h2>Build předpis: F0–F8</h2>
@@ -119,6 +122,10 @@
         <li class="ok">CI: sken tajemství + kontrola odkazů</li>
         <li class="ok">První ostrý audit běžícího agenta</li>
         <li class="ok"><code>AGENTS.md</code> — pravidla pro AI asistenty v tomhle repu</li>
+        <li class="ok">Manažerské shrnutí na jednu A4 pro vedení</li>
+        <li class="ok">Myšlenková mapa, tok informací, vývojový diagram F0–F8</li>
+        <li class="ok">Dvojjazyčnost: jádro metodiky přeloženo, konvence <code>*.en.md</code></li>
+        <li class="ok">CI kontrola jazykových dvojic s ručním seznamem výjimek</li>
       </ul>
     </div>
     <div class="card todo-card">
@@ -127,7 +134,9 @@
         <li class="todo"><b>Kapitola o UX agenta</b> — autonomy slider, sdělování nejistoty, synchronní vs. asynchronní návrh</li>
         <li class="todo">Projít Vorla (<i>NoOps</i>) a Lanhama (<i>AI Agents in Action</i>)</li>
         <li class="todo">Slovník k veřejným předpisům (workflow vs. agent, pět vzorů, faktory 5 a 6)</li>
-        <li class="todo">Rozhodnout duplicity: <code>03-projekty/prepisovac/kod/</code> vs. repo <code>mp3totxt</code>; <code>03-projekty/gwalarn/</code> vs. repo <code>gwalarn</code></li>
+        <li class="todo"><b>Smazat <code>03-projekty/prepisovac/kod/</code></b> — rozhodnuto, blokuje oprávnění; prototyp neprošel vlastní bránou (chybí <code>preflight.py</code>, který zadání označuje za klíčový modul)</li>
+        <li class="todo">Rozhodnout <code>03-projekty/gwalarn/</code> vs. repo <code>gwalarn</code></li>
+        <li class="todo">Dopřeložit <code>03-projekty/</code> a <code>04-firemni/</code> — kontrola dvojic je vypisuje</li>
         <li class="todo"><code>AGENTS.md</code> do ostatních repozitářů (tady už je)</li>
         <li class="todo">Vybrat prvního agenta z <code>04-firemni/</code> a postavit ho podle předpisu od F0</li>
       </ul>

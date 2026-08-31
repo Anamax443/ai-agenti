@@ -2,4 +2,6 @@
 # Jeden vztazny path na radek, komentar za #.
 # Seznam je rucni schvalne: co se neprekklada, ma byt videt.
 
-# --- zatim nelozeno, viz HANDOFF.md ---
+# Ceka na smazani (viz HANDOFF.md) - prekladat nedodelany prototyp nema smysl.
+# Az slozka zmizi, kontrola tenhle radek ohlasi jako zbytecnou vyjimku.
+03-projekty/prepisovac/kod/README.md

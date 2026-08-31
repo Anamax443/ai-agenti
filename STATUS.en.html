@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-AGENTI — Status</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<style>
+  :root{--bg:#0c0f15;--panel:#141925;--panel2:#1b2233;--line:#2a3346;--fg:#e9edf5;--mut:#8b97ad;--acc:#4f9cf9;--good:#3ecf8e;--warn:#f0b35b;--danger:#e5766b}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15.5px/1.65 system-ui,'Segoe UI',Roboto,sans-serif}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px}
+  header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#111725,#0c0f15)}
+  header .wrap{padding:26px 22px}
+  h1{margin:0;font-size:1.9rem;letter-spacing:.01em}
+  .sub{color:var(--mut);font-size:.95rem;margin-top:.3rem}
+  h2{font-size:1.25rem;margin:2rem 0 .7rem;padding-top:.6rem;border-top:1px solid var(--line)}
+  .pill{display:inline-block;padding:.15rem .7rem;border-radius:999px;font-size:.78rem;font-weight:700}
+  .prep{background:#4a3a1f;color:#f0d6a8;border:1px solid #6b5324}
+  .live{background:#12351f;color:#8ff0b8;border:1px solid #276b45}
+  a{color:var(--acc)}
+  code{background:var(--panel2);border:1px solid var(--line);padding:.1rem .4rem;border-radius:5px;font-size:.88em}
+  table{border-collapse:collapse;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{text-align:left;padding:.62rem .9rem;border-bottom:1px solid var(--line);vertical-align:top;font-size:.95rem}
+  th{width:32%;color:var(--mut);font-weight:600}
+  tr:last-child th,tr:last-child td{border-bottom:0}
+  ul{margin:.4rem 0 0;padding-left:1.2rem}li{margin:.28rem 0}
+  .ok::before{content:"✅ "}.todo::before{content:"⏳ "}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem}
+  .card.todo-card{border-left:4px solid var(--warn)}
+  .note{background:#13241d;border:1px solid #27543f;border-radius:10px;padding:.7rem 1rem;color:#bfe8d4;margin:.8rem 0}
+  .note.warnbox{background:#2a2115;border-color:#6b5324;color:#f0d6a8}
+  .quote{border-left:3px solid var(--acc);padding:.2rem 0 .2rem 1rem;color:var(--mut);margin:.9rem 0}
+  footer{color:var(--mut);font-size:.85rem;margin-top:2.5rem;border-top:1px solid var(--line);padding-top:1rem}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}th{width:42%}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>📐 AI-AGENTI — methodology status</h1>
+  <div class="sub">How to build AI agents that can actually be run · snapshot as of 31 Aug 2026</div>
+  <div class="sub" style="margin-top:.5rem">Language: <a href="STATUS.html">Čeština</a> · <b>English</b></div>
+</div></header>
+
+<div class="wrap">
+
+  <h2>Overview</h2>
+  <table>
+    <tr><th>What it is</th><td>A methodological base for building AI agents: principles, a design sheet, a phased build specification and a repository skeleton. Not a framework and not a library — it is <b>the brief an agent gets built against</b>.</td></tr>
+    <tr><th>The core in one sentence</th><td><b>AI recognises, code executes.</b> The model gets three kinds of task only: intent recognition, structure extraction, text synthesis. Everything else is deterministic code.</td></tr>
+    <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · created 30 Aug 2026</td></tr>
+    <tr><th>State</th><td><span class="pill live">usable</span> The specification has been through its first live application on a running agent (JobWatch) and found three real defects.</td></tr>
+    <tr><th>Checks</th><td>CI on every push: secret scan (gitleaks), link check over <code>*.md</code> (lychee) and the language-pair check (<code>kontrola/dvojice.py</code>).</td></tr>
+  </table>
+
+  <h2>What is in the repo</h2>
+  <table>
+    <tr><th><code>01-principy/</code></th><td>The methodology in 16 chapters — anatomy of an agent, persona, permissions, gates, cross-checking, memory, proactivity, failure, anti-patterns.</td></tr>
+    <tr><th><code>sablony/BUILD-PREDPIS.en.md</code></th><td><b>The phased procedure F0–F8</b>, every phase with a gate. General — it holds for any agent.</td></tr>
+    <tr><th><code>sablony/navrhovy-list.en.md</code></th><td>The design sheet. Filled in before the first line of code exists. Including hostile input and regulation (AI Act, personal data, retention).</td></tr>
+    <tr><th><code>sablony/kostra-agenta/</code></th><td>The repository skeleton: prompts as code, evals with metrics, a runbook.</td></tr>
+    <tr><th><code>02-pripady/</code></th><td>A completed design sheet (invoices) and an <a href="02-pripady/AUDIT-job-watch.en.md">audit of a running agent</a>.</td></tr>
+    <tr><th><code>03-projekty/</code>, <code>04-firemni/</code></th><td>Work-in-progress designs and agent portfolios for an office and for a large company.</td></tr>
+    <tr><th><code>00-zdroje/</code></th><td>Where the methodology comes from — citations and a map of timestamps to chapters. The sources themselves are not in the repo.</td></tr>
+    <tr><th><code>AGENTS.en.md</code></th><td>Rules for AI assistants working in the repo: code does not belong here, link don't copy, third-party transcripts stay out, keep the diary and the status sheet in agreement.</td></tr>
+    <tr><th><code>05-html/</code></th><td><b>Visual outputs</b> — <a href="05-html/manazerske-shrnuti.en.html">management summary</a> (A4 portrait), <a href="05-html/mapa-mysleni.en.html">mind map</a>, <a href="05-html/tok-informaci.en.html">information flow</a>, <a href="05-html/vyvojovy-diagram.en.html">flowchart F0–F8</a>. Each one in Czech as well.</td></tr>
+    <tr><th><code>kontrola/</code></th><td>The language-pair check. Anything deliberately left untranslated is listed in <code>bez-prekladu.txt</code> — a missing translation has to be visible.</td></tr>
+  </table>
+
+  <h2>Build specification: F0–F8</h2>
+  <p><b>A gate</b> = a list of conditions at the end of a phase. Until all of them hold, the next phase does not begin.</p>
+  <table>
+    <tr><th>F0 · design on paper</th><td>A closed list of scenarios, the model/code split, a measurable “done”.</td></tr>
+    <tr><th>F1 · verify the core</th><td>The riskiest step measured <b>against a real sample</b> — accuracy, cost and time as numbers. A short, synthetic sample lies systematically in your favour.</td></tr>
+    <tr><th>F2 · skeleton and contracts</th><td>Modules run on their own; the test environment physically has no outbound channels.</td></tr>
+    <tr><th>F3 · deterministic backbone</th><td>The process passes with manual input, still without a model. Only two endings: it failed and you know, or it went well.</td></tr>
+    <tr><th>F4 · model and evals</th><td>The model does only its three jobs. Evals in CI, the tool recall/precision and parameter accuracy metrics. Hostile input cannot push the agent off-scenario.</td></tr>
+    <tr><th>F5 · gates and limits</th><td>The mode follows the reversibility of the mistake, not trust. Identity from the channel. Least possible power for tools. Autonomy grows over time and can be taken back.</td></tr>
+    <tr><th>F6 · failure and kill switch</th><td>A report goes <b>to a person</b>, not just to a log. The kill switch is one action, tested.</td></tr>
+    <tr><th>F7 · deployment</th><td>See the running version, know the cost, check by hand for the first week. Error vs. variance: 3–5 runs, an 80 % threshold.</td></tr>
+    <tr><th>F8 · operation and growth</th><td>Every error and every successful pass goes into the evals. Watch distribution shift, not just the error rate.</td></tr>
+  </table>
+  <div class="note">
+    <b>The minimum that is never skipped</b>, even for the smallest agent: <b>F1</b> a real sample · <b>F3</b> two outcomes · <b>F6</b> a kill switch.
+    These are the three whose missing versions are recognised only from the damage.
+  </div>
+
+  <h2>First live application: JobWatch</h2>
+  <p>The specification was applied to <a href="https://github.com/Anamax443/job-watch">JobWatch</a> — a daily agent
+  running live on Cloudflare. The result is a record that the specification works: it found <b>three defects
+  that the tests had not</b>, because it asked different questions than tests do.</p>
+  <table>
+    <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill prep">F6</span></td></tr>
+    <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill prep">F6</span></td></tr>
+    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. <span class="pill prep">F4</span></td></tr>
+  </table>
+  <p>The full analysis, including what held up: <a href="02-pripady/AUDIT-job-watch.en.md"><code>02-pripady/AUDIT-job-watch.en.md</code></a>.</p>
+
+  <h2>Where the methodology comes from</h2>
+  <table>
+    <tr><th>Interview with Marek Bartoš</th><td>The <i>Keci a politika</i> podcast, the special “Artificial intelligence is our UFO”. The source of the principle “AI recognises, code executes”, of the gates, the cross-check and the economics of the process. A map of 19 timestamps → chapters in <code>00-zdroje/ZDROJE.en.md</code>.</td></tr>
+    <tr><th>Michael Albada</th><td><i>Building Applications with AI Agents</i> (O'Reilly 2025). Contributed the measurement metrics, telling an error from variance, the growth of autonomy and the four ways human oversight fails.</td></tr>
+    <tr><th>Public specifications</th><td>Anthropic <i>Building effective agents</i> (workflow vs. agent, five patterns) · <a href="https://github.com/humanlayer/12-factor-agents">12-Factor Agents</a> (own your loop, your context and your prompts).</td></tr>
+  </table>
+  <div class="quote">
+    Bartoš's approach has a name in the public taxonomy: by Anthropic's terms it is a <b>workflow</b>, not an agent —
+    a model and tools driven by code written in advance. That is, the category Anthropic itself recommends as the first
+    choice, because it is predictable.
+  </div>
+
+  <h2>Done vs. remaining</h2>
+  <div class="grid">
+    <div class="card">
+      <strong>✅ Done</strong>
+      <ul>
+        <li class="ok">The methodology in 16 chapters</li>
+        <li class="ok">The build specification F0–F8 with gates</li>
+        <li class="ok">The design sheet, including hostile input and regulation</li>
+        <li class="ok">The agent skeleton: prompts, evals with metrics, runbook</li>
+        <li class="ok">Source citations with a map of “what came from where”</li>
+        <li class="ok">CI: secret scan + link check</li>
+        <li class="ok">The first live audit of a running agent</li>
+        <li class="ok"><code>AGENTS.md</code> — rules for AI assistants in this repo</li>
+        <li class="ok">A one-page A4 management summary</li>
+        <li class="ok">Mind map, information flow, flowchart F0–F8</li>
+        <li class="ok">Bilingualism: the core methodology translated, the <code>*.en.md</code> convention</li>
+        <li class="ok">A CI language-pair check with a manual exception list</li>
+      </ul>
+    </div>
+    <div class="card todo-card">
+      <strong>⏳ Remaining</strong>
+      <ul>
+        <li class="todo"><b>A chapter on agent UX</b> — the autonomy slider, communicating uncertainty, synchronous vs. asynchronous design</li>
+        <li class="todo">Work through Vorel (<i>NoOps</i>) and Lanham (<i>AI Agents in Action</i>)</li>
+        <li class="todo">A glossary against the public specifications (workflow vs. agent, the five patterns, factors 5 and 6)</li>
+        <li class="todo"><b>Delete <code>03-projekty/prepisovac/kod/</code></b> — decided, blocked on permissions; the prototype failed its own gate (no <code>preflight.py</code>, which the brief calls the key module)</li>
+        <li class="todo">Decide <code>03-projekty/gwalarn/</code> vs. the <code>gwalarn</code> repo</li>
+        <li class="todo">Finish translating <code>03-projekty/</code> and <code>04-firemni/</code> — the pair check lists them</li>
+        <li class="todo"><code>AGENTS.md</code> into the other repositories (this one has it)</li>
+        <li class="todo">Pick the first agent from <code>04-firemni/</code> and build it against the specification from F0</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Part of the rolling documentation of the AI-AGENTI project. Methodology: <code>01-principy/</code>, specification: <code>sablony/BUILD-PREDPIS.en.md</code>, state diary: <code>HANDOFF.en.md</code>.
+    Repo: <a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
