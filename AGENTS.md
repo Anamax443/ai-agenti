@@ -21,6 +21,10 @@ kopií návrhového listu a je z něj dnes jen ukazatel. **Odkaž, nekopíruj.**
 ## Jazyk a forma
 
 - Píše se **česky**, včetně diakritiky. Názvy souborů, cesty a kód bez diakritiky.
+- Každý dokument má anglické dvojče `<jméno>.en.md` / `<jméno>.en.html`.
+  **Měníš-li jeden, změň ve stejném commitu i druhý.** Kontrola je
+  `python kontrola/dvojice.py` a běží v CI.
+- Když si ty dvě verze odporují, platí česká. Angličtina je překlad, ne odnož.
 - Věcně, bez marketingu. Tvrzení bez důvodu do textu nepatří.
 - Jde-li o výčet, je tabulka lepší než odstavec.
 
@@ -43,6 +47,9 @@ kopií návrhového listu a je z něj dnes jen ukazatel. **Odkaž, nekopíruj.**
   existující soubor. Když soubor přejmenuješ nebo smažeš, oprav odkazy na něj,
   jinak CI spadne. Externí URL se offline nekontrolují, takže překlep v adrese
   na GitHub CI nechytí — ověř ho ručně.
+- **`kontrola/dvojice.py`** — ke každému českému dokumentu existuje anglické dvojče
+  a naopak. Co se vědomě nepřekládá, patří do `kontrola/bez-prekladu.txt`, kde je
+  to vidět, místo aby to tiše chybělo.
 
 Kroky `testy` a `evaly` jsou ve workflow zakomentované. Odkomentují se, až tu bude
 kód agenta — což podle pravidla výš nemá nastat.

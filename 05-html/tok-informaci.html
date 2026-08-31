@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tok informací agentem</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+/* ---------- hlavicka ---------- */
+header{padding:64px 0 34px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 16px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:clamp(36px,5.8vw,64px);
+  line-height:.99;letter-spacing:-.025em;margin:0 0 18px;max-width:17ch;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:60ch;margin:0;font-weight:300}
+.langbar{
+  display:flex;gap:14px;margin-top:26px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+}
+.langbar a{color:var(--plum);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.langbar span{color:var(--ink-soft)}
+
+h2{
+  font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);
+  letter-spacing:-.02em;line-height:1.14;margin:56px 0 8px;
+}
+.sub{color:var(--ink-soft);max-width:62ch;margin:0 0 30px}
+
+/* ---------- legenda ---------- */
+.legend{
+  display:flex;flex-wrap:wrap;gap:22px;margin:0 0 34px;padding:14px 18px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+}
+.legend span{display:flex;align-items:center;gap:8px}
+.chip{
+  display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:2px;font-weight:600;
+}
+.chip.model{background:var(--plum);color:#fff}
+.chip.code{background:var(--teal);color:#fff}
+.chip.human{background:var(--ink);color:#fff}
+
+/* ---------- tok ---------- */
+.flow{margin:0 0 20px}
+.stage{
+  display:grid;grid-template-columns:1fr 300px 1fr;gap:20px;align-items:center;
+}
+.stage .box{
+  border:1px solid var(--rule);background:var(--paper-2);padding:15px 18px;
+  position:relative;
+}
+.stage.is-model .box{border-left:3px solid var(--plum)}
+.stage.is-code .box{border-left:3px solid var(--teal)}
+.stage.is-human .box{border-left:3px solid var(--ink)}
+.box h3{
+  font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-.01em;
+  margin:0 0 6px;line-height:1.18;
+}
+.box p{margin:0;font-size:14.5px;line-height:1.42;color:var(--ink-soft)}
+.box .chip{position:absolute;top:-9px;right:12px}
+
+/* data po stranach */
+.side{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-soft)}
+.side .lab{
+  display:block;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--plum);margin-bottom:4px;
+}
+.side.left{text-align:right}
+.side.right{text-align:left}
+.side code{
+  font-family:var(--mono);font-size:11px;background:var(--paper-2);
+  border:1px solid var(--rule);padding:1px 5px;border-radius:2px;
+}
+
+/* sipka mezi fazemi */
+.arrow{
+  grid-column:2;display:flex;flex-direction:column;align-items:center;
+  padding:2px 0;
+}
+.arrow .line{width:1px;height:22px;background:var(--rule)}
+.arrow .head{
+  width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;
+  border-top:7px solid var(--rule);margin-top:-1px;
+}
+.arrow .what{
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  background:var(--paper);padding:3px 9px;border:1px solid var(--rule);border-radius:2px;
+  margin:4px 0;white-space:nowrap;
+}
+.hop{display:grid;grid-template-columns:1fr 300px 1fr;gap:20px}
+
+/* ---------- hranice duvery ---------- */
+.boundary{
+  grid-column:1 / -1;display:flex;align-items:center;gap:14px;margin:12px 0;
+}
+.boundary .bline{flex:1;height:0;border-top:2px dashed var(--plum)}
+.boundary .btxt{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--plum);font-weight:600;white-space:nowrap;
+}
+
+/* ---------- dva konce ---------- */
+.ends{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0 0}
+.end{border:1px solid var(--rule);background:var(--paper-2);padding:16px 20px}
+.end.fail{border-left:3px solid var(--plum)}
+.end.ok{border-left:3px solid var(--teal)}
+.end .lab{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 5px;
+}
+.end p{margin:0;font-size:15px;line-height:1.44}
+.third{
+  margin:16px 0 0;padding:14px 20px;border:1px dashed var(--rule);
+  color:var(--ink-soft);font-style:italic;font-size:15px;
+}
+.third b{font-style:normal;color:var(--ink)}
+
+/* ---------- vypinac ---------- */
+.kill{
+  margin:34px 0 0;padding:16px 20px;background:var(--ink);color:#D8DEE6;
+  border-left:3px solid var(--plum);
+}
+.kill h3{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;margin:0 0 8px;font-weight:600;
+}
+.kill p{margin:0;font-size:15px;line-height:1.48;color:#B9C4D2}
+.kill b{color:#fff;font-weight:600}
+
+/* ---------- kde se to lame ---------- */
+.breaks{margin:0}
+.brk{
+  display:grid;grid-template-columns:78px 1fr;gap:20px;
+  padding:20px 0;border-bottom:1px solid var(--rule);
+}
+.brk:last-child{border-bottom:0}
+.brk .at{
+  font-family:var(--mono);font-size:11px;color:var(--plum);font-weight:600;
+  letter-spacing:.06em;line-height:1.5;
+}
+.brk .at span{display:block;color:var(--ink-soft);font-weight:400;margin-top:3px}
+.brk h3{font-family:var(--disp);font-weight:600;font-size:19px;margin:0 0 6px;letter-spacing:-.01em}
+.brk p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:64ch}
+
+/* ---------- paticka ---------- */
+footer{
+  margin-top:64px;padding:22px 0 60px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  @page{size:A4 portrait;margin:14mm}
+  header{padding:0 0 18px}
+  h1{font-size:26pt}
+  .langbar{display:none}
+  .stage,.hop{grid-template-columns:1fr 260px 1fr}
+  .kill{background:#fff;color:var(--ink);border:1px solid var(--rule);border-left:3px solid var(--plum)}
+  .kill h3{color:var(--plum)}.kill p{color:var(--ink-soft)}.kill b{color:var(--ink)}
+  h2{margin-top:26px}
+}
+@media(max-width:860px){
+  .stage,.hop{grid-template-columns:1fr;gap:8px}
+  .side.left,.side.right{text-align:left}
+  .arrow{grid-column:1}
+  .ends{grid-template-columns:1fr}
+  .brk{grid-template-columns:1fr;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">AI-AGENTI · schéma</p>
+    <h1>Tok informací <em>agentem</em></h1>
+    <p class="lede">
+      Kudy data putují, kdo je na kterém úseku zpracovává a kde je hranice, za kterou
+      se cizímu textu přestává věřit. Barva rámečku říká, jestli krok dělá model, kód,
+      nebo člověk.
+    </p>
+    <p class="langbar"><span>Jazyk:</span> <b>Čeština</b> <a href="tok-informaci.en.html">English</a></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>Hlavní trasa</h2>
+  <p class="sub">
+    Vlevo je vidět, co do kroku vstupuje, vpravo co z něj vychází. Podstatné je, že
+    tvar dat se cestou zpřesňuje: z volného textu se stane struktura a teprve strukturu
+    dostane kód, který nese následky.
+  </p>
+
+  <div class="legend">
+    <span><i class="chip model">model</i> rozpoznává, neexekuuje</span>
+    <span><i class="chip code">kód</i> vykonává, je odladitelný</span>
+    <span><i class="chip human">člověk</i> schvaluje nevratné</span>
+    <span>── ── hranice důvěry</span>
+  </div>
+
+  <div class="flow">
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        cizí i vlastní podnět<br><code>text · zvuk · událost</code>
+      </div>
+      <div class="box">
+        <i class="chip code">kód</i>
+        <h3>Vstupní kanály</h3>
+        <p>Chat, hlasovka, e-mail, webhook, cron, senzor. Kanál zároveň nese identitu —
+        číslo, ID, podpis. Nikdy jméno z textu.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        podnět + ověřený odesílatel<br><code>{kdo, kdy, obsah}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">syrový vstup</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="boundary">
+        <div class="bline"></div>
+        <div class="btxt">Hranice důvěry — odsud dál je text od cizích lidí jen data, nikdy pokyn</div>
+        <div class="bline"></div>
+      </div>
+    </div>
+
+    <div class="stage is-model">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        volný text v obalu<br><code>uzavřený seznam scénářů</code>
+      </div>
+      <div class="box">
+        <i class="chip model">model</i>
+        <h3>Rozpoznání záměru</h3>
+        <p>O co jde? Odpovědí je jeden ze známých scénářů — nebo „nevím“.
+        Neznámý záměr jde na člověka, agent neimprovizuje.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        jeden scénář + jistota<br><code>{scenar: "S1", jistota: .93}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">rozpoznaný záměr</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-model">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        dokument, věta, sken<br><code>volný tvar</code>
+      </div>
+      <div class="box">
+        <i class="chip model">model</i>
+        <h3>Extrakce struktury</h3>
+        <p>Z textu udělá pole. Kde záleží na číslech, běží dva nezávislé průchody
+        a porovnají se — shoda znamená skoro jistotu, rozpor jde na člověka.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        vyplněná struktura<br><code>{castka, datum, dodavatel}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">strukturovaná data</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        struktura + kontext z paměti<br><code>jen to, co je k úkolu třeba</code>
+      </div>
+      <div class="box">
+        <i class="chip code">kód</i>
+        <h3>Hlavní mysl</h3>
+        <p>Drží paměť, kontext, osobnost a oprávnění. Rozhoduje <b>co</b> se spustí,
+        ne <b>jak</b> to proběhne. Faktická paměť se nikdy nesype do promptu celá.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        volba procesu<br><code>spustit(P3, parametry)</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">příkaz ke spuštění</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        parametry procesu<br><code>validované, typované</code>
+      </div>
+      <div class="box">
+        <i class="chip code">kód</i>
+        <h3>Pevný proces</h3>
+        <p>Deterministický kód. Validace, idempotence, jasné chybové stavy.
+        Nástroj je úzká operace <code>vystav_doklad(id)</code>, ne obecná brána
+        <code>spust_sql(dotaz)</code>.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        připravená akce<br><code>{akce, dopad, vratnost}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">akce čekající na posouzení</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-human">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        akce + její vratnost<br><code>auto / limit / schválení</code>
+      </div>
+      <div class="box">
+        <i class="chip human">brána</i>
+        <h3>Brány a limity</h3>
+        <p>Režim určuje <b>vratnost chyby</b>, ne důvěra k modelu. Vratné běží samo,
+        finanční do limitu, nevratné se schvalují. Bez odpovědi do lhůty se úkol
+        zahodí a oznámí.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        povoleno, nebo eskalace<br><code>{povoleno} | {ptam_se, proc}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">schválená akce</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">vstupuje</span>
+        povolená akce<br><code>s označením, že píše AI</code>
+      </div>
+      <div class="box">
+        <i class="chip code">kód</i>
+        <h3>Výstupní kanály</h3>
+        <p>Zpráva, publikace, zápis do systému, platba. Každý odchozí text nese
+        označení, že ho psala AI. V testovacím prostředí kanály fyzicky nejsou —
+        konfigurací, ne podmínkou v kódu.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">vychází</span>
+        následek ve světě<br><code>+ záznam v logu</code>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Dva konce, žádný třetí</h2>
+  <p class="sub">
+    Celý tvar téhle trasy existuje kvůli jediné vlastnosti: aby se běh nemohl skončit
+    jinak než těmito dvěma způsoby.
+  </p>
+
+  <div class="ends">
+    <div class="end fail">
+      <p class="lab">Konec 1</p>
+      <p><b>Selhalo a víš o tom.</b> Proces spadl s hlášením, které dorazilo člověku —
+      ne jen do logu.</p>
+    </div>
+    <div class="end ok">
+      <p class="lab">Konec 2</p>
+      <p><b>Dopadlo dobře.</b> Výsledek odpovídá zadání a je po něm dohledatelná stopa.</p>
+    </div>
+  </div>
+  <p class="third">
+    <b>Třetí konec — „udělal něco, co nikdo nechtěl“ — v téhle trase nemá kde vzniknout.</b>
+    Model totiž nikde nedrží v ruce nevratnou akci. Vždycky jen popíše, co vidí,
+    a rozhodnutí i provedení leží v kódu a v bráně.
+  </p>
+
+  <div class="kill">
+    <h3>Napříč celou trasou</h3>
+    <p>
+      <b>Vypínač</b> — jeden úkon, který zastaví běh na kterémkoli úseku. Musí být
+      vyzkoušený, ne teoretický. <b>Hlášení o pádu</b> jde člověku, ne do logu.
+      <b>Ticho agenta</b> musí jít odlišit od „nebylo co dělat“ — jinak vypadá mrtvý
+      agent stejně jako klidný den. <b>Log obsahuje rozhodnutí</b>, ne jen výsledky:
+      proč se spustil zrovna tenhle proces, se za měsíc jinak nedohledá.
+    </p>
+  </div>
+
+  <h2>Kde se to v praxi láme</h2>
+  <p class="sub">
+    Tři vady nalezené auditem běžícího agenta. Každá sedí na jiném úseku trasy —
+    a všechny prošly automatickými testy.
+  </p>
+
+  <div class="breaks">
+    <div class="brk">
+      <div class="at">Napříč<span>vypínač</span></div>
+      <div>
+        <h3>Vypínač neodpojil trasu</h3>
+        <p>Stop uzavřel záznam běhu, ale žádný úsek stop příznak nečetl. Zpracování
+        běželo dál a dál odesílalo — jen o tom nebyl záznam. Funkce vracela správnou
+        hodnotu; systém přesto nedělal, co slibuje.</p>
+      </div>
+    </div>
+    <div class="brk">
+      <div class="at">Konec 1<span>hlášení</span></div>
+      <div>
+        <h3>Konec „selhalo“ nebyl vidět</h3>
+        <p>Zprávy chodily jen na nálezy. „Nic nenašel“ a „spadlo to“ vypadaly zvenčí
+        identicky — ticho. Agent, na kterého se člověk spoléhá, mohl být týden mrtvý
+        a vypadalo to jako prázdný trh.</p>
+      </div>
+    </div>
+    <div class="brk">
+      <div class="at">Hranice<span>důvěry</span></div>
+      <div>
+        <h3>Cizí text překročil hranici bez obalu</h3>
+        <p>Text psaný neznámými lidmi šel do modelu jako pokyn, ne jako data. Věta
+        „ignoruj předchozí instrukce“ neměla co zastavit. Škodu omezilo jen to, že model
+        směl vrátit pouhé číslo — což je štěstí z návrhu, ne obrana.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Podrobně: <code>01-principy/PRINCIPY-stavby-agentu.md</code> · <code>sablony/BUILD-PREDPIS.md</code></span>
+    <span><a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

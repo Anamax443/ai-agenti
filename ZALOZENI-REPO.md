@@ -16,7 +16,8 @@ Lokální cesta na tomhle PC: `D:\git\ai-agenti`.
 - *Dependabot alerts* — zapnuto.
 
 **CI** — `.github/workflows/kontrola.yml` běží při každém pushi:
-sken tajemství (gitleaks) a kontrola odkazů v `*.md`. Testy a evaly jsou
+sken tajemství (gitleaks), kontrola odkazů v `*.md` a kontrola jazykových
+dvojic ([`kontrola/dvojice.py`](kontrola/dvojice.py)). Testy a evaly jsou
 zakomentované, dokud v repozitáři není kód agenta.
 
 **Zvážit později** — ochrana větve `main` s povinným pull requestem.

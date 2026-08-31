@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agents — management summary</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:10.2pt;line-height:1.42;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- A4 portrait sheet ---------- */
+.sheet{
+  width:210mm;min-height:297mm;margin:12mm auto;padding:14mm 15mm 12mm;
+  background:var(--paper-2);border:1px solid var(--rule);
+  box-shadow:0 2px 18px rgba(22,35,58,.10);
+  display:flex;flex-direction:column;
+}
+
+/* ---------- header ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:7.4pt;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 7px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:27pt;line-height:1.0;
+  letter-spacing:-.025em;margin:0 0 8px;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{
+  font-size:11.4pt;line-height:1.42;color:var(--ink-soft);
+  margin:0 0 13px;font-weight:300;max-width:56ch;
+}
+.rule{border:0;border-top:1px solid var(--rule);margin:0 0 13px}
+
+/* ---------- core ---------- */
+.core{
+  border-left:3px solid var(--plum);background:var(--paper);
+  padding:10px 15px;margin:0 0 14px;
+}
+.core .big{
+  font-family:var(--disp);font-weight:600;font-size:15pt;letter-spacing:-.015em;
+  margin:0 0 5px;line-height:1.12;
+}
+.core p{margin:0;color:var(--ink-soft);font-size:9.8pt;max-width:64ch}
+
+h2{
+  font-family:var(--mono);font-size:8pt;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--teal);font-weight:600;margin:0 0 8px;
+  padding-bottom:4px;border-bottom:1px solid var(--rule);
+}
+section{margin:0 0 14px}
+p{margin:0 0 7px}
+
+/* ---------- two branches ---------- */
+.branch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 9px}
+.br{
+  border:1px solid var(--rule);background:var(--paper);padding:9px 12px;
+  position:relative;
+}
+.br.bad{border-left:3px solid var(--plum)}
+.br.good{border-left:3px solid var(--teal)}
+.br .lab{
+  font-family:var(--mono);font-size:7.4pt;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 3px;
+}
+.br .txt{font-size:9.8pt;margin:0;line-height:1.34}
+.killed{
+  border:1px dashed var(--rule);background:transparent;padding:8px 12px;
+  color:var(--ink-soft);font-size:9.5pt;font-style:italic;margin:0;
+}
+.killed b{font-style:normal;color:var(--ink);font-weight:600}
+
+/* ---------- numbers ---------- */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 8px}
+.num{border:1px solid var(--rule);background:var(--paper);padding:9px 12px}
+.num .v{
+  font-family:var(--disp);font-weight:800;font-size:20pt;line-height:1;
+  color:var(--plum);letter-spacing:-.03em;display:block;margin-bottom:3px;
+  font-variant-numeric:tabular-nums;
+}
+.num .k{font-size:9.3pt;color:var(--ink-soft);line-height:1.3;display:block}
+
+/* ---------- phases ---------- */
+.phases{display:flex;gap:3px;margin:0 0 7px}
+.ph{
+  flex:1;text-align:center;padding:6px 2px 5px;background:var(--paper);
+  border:1px solid var(--rule);font-family:var(--mono);font-size:8pt;
+}
+.ph b{display:block;font-size:9pt;color:var(--ink);font-weight:600}
+.ph span{display:block;font-size:6.8pt;color:var(--ink-soft);letter-spacing:.04em;margin-top:2px}
+.ph.must{background:#EDE3E9;border-color:var(--plum)}
+.ph.must b{color:var(--plum)}
+.legend{font-size:8.8pt;color:var(--ink-soft);margin:0}
+.legend b{color:var(--plum);font-weight:600}
+
+/* ---------- evidence ---------- */
+.proof{border:1px solid var(--teal);background:#E7EDEC;padding:10px 14px}
+.proof h3{
+  font-family:var(--mono);font-size:7.8pt;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 6px;font-weight:600;
+}
+.proof ol{margin:0 0 6px;padding-left:16px}
+.proof li{margin:0 0 3px;font-size:9.6pt;line-height:1.34}
+.proof .after{margin:0;font-size:9.3pt;color:var(--ink-soft);font-style:italic}
+
+/* ---------- what it means ---------- */
+table{border-collapse:collapse;width:100%;font-size:9.5pt}
+th,td{text-align:left;padding:5px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{
+  font-family:var(--mono);font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:600;white-space:nowrap;
+}
+tr:last-child td{border-bottom:0}
+td.q{color:var(--ink-soft);width:38%}
+
+/* ---------- footer ---------- */
+footer{
+  margin-top:auto;padding-top:9px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:7.4pt;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+.lang{
+  position:fixed;top:10px;right:12px;font-family:var(--mono);font-size:11px;
+  background:var(--paper-2);border:1px solid var(--rule);padding:5px 10px;
+}
+.lang a{color:var(--plum);text-decoration:none}
+
+/* ---------- print ---------- */
+@page{size:A4 portrait;margin:0}
+@media print{
+  body{background:#fff}
+  .sheet{
+    width:auto;min-height:auto;margin:0;padding:13mm 14mm;
+    border:0;box-shadow:none;background:#fff;
+  }
+  .lang{display:none}
+  .br,.num,.ph,.core{background:#fff}
+}
+@media(max-width:800px){
+  .sheet{width:auto;margin:0;padding:22px 18px;border:0}
+  .branch,.nums{grid-template-columns:1fr}
+  .phases{flex-wrap:wrap}
+  .ph{flex:1 0 18%}
+}
+</style>
+</head>
+<body>
+
+<div class="lang"><a href="manazerske-shrnuti.html">←&nbsp;CS</a></div>
+
+<div class="sheet">
+
+  <p class="eyebrow">Management summary · 31 Aug 2026</p>
+  <h1>How we build <em>AI agents</em> that can actually be run</h1>
+  <p class="lede">
+    Not an experiment, and not a tool purchase. A specification for designing, building and
+    deploying an agent in a way that keeps it supervisable.
+  </p>
+  <hr class="rule">
+
+  <div class="core">
+    <p class="big">AI recognises. Code executes.</p>
+    <p>
+      The model gets three jobs only: work out what is being asked, pull structure out of text,
+      write text. Everything with consequences — writing to a system, making a payment, sending
+      something out — is ordinary program code that no model reasons about.
+    </p>
+  </div>
+
+  <section>
+    <h2>Why this matters</h2>
+    <div class="branch">
+      <div class="br bad">
+        <p class="lab">Outcome 1</p>
+        <p class="txt">The process <b>fails and reports it.</b> Someone knows within minutes.</p>
+      </div>
+      <div class="br good">
+        <p class="lab">Outcome 2</p>
+        <p class="txt">The process <b>succeeds.</b> The result is the one that was specified.</p>
+      </div>
+    </div>
+    <p class="killed">
+      <b>The third outcome is removed by design.</b> An agent that decides for itself how to
+      carry out a task can succeed, fail — or do something nobody asked for. That third branch
+      is the source of every “the assistant emailed fifty people” story. This way of building
+      has nowhere to get it from.
+    </p>
+  </section>
+
+  <section>
+    <h2>What it means operationally</h2>
+    <table>
+      <tr>
+        <th>Cost</th>
+        <td>Deterministic code costs a fraction of what a model costs. The order-of-magnitude
+        difference is not which model you pick, but <b>how much work you hand it at all.</b></td>
+      </tr>
+      <tr>
+        <th>Accountability</th>
+        <td>Every irreversible action has a named mode: on its own / within a limit / with
+        approval. The deciding factor is <b>how reversible the mistake is</b>, not how much you
+        trust the model.</td>
+      </tr>
+      <tr>
+        <th>Identity</th>
+        <td>Who may do what is bound to the channel (phone number, ID, signature), never to a
+        name in the text. Anyone can write “this is the director” — but not from the
+        director's number.</td>
+      </tr>
+      <tr>
+        <th>Oversight</th>
+        <td>A kill switch that takes one action. A crash is reported <b>to a person</b>, not to a
+        log. Agent silence must be distinguishable from “there was nothing to do”.</td>
+      </tr>
+      <tr>
+        <th>Regulation</th>
+        <td>The agent discloses that it is an AI whenever it communicates outward. The AI Act
+        requires it, and in practice it works better than the alternative.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>The process — nine phases, each with a gate</h2>
+    <div class="phases">
+      <div class="ph"><b>F0</b><span>design</span></div>
+      <div class="ph must"><b>F1</b><span>real data</span></div>
+      <div class="ph"><b>F2</b><span>skeleton</span></div>
+      <div class="ph must"><b>F3</b><span>backbone</span></div>
+      <div class="ph"><b>F4</b><span>model</span></div>
+      <div class="ph"><b>F5</b><span>gates</span></div>
+      <div class="ph must"><b>F6</b><span>kill switch</span></div>
+      <div class="ph"><b>F7</b><span>deploy</span></div>
+      <div class="ph"><b>F8</b><span>operate</span></div>
+    </div>
+    <p class="legend">
+      A gate is a list of conditions at the end of a phase. Until all of them hold, the next
+      phase does not start. <b>The three highlighted ones are never skipped</b> — verification
+      on real data (F1), a process with two outcomes before any model is involved (F3), and a
+      working kill switch (F6). When these are missing, you find out from the damage.
+    </p>
+  </section>
+
+  <section>
+    <h2>Evidence that this is more than a document</h2>
+    <div class="proof">
+      <h3>Specification applied to our own running agent (JobWatch, 30 Aug 2026)</h3>
+      <ol>
+        <li><b>The kill switch did not stop anything.</b> The Stop button closed the run record,
+        but processing carried on and kept sending messages.</li>
+        <li><b>A crashed run was silent.</b> Notifications were sent only on findings, so “found
+        nothing today” and “crashed today” looked identical from outside. The agent could have
+        been dead for a week.</li>
+        <li><b>Third-party text reached the model unwrapped.</b> Text written by unknown people
+        fed the scoring step with no defence of any kind.</li>
+      </ol>
+      <p class="after">
+        All three defects were present in a system with 38 passing automated checks. Tests ask
+        whether a function returns the right value. A gate asks whether the system does what it
+        promises — and that is a different question.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where we are and what comes next</h2>
+    <div class="nums">
+      <div class="num"><span class="v">1</span><span class="k">agent in live operation, audited against the spec</span></div>
+      <div class="num"><span class="v">9</span><span class="k">gated phases, applicable to any agent</span></div>
+      <div class="num"><span class="v">3</span><span class="k">defects found where the tests were passing</span></div>
+    </div>
+    <p>
+      The methodology is complete and has been proven once in live use. The next step is to pick
+      the first case from the office-agent portfolio and build it against the spec from F0 —
+      that is, with the design sheet filled in before the first line of code exists.
+    </p>
+  </section>
+
+  <footer>
+    <span>AI-AGENTI · agent-building methodology · <a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+    <span>In detail: 01-principy/ · sablony/BUILD-PREDPIS.en.md</span>
+  </footer>
+
+</div>
+</body>
+</html>

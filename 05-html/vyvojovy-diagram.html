@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vývojový diagram stavby agenta</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+
+header{padding:64px 0 34px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 16px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:clamp(36px,5.8vw,64px);
+  line-height:.99;letter-spacing:-.025em;margin:0 0 18px;max-width:16ch;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:60ch;margin:0;font-weight:300}
+.langbar{
+  display:flex;gap:14px;margin-top:26px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+}
+.langbar a{color:var(--plum);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.langbar span{color:var(--ink-soft)}
+
+h2{
+  font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);
+  letter-spacing:-.02em;line-height:1.14;margin:52px 0 8px;
+}
+.sub{color:var(--ink-soft);max-width:64ch;margin:0 0 26px}
+
+/* ---------- legenda ---------- */
+.legend{
+  display:flex;flex-wrap:wrap;gap:24px;margin:0 0 26px;padding:14px 18px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+}
+.legend span{display:flex;align-items:center;gap:9px}
+.swatch{width:26px;height:12px;border:1px solid var(--rule);background:var(--paper-2);display:inline-block}
+.swatch.must{border:1.6px solid var(--plum);background:#EDE3E9}
+.swatch.gate{border:0;background:transparent;transform:rotate(45deg);width:11px;height:11px;border:1.4px solid var(--teal)}
+.swatch.back{border:0;border-top:1.6px dashed var(--plum);height:0;background:none}
+
+/* ---------- diagram ---------- */
+.chartbox{
+  border:1px solid var(--rule);background:var(--paper-2);padding:10px;
+  overflow-x:auto;margin:0 0 10px;
+}
+svg.chart{display:block;width:100%;height:auto;min-width:820px}
+
+svg.chart .ph rect{fill:var(--paper-2);stroke:var(--rule);stroke-width:1}
+svg.chart .ph.must rect{fill:#EDE3E9;stroke:var(--plum);stroke-width:1.6}
+svg.chart .pnum{
+  font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;fill:var(--plum);
+}
+svg.chart .ptitle{
+  font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:600;fill:var(--ink);
+}
+svg.chart .pdo{
+  font-family:'JetBrains Mono',monospace;font-size:11px;fill:var(--ink-soft);
+}
+svg.chart .pmust{
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;fill:var(--plum);
+  text-anchor:end;letter-spacing:.1em;text-transform:uppercase;
+}
+svg.chart .gate polygon{fill:var(--paper-2);stroke:var(--teal);stroke-width:1.4}
+svg.chart .glab{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;fill:var(--teal);
+  text-anchor:middle;letter-spacing:.08em;
+}
+svg.chart .cond rect{fill:none;stroke:var(--rule);stroke-width:1;stroke-dasharray:3 3}
+svg.chart .cond text{font-family:'JetBrains Mono',monospace;font-size:11px;fill:var(--ink-soft)}
+svg.chart .flow{stroke:var(--ink-soft);stroke-width:1.2;fill:none}
+svg.chart .back{stroke:var(--plum);stroke-width:1.2;fill:none;stroke-dasharray:4 3}
+svg.chart .repeat{stroke:var(--teal);stroke-width:1.2;fill:none;stroke-dasharray:4 3}
+svg.chart .elab{font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--ink-soft)}
+svg.chart .elabb{font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--plum);text-anchor:end}
+svg.chart .elabr{font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--teal)}
+svg.chart .term rect{fill:var(--ink);stroke:none}
+svg.chart .term text{
+  font-family:'JetBrains Mono',monospace;font-size:11px;fill:#E9ECEF;text-anchor:middle;
+}
+svg.chart .term.end rect{fill:var(--teal)}
+
+.caption{
+  font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin:0 0 4px;
+}
+
+/* ---------- kriticka cesta ---------- */
+.crit{
+  margin:30px 0 0;border:1px solid var(--rule);background:var(--paper-2);
+  border-left:3px solid var(--plum);padding:16px 20px;
+}
+.crit h3{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--plum);font-weight:600;margin:0 0 9px;
+}
+.crit p{margin:0 0 8px;font-size:15.5px;color:var(--ink-soft);max-width:70ch}
+.crit p:last-child{margin:0}
+.crit b{color:var(--ink)}
+
+/* ---------- tabulka zestihleni ---------- */
+table{border-collapse:collapse;width:100%;margin:0 0 8px;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:600;
+}
+td:first-child{
+  font-family:var(--mono);font-size:13px;color:var(--plum);font-weight:600;
+  width:70px;white-space:nowrap;
+}
+tr:last-child td{border-bottom:0}
+
+code{
+  font-family:var(--mono);font-size:.85em;background:var(--paper-2);
+  border:1px solid var(--rule);padding:1px 5px;border-radius:2px;
+}
+
+footer{
+  margin-top:60px;padding:22px 0 60px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+
+@media print{
+  @page{size:A4 portrait;margin:12mm}
+  body{background:#fff;font-size:10.5pt}
+  header{padding:0 0 14px}
+  h1{font-size:23pt}
+  .langbar{display:none}
+  .chartbox{border:0;padding:0;background:#fff;break-inside:avoid}
+  svg.chart{min-width:0}
+  .ph rect,.gate polygon{fill:#fff}
+  h2{margin-top:20px}
+  .crit{background:#fff;break-inside:avoid}
+  table{break-inside:avoid}
+}
+@media(max-width:760px){
+  .legend{gap:14px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">AI-AGENTI · vývojový diagram</p>
+    <h1>Od nápadu <em>k nasazenému agentovi</em></h1>
+    <p class="lede">
+      Devět fází, každá zakončená bránou. Brána je seznam podmínek — dokud neplatí
+      všechny, další fáze se nezačíná a práce se vrací zpátky. Každá brána zachytává
+      jednu třídu chyb, na kterou by následující fáze narazila taky, jen dráž.
+    </p>
+    <p class="langbar"><span>Jazyk:</span> <b>Čeština</b> <a href="vyvojovy-diagram.en.html">English</a></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>Diagram</h2>
+  <p class="sub">
+    Plná šipka je postup vpřed, čárkovaná vlevo je návrat na tutéž fázi, když brána
+    neprojde. Zvýrazněné fáze se nepřeskakují ani u nejmenšího agenta.
+  </p>
+
+  <div class="legend">
+    <span><i class="swatch"></i> fáze</span>
+    <span><i class="swatch must"></i> nepřeskočitelná fáze</span>
+    <span><i class="swatch gate"></i> brána — rozhodnutí</span>
+    <span><i class="swatch back"></i> návrat, když brána neprojde</span>
+  </div>
+
+  <div class="chartbox">
+<svg class="chart" viewBox="0 0 1060 1502" role="img" aria-label="Vývojový diagram stavby agenta: fáze F0 až F8, každá s bránou">
+<defs><marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4A5A73"/></marker><marker id="tipb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8B2E5D"/></marker><marker id="tipr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2F6F6B"/></marker></defs>
+<g class="ph">
+<rect x="72" y="128" width="330" height="60" rx="2"/>
+<text class="pnum" x="86" y="153">F0</text>
+<text class="ptitle" x="132" y="153">Návrh na papíře</text>
+<text class="pdo" x="86" y="173">návrhový list · uzavřít scénáře · rozdělit model/kód</text>
+</g>
+<line class="flow" x1="237" y1="188" x2="237" y2="210" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="237,212 293,234 237,256 181,234"/><text class="glab" x="237" y="238">brána</text></g>
+<path class="back" d="M 181 234 H 38 V 158 H 72" marker-end="url(#tipb)"/>
+<text class="elabb" x="167" y="225">ne</text>
+<line class="flow" x1="237" y1="256" x2="237" y2="278" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="271">ano</text>
+<g class="cond"><rect x="72" y="280" width="330" height="75" rx="2"/>
+<text x="85" y="298">□ scénářů je konečný počet</text>
+<text x="85" y="313">□ u každého kroku stojí: model, nebo kód</text>
+<text x="85" y="328">□ každá nevratná akce má svůj režim</text>
+<text x="85" y="343">□ „hotovo“ je měřitelné, ne „až bude fungovat“</text>
+</g>
+<line class="flow" x1="237" y1="355" x2="237" y2="393" marker-end="url(#tip)"/>
+<g class="ph must">
+<rect x="72" y="395" width="330" height="60" rx="2"/>
+<text class="pnum" x="86" y="420">F1</text>
+<text class="ptitle" x="132" y="420">Ověření jádra</text>
+<text class="pdo" x="86" y="440">nejrizikovější krok pustit na reálném vzorku</text>
+<text class="pmust" x="402" y="388">nepřeskočitelná</text>
+</g>
+<line class="flow" x1="237" y1="455" x2="237" y2="477" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="237,479 293,501 237,523 181,501"/><text class="glab" x="237" y="505">brána</text></g>
+<path class="back" d="M 181 501 H 38 V 425 H 72" marker-end="url(#tipb)"/>
+<text class="elabb" x="167" y="492">ne</text>
+<line class="flow" x1="237" y1="523" x2="237" y2="545" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="538">ano</text>
+<g class="cond"><rect x="72" y="547" width="330" height="75" rx="2"/>
+<text x="85" y="565">□ vzorek reálný — ne syntetický, ne zkrácený</text>
+<text x="85" y="580">□ přesnost, cena i čas zapsané jako čísla</text>
+<text x="85" y="595">□ čísla mimo → projekt se zastaví</text>
+<text x="85" y="610">      nebo se změní zadání; nepokračuje se</text>
+</g>
+<line class="flow" x1="237" y1="622" x2="237" y2="660" marker-end="url(#tip)"/>
+<g class="ph">
+<rect x="72" y="662" width="330" height="60" rx="2"/>
+<text class="pnum" x="86" y="687">F2</text>
+<text class="ptitle" x="132" y="687">Kostra a kontrakty</text>
+<text class="pdo" x="86" y="707">zafixovat rozhraní modulů, každý s vlastním CLI</text>
+</g>
+<line class="flow" x1="237" y1="722" x2="237" y2="744" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="237,746 293,768 237,790 181,768"/><text class="glab" x="237" y="772">brána</text></g>
+<path class="back" d="M 181 768 H 38 V 692 H 72" marker-end="url(#tipb)"/>
+<text class="elabb" x="167" y="759">ne</text>
+<line class="flow" x1="237" y1="790" x2="237" y2="812" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="805">ano</text>
+<g class="cond"><rect x="72" y="814" width="330" height="90" rx="2"/>
+<text x="85" y="832">□ NAVRH.md v repu vyplněný, ne šablona</text>
+<text x="85" y="847">□ modul jde spustit samostatně z konzole</text>
+<text x="85" y="862">□ v testovacím prostředí nejde odeslat nic ven</text>
+<text x="85" y="877">□ nástroje vypíná konfigurace, ne if v kódu</text>
+<text x="85" y="892">□ žádné tajemství v gitu, jen *.example</text>
+</g>
+<line class="flow" x1="237" y1="904" x2="237" y2="942" marker-end="url(#tip)"/>
+<g class="ph must">
+<rect x="72" y="944" width="330" height="60" rx="2"/>
+<text class="pnum" x="86" y="969">F3</text>
+<text class="ptitle" x="132" y="969">Deterministická páteř</text>
+<text class="pdo" x="86" y="989">scénář S1 od konce ke konci, ještě bez modelu</text>
+<text class="pmust" x="402" y="937">nepřeskočitelná</text>
+</g>
+<line class="flow" x1="237" y1="1004" x2="237" y2="1026" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="237,1028 293,1050 237,1072 181,1050"/><text class="glab" x="237" y="1054">brána</text></g>
+<path class="back" d="M 181 1050 H 38 V 974 H 72" marker-end="url(#tipb)"/>
+<text class="elabb" x="167" y="1041">ne</text>
+<line class="flow" x1="237" y1="1072" x2="237" y2="1094" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="1087">ano</text>
+<g class="cond"><rect x="72" y="1096" width="330" height="90" rx="2"/>
+<text x="85" y="1114">□ S1 projde s ručně napsaným vstupem</text>
+<text x="85" y="1129">□ když se něco nepovede, spadne to s hlášením</text>
+<text x="85" y="1144">□ existují jen dva konce: selhalo a víš o tom,</text>
+<text x="85" y="1159">      nebo dopadlo dobře</text>
+<text x="85" y="1174">□ opakovaný běh nedělá věc dvakrát</text>
+</g>
+<line class="flow" x1="237" y1="1186" x2="237" y2="1224" marker-end="url(#tip)"/>
+<g class="ph">
+<rect x="72" y="1226" width="330" height="60" rx="2"/>
+<text class="pnum" x="86" y="1251">F4</text>
+<text class="ptitle" x="132" y="1251">Model na tři úlohy</text>
+<text class="pdo" x="86" y="1271">záměr · struktura · text — a nic jiného</text>
+</g>
+<line class="flow" x1="237" y1="1286" x2="237" y2="1308" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="237,1310 293,1332 237,1354 181,1332"/><text class="glab" x="237" y="1336">brána</text></g>
+<path class="back" d="M 181 1332 H 38 V 1256 H 72" marker-end="url(#tipb)"/>
+<text class="elabb" x="167" y="1323">ne</text>
+<line class="flow" x1="237" y1="1354" x2="237" y2="1376" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="1369">ano</text>
+<g class="cond"><rect x="72" y="1378" width="330" height="90" rx="2"/>
+<text x="85" y="1396">□ evaly běží v CI a jsou nad prahem</text>
+<text x="85" y="1411">□ změna promptu bez běhu evalů neprojde</text>
+<text x="85" y="1426">□ model nemá přímý přístup k nevratné akci</text>
+<text x="85" y="1441">□ nepřátelský vstup neposune agenta ze scénáře</text>
+<text x="85" y="1456">□ podíl eskalací na člověka drží pod ~10 %</text>
+</g>
+<g class="ph">
+<rect x="610" y="128" width="330" height="60" rx="2"/>
+<text class="pnum" x="624" y="153">F5</text>
+<text class="ptitle" x="670" y="153">Brány, limity, identita</text>
+<text class="pdo" x="624" y="173">režim podle vratnosti chyby, ne podle důvěry</text>
+</g>
+<line class="flow" x1="775" y1="188" x2="775" y2="210" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="775,212 831,234 775,256 719,234"/><text class="glab" x="775" y="238">brána</text></g>
+<path class="back" d="M 719 234 H 576 V 158 H 610" marker-end="url(#tipb)"/>
+<text class="elabb" x="705" y="225">ne</text>
+<line class="flow" x1="775" y1="256" x2="775" y2="278" marker-end="url(#tip)"/>
+<text class="elab" x="783" y="271">ano</text>
+<g class="cond"><rect x="610" y="280" width="330" height="75" rx="2"/>
+<text x="623" y="298">□ nevratná akce nad limit jen se schválením</text>
+<text x="623" y="313">□ vydávání se za jiného ošetřeno na kanálu</text>
+<text x="623" y="328">□ brána bez odpovědi do X hodin má chování</text>
+<text x="623" y="343">□ odchozí komunikace je označená jako AI</text>
+</g>
+<line class="flow" x1="775" y1="355" x2="775" y2="393" marker-end="url(#tip)"/>
+<g class="ph must">
+<rect x="610" y="395" width="330" height="60" rx="2"/>
+<text class="pnum" x="624" y="420">F6</text>
+<text class="ptitle" x="670" y="420">Selhání, runbook, vypínač</text>
+<text class="pdo" x="624" y="440">aby se rozbitý agent poznal a dal zastavit</text>
+<text class="pmust" x="940" y="388">nepřeskočitelná</text>
+</g>
+<line class="flow" x1="775" y1="455" x2="775" y2="477" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="775,479 831,501 775,523 719,501"/><text class="glab" x="775" y="505">brána</text></g>
+<path class="back" d="M 719 501 H 576 V 425 H 610" marker-end="url(#tipb)"/>
+<text class="elabb" x="705" y="492">ne</text>
+<line class="flow" x1="775" y1="523" x2="775" y2="545" marker-end="url(#tip)"/>
+<text class="elab" x="783" y="538">ano</text>
+<g class="cond"><rect x="610" y="547" width="330" height="75" rx="2"/>
+<text x="623" y="565">□ agent se zastaví jedním úkonem — ověřeno</text>
+<text x="623" y="580">□ simulovaný pád dorazí vlastníkovi do minut</text>
+<text x="623" y="595">□ ticho agenta ≠ „nebylo co dělat“</text>
+<text x="623" y="610">□ obnova ze zálohy aspoň jednou nanečisto</text>
+</g>
+<line class="flow" x1="775" y1="622" x2="775" y2="660" marker-end="url(#tip)"/>
+<g class="ph">
+<rect x="610" y="662" width="330" height="60" rx="2"/>
+<text class="pnum" x="624" y="687">F7</text>
+<text class="ptitle" x="670" y="687">Nasazení</text>
+<text class="pdo" x="624" y="707">první týden každý výstup zkontrolovat ručně</text>
+</g>
+<line class="flow" x1="775" y1="722" x2="775" y2="744" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="775,746 831,768 775,790 719,768"/><text class="glab" x="775" y="772">brána</text></g>
+<path class="back" d="M 719 768 H 576 V 692 H 610" marker-end="url(#tipb)"/>
+<text class="elabb" x="705" y="759">ne</text>
+<line class="flow" x1="775" y1="790" x2="775" y2="812" marker-end="url(#tip)"/>
+<text class="elab" x="783" y="805">ano</text>
+<g class="cond"><rect x="610" y="814" width="330" height="60" rx="2"/>
+<text x="623" y="832">□ na nasazení je vidět verze a datum</text>
+<text x="623" y="847">□ náklady za týden sedí na odhad z F1</text>
+<text x="623" y="862">□ ruční kontrola nenašla nic, co by šlo tiše ven</text>
+</g>
+<line class="flow" x1="775" y1="874" x2="775" y2="912" marker-end="url(#tip)"/>
+<g class="ph">
+<rect x="610" y="914" width="330" height="60" rx="2"/>
+<text class="pnum" x="624" y="939">F8</text>
+<text class="ptitle" x="670" y="939">Provoz a růst</text>
+<text class="pdo" x="624" y="959">chyba v provozu → nový případ do evalů</text>
+</g>
+<line class="flow" x1="775" y1="974" x2="775" y2="996" marker-end="url(#tip)"/>
+<g class="gate"><polygon points="775,998 831,1020 775,1042 719,1020"/><text class="glab" x="775" y="1024">brána</text></g>
+<path class="back" d="M 719 1020 H 576 V 944 H 610" marker-end="url(#tipb)"/>
+<text class="elabb" x="705" y="1011">ne</text>
+<line class="flow" x1="775" y1="1042" x2="775" y2="1064" marker-end="url(#tip)"/>
+<text class="elab" x="783" y="1057">ano</text>
+<g class="cond"><rect x="610" y="1066" width="330" height="60" rx="2"/>
+<text x="623" y="1084">□ evalů přibývá s provozem</text>
+<text x="623" y="1099">□ změny promptu mají review jako změny kódu</text>
+<text x="623" y="1114">□ sedí ještě seznam scénářů, nebo se to rozlezlo?</text>
+</g>
+<g class="term"><rect x="129" y="76" width="216" height="30" rx="15"/><text x="237" y="96">nápad na agenta a jeho vlastník</text></g>
+<line class="flow" x1="237" y1="106" x2="237" y2="126" marker-end="url(#tip)"/>
+<path class="flow" d="M 237 1468 V 1494 H 24 V 40 H 775 V 126" marker-end="url(#tip)"/>
+<text class="elab" x="245" y="1488">pokračuje</text>
+<g class="term end"><rect x="630" y="1168" width="290" height="30" rx="15"/><text x="775" y="1188">agent v provozu · runbook · evaly · vypínač</text></g>
+<line class="flow" x1="775" y1="1126" x2="775" y2="1166" marker-end="url(#tip)"/>
+<path class="repeat" d="M 940 1106 H 966 V 944 H 940" marker-end="url(#tipr)"/>
+<text class="elabr" x="973" y="936">opakovaně</text>
+</svg>
+  </div>
+  <p class="caption">Levý sloupec F0–F4, pravý F5–F8. Podmínky pod každou bránou jsou úplné — nic se nekrátí. Brána F8 se čte opakovaně, ne jednorázově.</p>
+
+  <div class="crit">
+    <h3>Kritická cesta a kde se to nejčastěji zvrtne</h3>
+    <p>
+      <b>Kritická cesta je F0 → F1 → F3 → F5.</b> Tyhle čtyři nesou riziko celého projektu;
+      zbytek jsou dodělávky, které jdou dohnat.
+    </p>
+    <p>
+      <b>Nejčastější chyba je přeskočení F1 a F3</b> — model se pustí dřív, než existuje proces.
+      Pak se ladí dvě neznámé naráz a nejde poznat, jestli je vada v promptu, nebo v páteři.
+    </p>
+    <p>
+      <b>Nepřeskočitelné jsou tři:</b> reálný vzorek v F1, dva konce procesu v F3 a vypínač v F6.
+      Jejich chybějící verze se nepozná při vývoji — pozná se až podle škody.
+    </p>
+  </div>
+
+  <h2>Co se u malého agenta smí zeštíhlit</h2>
+  <p class="sub">
+    Předpis je maximum, ne minimum. U jednoduchého agenta pro sebe sama zůstávají povinné
+    F0, F1, F3 a F6. Zbytek se dá zkrátit — vědomě, ne opomenutím.
+  </p>
+
+  <table>
+    <tr><th>Fáze</th><th>Zeštíhlení</th></tr>
+    <tr><td>F2</td><td>plochá struktura místo kostry; kontrakty stačí v hlavě u jednoho až dvou modulů</td></tr>
+    <tr><td>F4</td><td>evaly ručně v deseti případech místo běhu v CI</td></tr>
+    <tr><td>F5</td><td>jeden globální limit místo tabulky režimů</td></tr>
+    <tr><td>F7</td><td>bez commit hashe — ale pořád s ruční kontrolou prvního týdne</td></tr>
+  </table>
+
+  <footer>
+    <span>Zdroj: <code>sablony/BUILD-PREDPIS.md</code> · principy: <code>01-principy/</code></span>
+    <span><a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

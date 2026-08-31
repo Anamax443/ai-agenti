@@ -1,5 +1,7 @@
 # AI-AGENTI
 
+**Čeština** · [English](README.en.md)
+
 Metodika stavby AI agentů a rozpracované projekty.
 
 Vzniklo z rozboru rozhovoru s Markem Bartošem (podcast Keci a politika,
@@ -24,6 +26,18 @@ Jak předpis dopadl v ostrém provozu, ukazuje
 **[02-pripady/AUDIT-job-watch.md](02-pripady/AUDIT-job-watch.md)** — na běžícím agentovi
 našel tři vady, které testy nenašly.
 
+### Když to potřebuješ ukázat někomu jinému
+
+| Výstup | K čemu |
+|---|---|
+| [Manažerské shrnutí](05-html/manazerske-shrnuti.html) | jedna A4 na výšku, k vytištění pro vedení |
+| [Myšlenková mapa](05-html/mapa-mysleni.html) | celá metodika na jedné ploše, od jádra ven |
+| [Tok informací](05-html/tok-informaci.html) | kudy data jdou, kdo je zpracovává, kde je hranice důvěry |
+| [Vývojový diagram](05-html/vyvojovy-diagram.html) | fáze F0–F8 s branami a návraty |
+
+Každá stránka má anglickou verzi (`*.en.html`) a přepínač jazyka v hlavičce.
+Manažerské shrnutí a vývojový diagram jsou nastavené na tisk A4.
+
 ---
 
 ## Obsah
@@ -34,10 +48,11 @@ našel tři vady, které testy nenašly.
 | `01-principy/` | Obecná metodika. Platí pro libovolnou doménu. |
 | `02-pripady/` | Vyplněný návrhový list (faktury) a **audit běžícího agenta** proti předpisu. |
 | `03-projekty/gwalarn/` | Agent na obsah pro kapelu: scénář, moduly, zadání modulu M1. |
-| `03-projekty/prepisovac/` | Desktopová aplikace na přepis audia: zadání + funkční kód. |
+| `03-projekty/prepisovac/` | Zadání desktopové aplikace na přepis audia. Podsložka `kod/` je rozhodnutá ke smazání — nedodělaný prototyp vedle hotového [mp3totxt](https://github.com/Anamax443/mp3totxt), viz `HANDOFF.md`. |
 | `04-firemni/` | Portfolio agentů pro malou kancelář a pro velkou firmu. |
-| `05-html/` | Vizuální roadmapa postupu stavby. |
+| `05-html/` | Vizuální výstupy: manažerské shrnutí, myšlenková mapa, tok informací, vývojový diagram, roadmapa. |
 | `sablony/` | **Build předpis** (fáze a brány), prázdný návrhový list a kostra repozitáře agenta. |
+| `kontrola/` | Kontrola jazykových dvojic — běží v CI. |
 
 ---
 
@@ -56,7 +71,7 @@ Třetí větev, kdy udělá něco, co nikdo nechtěl, je odstraněná návrhem.
 
 | Projekt | Stav | Další krok |
 |---|---|---|
-| Přepisovač audia | kód hotový, neotestovaný na Windows | doladit prostředí, zabalit do EXE |
+| Přepisovač audia | zadání hotové; přepis samotný řeší [mp3totxt](https://github.com/Anamax443/mp3totxt) | rozhodnout o GUI a stahování z URL — to `mp3totxt` nepokrývá |
 | Gwalarn — agent na obsah | návrh hotový | modul M1 (ffmpeg), účty u Mety |
 | Agenti pro kancelář | návrh | vybrat prvního a postavit |
 
@@ -89,12 +104,21 @@ Repozitář drží [project-standard](https://github.com/Anamax443/project-stand
 - `LICENSE` — zdroje jsou veřejně čitelné jako ukázka práce, ne open source
 
 CI (`.github/workflows/kontrola.yml`) při každém pushi skenuje tajemství
-(gitleaks) a kontroluje odkazy v `*.md`.
+(gitleaks), kontroluje odkazy v `*.md` a ověřuje jazykové dvojice
+(`kontrola/dvojice.py`).
+
+## Jazyk
+
+Repozitář je dvojjazyčný. Každý dokument má anglické dvojče `<jméno>.en.md`
+(u stránek `.en.html`). Když si obě verze odporují, platí česká — angličtina
+je překlad, ne odnož. Co se vědomě nepřekládá, je vypsané
+v [kontrola/bez-prekladu.txt](kontrola/bez-prekladu.txt), aby to bylo vidět
+a nechybělo to potichu.
 
 ## Souvislosti s ostatními repozitáři
 
 | Tady | Samostatné repo |
 |---|---|
-| `03-projekty/prepisovac/` | [mp3totxt](https://github.com/Anamax443/mp3totxt) — hotová CLI verze téhož |
+| `03-projekty/prepisovac/` | [mp3totxt](https://github.com/Anamax443/mp3totxt) — hotové CLI; nepokrývá GUI ani stahování z URL |
 | `03-projekty/gwalarn/` | [gwalarn](https://github.com/Anamax443/gwalarn) — web kapely |
 | `02-pripady/` (faktury) | [faxx-dox](https://github.com/Anamax443/faxx-dox) — extrakce dat z dokladů |

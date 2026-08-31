@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Information flow through an agent</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+/* ---------- hlavicka ---------- */
+header{padding:64px 0 34px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 16px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:clamp(36px,5.8vw,64px);
+  line-height:.99;letter-spacing:-.025em;margin:0 0 18px;max-width:17ch;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:60ch;margin:0;font-weight:300}
+.langbar{
+  display:flex;gap:14px;margin-top:26px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+}
+.langbar a{color:var(--plum);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.langbar span{color:var(--ink-soft)}
+
+h2{
+  font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);
+  letter-spacing:-.02em;line-height:1.14;margin:56px 0 8px;
+}
+.sub{color:var(--ink-soft);max-width:62ch;margin:0 0 30px}
+
+/* ---------- legenda ---------- */
+.legend{
+  display:flex;flex-wrap:wrap;gap:22px;margin:0 0 34px;padding:14px 18px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+}
+.legend span{display:flex;align-items:center;gap:8px}
+.chip{
+  display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:2px;font-weight:600;
+}
+.chip.model{background:var(--plum);color:#fff}
+.chip.code{background:var(--teal);color:#fff}
+.chip.human{background:var(--ink);color:#fff}
+
+/* ---------- tok ---------- */
+.flow{margin:0 0 20px}
+.stage{
+  display:grid;grid-template-columns:1fr 300px 1fr;gap:20px;align-items:center;
+}
+.stage .box{
+  border:1px solid var(--rule);background:var(--paper-2);padding:15px 18px;
+  position:relative;
+}
+.stage.is-model .box{border-left:3px solid var(--plum)}
+.stage.is-code .box{border-left:3px solid var(--teal)}
+.stage.is-human .box{border-left:3px solid var(--ink)}
+.box h3{
+  font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-.01em;
+  margin:0 0 6px;line-height:1.18;
+}
+.box p{margin:0;font-size:14.5px;line-height:1.42;color:var(--ink-soft)}
+.box .chip{position:absolute;top:-9px;right:12px}
+
+/* data po stranach */
+.side{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-soft)}
+.side .lab{
+  display:block;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--plum);margin-bottom:4px;
+}
+.side.left{text-align:right}
+.side.right{text-align:left}
+.side code{
+  font-family:var(--mono);font-size:11px;background:var(--paper-2);
+  border:1px solid var(--rule);padding:1px 5px;border-radius:2px;
+}
+
+/* sipka mezi fazemi */
+.arrow{
+  grid-column:2;display:flex;flex-direction:column;align-items:center;
+  padding:2px 0;
+}
+.arrow .line{width:1px;height:22px;background:var(--rule)}
+.arrow .head{
+  width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;
+  border-top:7px solid var(--rule);margin-top:-1px;
+}
+.arrow .what{
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+  background:var(--paper);padding:3px 9px;border:1px solid var(--rule);border-radius:2px;
+  margin:4px 0;white-space:nowrap;
+}
+.hop{display:grid;grid-template-columns:1fr 300px 1fr;gap:20px}
+
+/* ---------- hranice duvery ---------- */
+.boundary{
+  grid-column:1 / -1;display:flex;align-items:center;gap:14px;margin:12px 0;
+}
+.boundary .bline{flex:1;height:0;border-top:2px dashed var(--plum)}
+.boundary .btxt{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--plum);font-weight:600;white-space:nowrap;
+}
+
+/* ---------- dva konce ---------- */
+.ends{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0 0}
+.end{border:1px solid var(--rule);background:var(--paper-2);padding:16px 20px}
+.end.fail{border-left:3px solid var(--plum)}
+.end.ok{border-left:3px solid var(--teal)}
+.end .lab{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 5px;
+}
+.end p{margin:0;font-size:15px;line-height:1.44}
+.third{
+  margin:16px 0 0;padding:14px 20px;border:1px dashed var(--rule);
+  color:var(--ink-soft);font-style:italic;font-size:15px;
+}
+.third b{font-style:normal;color:var(--ink)}
+
+/* ---------- vypinac ---------- */
+.kill{
+  margin:34px 0 0;padding:16px 20px;background:var(--ink);color:#D8DEE6;
+  border-left:3px solid var(--plum);
+}
+.kill h3{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;margin:0 0 8px;font-weight:600;
+}
+.kill p{margin:0;font-size:15px;line-height:1.48;color:#B9C4D2}
+.kill b{color:#fff;font-weight:600}
+
+/* ---------- kde se to lame ---------- */
+.breaks{margin:0}
+.brk{
+  display:grid;grid-template-columns:78px 1fr;gap:20px;
+  padding:20px 0;border-bottom:1px solid var(--rule);
+}
+.brk:last-child{border-bottom:0}
+.brk .at{
+  font-family:var(--mono);font-size:11px;color:var(--plum);font-weight:600;
+  letter-spacing:.06em;line-height:1.5;
+}
+.brk .at span{display:block;color:var(--ink-soft);font-weight:400;margin-top:3px}
+.brk h3{font-family:var(--disp);font-weight:600;font-size:19px;margin:0 0 6px;letter-spacing:-.01em}
+.brk p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:64ch}
+
+/* ---------- paticka ---------- */
+footer{
+  margin-top:64px;padding:22px 0 60px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  @page{size:A4 portrait;margin:14mm}
+  header{padding:0 0 18px}
+  h1{font-size:26pt}
+  .langbar{display:none}
+  .stage,.hop{grid-template-columns:1fr 260px 1fr}
+  .kill{background:#fff;color:var(--ink);border:1px solid var(--rule);border-left:3px solid var(--plum)}
+  .kill h3{color:var(--plum)}.kill p{color:var(--ink-soft)}.kill b{color:var(--ink)}
+  h2{margin-top:26px}
+}
+@media(max-width:860px){
+  .stage,.hop{grid-template-columns:1fr;gap:8px}
+  .side.left,.side.right{text-align:left}
+  .arrow{grid-column:1}
+  .ends{grid-template-columns:1fr}
+  .brk{grid-template-columns:1fr;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">AI-AGENTI · schematic</p>
+    <h1>Information flow <em>through an agent</em></h1>
+    <p class="lede">
+      Where the data travels, who processes each leg, and where the boundary sits beyond which
+      third-party text stops being trusted. The colour of each frame says whether the step is
+      done by the model, by code, or by a person.
+    </p>
+    <p class="langbar"><span>Language:</span> <a href="tok-informaci.html">Čeština</a> <b>English</b></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>The main route</h2>
+  <p class="sub">
+    On the left is what enters a step, on the right what leaves it. The point is that the shape
+    of the data sharpens along the way: free text becomes structure, and only structure reaches
+    the code that carries consequences.
+  </p>
+
+  <div class="legend">
+    <span><i class="chip model">model</i> recognises, never executes</span>
+    <span><i class="chip code">code</i> executes, can be debugged</span>
+    <span><i class="chip human">person</i> approves the irreversible</span>
+    <span>── ── trust boundary</span>
+  </div>
+
+  <div class="flow">
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">enters</span>
+        own and foreign input<br><code>text · audio · event</code>
+      </div>
+      <div class="box">
+        <i class="chip code">code</i>
+        <h3>Input channels</h3>
+        <p>Chat, voice message, e-mail, webhook, cron, sensor. The channel also carries identity —
+        number, ID, signature. Never a name taken from the text.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        input + verified sender<br><code>{who, when, content}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">raw input</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="boundary">
+        <div class="bline"></div>
+        <div class="btxt">Trust boundary — past this point foreign text is data, never an instruction</div>
+        <div class="bline"></div>
+      </div>
+    </div>
+
+    <div class="stage is-model">
+      <div class="side left">
+        <span class="lab">enters</span>
+        free text, wrapped<br><code>closed list of scenarios</code>
+      </div>
+      <div class="box">
+        <i class="chip model">model</i>
+        <h3>Intent recognition</h3>
+        <p>What is this about? The answer is one of the known scenarios — or “I don't know”.
+        An unknown intent goes to a person; the agent does not improvise.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        one scenario + confidence<br><code>{scenario: "S1", conf: .93}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">recognised intent</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-model">
+      <div class="side left">
+        <span class="lab">enters</span>
+        document, sentence, scan<br><code>free form</code>
+      </div>
+      <div class="box">
+        <i class="chip model">model</i>
+        <h3>Structure extraction</h3>
+        <p>Turns text into fields. Where numbers matter, two independent passes run and are
+        compared — agreement means near-certainty, disagreement goes to a person.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        populated structure<br><code>{amount, date, supplier}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">structured data</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">enters</span>
+        structure + context from memory<br><code>only what the task needs</code>
+      </div>
+      <div class="box">
+        <i class="chip code">code</i>
+        <h3>Main mind</h3>
+        <p>Holds memory, context, persona and permissions. It decides <b>what</b> runs, not
+        <b>how</b> it runs. Factual memory is never dumped into the prompt wholesale.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        choice of process<br><code>run(P3, parameters)</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">run instruction</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">enters</span>
+        process parameters<br><code>validated, typed</code>
+      </div>
+      <div class="box">
+        <i class="chip code">code</i>
+        <h3>Fixed process</h3>
+        <p>Deterministic code. Validation, idempotence, explicit error states. A tool is a narrow
+        operation <code>issue_document(id)</code>, not a general gateway
+        <code>run_sql(query)</code>.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        prepared action<br><code>{action, impact, reversibility}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">action awaiting judgement</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-human">
+      <div class="side left">
+        <span class="lab">enters</span>
+        action + its reversibility<br><code>auto / limit / approval</code>
+      </div>
+      <div class="box">
+        <i class="chip human">gate</i>
+        <h3>Gates and limits</h3>
+        <p>The mode is set by <b>how reversible the mistake is</b>, not by trust in the model.
+        Reversible runs on its own, financial within a limit, irreversible needs approval.
+        No answer within the deadline: the task is dropped and reported.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        allowed, or escalation<br><code>{allowed} | {asking, why}</code>
+      </div>
+    </div>
+
+    <div class="hop">
+      <div class="arrow"><div class="line"></div><div class="what">approved action</div><div class="line"></div><div class="head"></div></div>
+    </div>
+
+    <div class="stage is-code">
+      <div class="side left">
+        <span class="lab">enters</span>
+        permitted action<br><code>labelled as written by AI</code>
+      </div>
+      <div class="box">
+        <i class="chip code">code</i>
+        <h3>Output channels</h3>
+        <p>Message, publication, write to a system, payment. Every outgoing text is labelled as
+        AI-written. In the test environment the channels physically do not exist — by
+        configuration, not by a condition in the code.</p>
+      </div>
+      <div class="side right">
+        <span class="lab">leaves</span>
+        a consequence in the world<br><code>+ a log record</code>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Two outcomes, never a third</h2>
+  <p class="sub">
+    The entire shape of this route exists for a single property: that a run cannot end any other
+    way than these two.
+  </p>
+
+  <div class="ends">
+    <div class="end fail">
+      <p class="lab">Outcome 1</p>
+      <p><b>It failed and you know.</b> The process stopped with a report that reached a person —
+      not just a log line.</p>
+    </div>
+    <div class="end ok">
+      <p class="lab">Outcome 2</p>
+      <p><b>It went well.</b> The result matches the specification and leaves a traceable record.</p>
+    </div>
+  </div>
+  <p class="third">
+    <b>The third outcome — “it did something nobody asked for” — has nowhere to arise on this route.</b>
+    The model never holds an irreversible action in its hand. It only ever describes what it sees;
+    the decision and the execution sit in code and in the gate.
+  </p>
+
+  <div class="kill">
+    <h3>Across the whole route</h3>
+    <p>
+      <b>Kill switch</b> — one action that stops the run on any leg. It must be tested, not
+      theoretical. <b>Crash reports</b> go to a person, not to a log. <b>Agent silence</b> must be
+      distinguishable from “there was nothing to do” — otherwise a dead agent looks exactly like a
+      quiet day. <b>The log records decisions</b>, not just results: a month later there is no
+      other way to find out why this particular process ran.
+    </p>
+  </div>
+
+  <h2>Where it breaks in practice</h2>
+  <p class="sub">
+    Three defects found by auditing a running agent. Each sits on a different leg of the route —
+    and all three passed the automated tests.
+  </p>
+
+  <div class="breaks">
+    <div class="brk">
+      <div class="at">Across<span>kill switch</span></div>
+      <div>
+        <h3>The kill switch did not cut the route</h3>
+        <p>Stop closed the run record, but no leg ever read a stop flag. Processing carried on and
+        kept sending — there was simply no record of it. The function returned the right value;
+        the system still did not do what it promised.</p>
+      </div>
+    </div>
+    <div class="brk">
+      <div class="at">Outcome 1<span>reporting</span></div>
+      <div>
+        <h3>The “it failed” outcome was invisible</h3>
+        <p>Messages were sent only on findings. “Found nothing” and “crashed” looked identical
+        from outside — silence. An agent someone relies on could have been dead for a week and it
+        would have looked like an empty market.</p>
+      </div>
+    </div>
+    <div class="brk">
+      <div class="at">Trust<span>boundary</span></div>
+      <div>
+        <h3>Foreign text crossed the boundary unwrapped</h3>
+        <p>Text written by unknown people entered the model as an instruction rather than as data.
+        A sentence saying “ignore previous instructions” had nothing to stop it. The damage was
+        limited only because the model was allowed to return a bare number — which is luck from
+        the design, not a defence.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>In detail: <code>01-principy/PRINCIPY-stavby-agentu.en.md</code> · <code>sablony/BUILD-PREDPIS.en.md</code></span>
+    <span><a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+  </footer>
+
+</div>
+
+</body>
+</html>

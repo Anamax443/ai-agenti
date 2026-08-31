@@ -1,0 +1,5 @@
+# Dokumenty, ktere zamerne nemaji anglicke dvojce.
+# Jeden vztazny path na radek, komentar za #.
+# Seznam je rucni schvalne: co se neprekklada, ma byt videt.
+
+# --- zatim nelozeno, viz HANDOFF.md ---

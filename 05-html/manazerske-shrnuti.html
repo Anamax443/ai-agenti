@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI agenti — manažerské shrnutí</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:10.2pt;line-height:1.42;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- list A4 na vysku ---------- */
+.sheet{
+  width:210mm;min-height:297mm;margin:12mm auto;padding:14mm 15mm 12mm;
+  background:var(--paper-2);border:1px solid var(--rule);
+  box-shadow:0 2px 18px rgba(22,35,58,.10);
+  display:flex;flex-direction:column;
+}
+
+/* ---------- hlavicka ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:7.4pt;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 7px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:27pt;line-height:1.0;
+  letter-spacing:-.025em;margin:0 0 8px;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{
+  font-size:11.4pt;line-height:1.42;color:var(--ink-soft);
+  margin:0 0 13px;font-weight:300;max-width:56ch;
+}
+.rule{border:0;border-top:1px solid var(--rule);margin:0 0 13px}
+
+/* ---------- jadro ---------- */
+.core{
+  border-left:3px solid var(--plum);background:var(--paper);
+  padding:10px 15px;margin:0 0 14px;
+}
+.core .big{
+  font-family:var(--disp);font-weight:600;font-size:15pt;letter-spacing:-.015em;
+  margin:0 0 5px;line-height:1.12;
+}
+.core p{margin:0;color:var(--ink-soft);font-size:9.8pt;max-width:64ch}
+
+h2{
+  font-family:var(--mono);font-size:8pt;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--teal);font-weight:600;margin:0 0 8px;
+  padding-bottom:4px;border-bottom:1px solid var(--rule);
+}
+section{margin:0 0 14px}
+p{margin:0 0 7px}
+
+/* ---------- dve vetve ---------- */
+.branch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 9px}
+.br{
+  border:1px solid var(--rule);background:var(--paper);padding:9px 12px;
+  position:relative;
+}
+.br.bad{border-left:3px solid var(--plum)}
+.br.good{border-left:3px solid var(--teal)}
+.br .lab{
+  font-family:var(--mono);font-size:7.4pt;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin:0 0 3px;
+}
+.br .txt{font-size:9.8pt;margin:0;line-height:1.34}
+.killed{
+  border:1px dashed var(--rule);background:transparent;padding:8px 12px;
+  color:var(--ink-soft);font-size:9.5pt;font-style:italic;margin:0;
+}
+.killed b{font-style:normal;color:var(--ink);font-weight:600}
+
+/* ---------- cisla ---------- */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 8px}
+.num{border:1px solid var(--rule);background:var(--paper);padding:9px 12px}
+.num .v{
+  font-family:var(--disp);font-weight:800;font-size:20pt;line-height:1;
+  color:var(--plum);letter-spacing:-.03em;display:block;margin-bottom:3px;
+  font-variant-numeric:tabular-nums;
+}
+.num .k{font-size:9.3pt;color:var(--ink-soft);line-height:1.3;display:block}
+
+/* ---------- faze ---------- */
+.phases{display:flex;gap:3px;margin:0 0 7px}
+.ph{
+  flex:1;text-align:center;padding:6px 2px 5px;background:var(--paper);
+  border:1px solid var(--rule);font-family:var(--mono);font-size:8pt;
+}
+.ph b{display:block;font-size:9pt;color:var(--ink);font-weight:600}
+.ph span{display:block;font-size:6.8pt;color:var(--ink-soft);letter-spacing:.04em;margin-top:2px}
+.ph.must{background:#EDE3E9;border-color:var(--plum)}
+.ph.must b{color:var(--plum)}
+.legend{font-size:8.8pt;color:var(--ink-soft);margin:0}
+.legend b{color:var(--plum);font-weight:600}
+
+/* ---------- dukaz ---------- */
+.proof{border:1px solid var(--teal);background:#E7EDEC;padding:10px 14px}
+.proof h3{
+  font-family:var(--mono);font-size:7.8pt;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 6px;font-weight:600;
+}
+.proof ol{margin:0 0 6px;padding-left:16px}
+.proof li{margin:0 0 3px;font-size:9.6pt;line-height:1.34}
+.proof .after{margin:0;font-size:9.3pt;color:var(--ink-soft);font-style:italic}
+
+/* ---------- co to znamena ---------- */
+table{border-collapse:collapse;width:100%;font-size:9.5pt}
+th,td{text-align:left;padding:5px 9px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{
+  font-family:var(--mono);font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:600;white-space:nowrap;
+}
+tr:last-child td{border-bottom:0}
+td.q{color:var(--ink-soft);width:38%}
+
+/* ---------- paticka ---------- */
+footer{
+  margin-top:auto;padding-top:9px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:7.4pt;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+.lang{
+  position:fixed;top:10px;right:12px;font-family:var(--mono);font-size:11px;
+  background:var(--paper-2);border:1px solid var(--rule);padding:5px 10px;
+}
+.lang a{color:var(--plum);text-decoration:none}
+
+/* ---------- tisk ---------- */
+@page{size:A4 portrait;margin:0}
+@media print{
+  body{background:#fff}
+  .sheet{
+    width:auto;min-height:auto;margin:0;padding:13mm 14mm;
+    border:0;box-shadow:none;background:#fff;
+  }
+  .lang{display:none}
+  .br,.num,.ph,.core{background:#fff}
+}
+@media(max-width:800px){
+  .sheet{width:auto;margin:0;padding:22px 18px;border:0}
+  .branch,.nums{grid-template-columns:1fr}
+  .phases{flex-wrap:wrap}
+  .ph{flex:1 0 18%}
+}
+</style>
+</head>
+<body>
+
+<div class="lang"><a href="manazerske-shrnuti.en.html">EN&nbsp;→</a></div>
+
+<div class="sheet">
+
+  <p class="eyebrow">Manažerské shrnutí · 31. 8. 2026</p>
+  <h1>Jak stavíme <em>AI agenty</em>, které se dají provozovat</h1>
+  <p class="lede">
+    Ne experiment a ne nákup nástroje. Předpis, podle kterého se agent navrhne,
+    postaví a pustí do provozu tak, aby se dal ohlídat.
+  </p>
+  <hr class="rule">
+
+  <div class="core">
+    <p class="big">AI rozpoznává. Kód vykonává.</p>
+    <p>
+      Model dostává jen tři úlohy: pozná, o co jde; vytáhne z textu strukturu; napíše text.
+      Všechno, co má následky — zápis do systému, platba, odeslání ven — dělá běžný
+      programový kód, nad kterým už žádný model nepřemýšlí.
+    </p>
+  </div>
+
+  <section>
+    <h2>Proč na tom záleží</h2>
+    <div class="branch">
+      <div class="br bad">
+        <p class="lab">Konec 1</p>
+        <p class="txt">Proces <b>selže a přijde hlášení.</b> Někdo se to dozví do minut.</p>
+      </div>
+      <div class="br good">
+        <p class="lab">Konec 2</p>
+        <p class="txt">Proces <b>dopadne dobře.</b> Výsledek je takový, jaký byl zadaný.</p>
+      </div>
+    </div>
+    <p class="killed">
+      <b>Třetí konec je odstraněný návrhem.</b> Agent, který si sám vybírá, jak úkol splní,
+      může uspět, selhat — nebo udělat něco, co nikdo nechtěl. Ta třetí větev je zdrojem
+      všech příběhů typu „asistent rozeslal e-mail padesáti lidem". Tenhle způsob stavby
+      ji nemá kde vzít.
+    </p>
+  </section>
+
+  <section>
+    <h2>Co to znamená provozně</h2>
+    <table>
+      <tr>
+        <th>Náklady</th>
+        <td>Deterministický kód stojí zlomek toho, co model. Řádový rozdíl nedělá volba
+        modelu, ale <b>kolik práce se mu vůbec dá.</b></td>
+      </tr>
+      <tr>
+        <th>Odpovědnost</th>
+        <td>Nevratná akce má vždy pojmenovaný režim: sám / do limitu / se schválením.
+        Rozhoduje <b>vratnost chyby</b>, ne důvěra k modelu.</td>
+      </tr>
+      <tr>
+        <th>Identita</th>
+        <td>Kdo smí co, se váže na kanál (číslo, ID, podpis), ne na jméno v textu.
+        Kdokoli napíše „tady ředitel" — ale ne z jeho čísla.</td>
+      </tr>
+      <tr>
+        <th>Dohled</th>
+        <td>Vypínač na jeden úkon. Pád agenta se hlásí <b>člověku</b>, ne do logu.
+        Ticho agenta musí jít odlišit od „nebylo co dělat".</td>
+      </tr>
+      <tr>
+        <th>Regulace</th>
+        <td>Agent přiznává, že je AI, když komunikuje ven. Vyžaduje to AI Act
+        a v praxi to funguje líp než opak.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Postup — devět fází, každá s bránou</h2>
+    <div class="phases">
+      <div class="ph"><b>F0</b><span>návrh</span></div>
+      <div class="ph must"><b>F1</b><span>vzorek</span></div>
+      <div class="ph"><b>F2</b><span>kostra</span></div>
+      <div class="ph must"><b>F3</b><span>páteř</span></div>
+      <div class="ph"><b>F4</b><span>model</span></div>
+      <div class="ph"><b>F5</b><span>brány</span></div>
+      <div class="ph must"><b>F6</b><span>vypínač</span></div>
+      <div class="ph"><b>F7</b><span>nasazení</span></div>
+      <div class="ph"><b>F8</b><span>provoz</span></div>
+    </div>
+    <p class="legend">
+      Brána je seznam podmínek na konci fáze. Dokud neplatí všechny, další fáze se nezačíná.
+      <b>Zvýrazněné tři se nepřeskakují nikdy</b> — ověření na reálných datech (F1),
+      proces se dvěma konci ještě bez modelu (F3) a funkční vypínač (F6). Jejich chybějící
+      verze se pozná až podle škody.
+    </p>
+  </section>
+
+  <section>
+    <h2>Důkaz, že to není jen text</h2>
+    <div class="proof">
+      <h3>Předpis pustěn na vlastního běžícího agenta (JobWatch, 30. 8. 2026)</h3>
+      <ol>
+        <li><b>Vypínač nevypínal.</b> Tlačítko Stop uzavřelo záznam běhu, ale zpracování
+        běželo dál a dál odesílalo zprávy.</li>
+        <li><b>Pád běhu byl tichý.</b> Zprávy chodily jen na nálezy, takže „nic nenašel"
+        a „spadlo to" vypadaly zvenčí stejně. Agent mohl být týden mrtvý.</li>
+        <li><b>Cizí text šel do modelu bez obalu.</b> Text psaný neznámými lidmi vstupoval
+        do hodnocení bez jakékoli obrany.</li>
+      </ol>
+      <p class="after">
+        Všechny tři vady měl systém, který má 38 procházejících automatických kontrol.
+        Testy se ptají, jestli funkce vrací správnou hodnotu. Brána se ptá,
+        jestli systém dělá, co slibuje — a to je jiná otázka.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kde jsme a co dál</h2>
+    <div class="nums">
+      <div class="num"><span class="v">1</span><span class="k">agent v ostrém provozu, prověřený předpisem</span></div>
+      <div class="num"><span class="v">9</span><span class="k">fází s branami, použitelných na libovolného agenta</span></div>
+      <div class="num"><span class="v">3</span><span class="k">vady nalezené tam, kde testy procházely</span></div>
+    </div>
+    <p>
+      Metodika je hotová a jednou ostře ověřená. Další krok je vybrat z portfolia
+      kancelářských agentů první případ a postavit ho podle předpisu od F0 — tedy
+      s vyplněným návrhovým listem dřív, než vznikne první řádek kódu.
+    </p>
+  </section>
+
+  <footer>
+    <span>AI-AGENTI · metodika stavby agentů · <a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+    <span>Podrobně: 01-principy/ · sablony/BUILD-PREDPIS.md</span>
+  </footer>
+
+</div>
+</body>
+</html>

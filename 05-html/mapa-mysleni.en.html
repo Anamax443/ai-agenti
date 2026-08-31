@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind map of the method</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="88">📐</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEF;
+  --paper-2:#F5F7F8;
+  --ink:#16233A;
+  --ink-soft:#4A5A73;
+  --plum:#8B2E5D;
+  --teal:#2F6F6B;
+  --rule:#C6CDD4;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',system-ui,sans-serif;
+  --body:'Newsreader',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ---------- hlavicka ---------- */
+header{padding:64px 0 34px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--plum);margin:0 0 16px;
+}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:clamp(36px,5.8vw,64px);
+  line-height:.99;letter-spacing:-.025em;margin:0 0 18px;max-width:16ch;
+}
+h1 em{font-style:normal;color:var(--plum)}
+.lede{font-size:19px;line-height:1.5;color:var(--ink-soft);max-width:60ch;margin:0;font-weight:300}
+.langbar{
+  display:flex;gap:14px;margin-top:26px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+}
+.langbar a{color:var(--plum);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.langbar span{color:var(--ink-soft)}
+
+h2{
+  font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);
+  letter-spacing:-.02em;line-height:1.14;margin:56px 0 8px;
+}
+.sub{color:var(--ink-soft);max-width:62ch;margin:0 0 34px}
+
+/* ---------- mapa ---------- */
+.map{
+  display:grid;grid-template-columns:1fr 250px 1fr;gap:0 30px;
+  align-items:center;margin:38px 0 0;position:relative;
+}
+.side{display:flex;flex-direction:column;gap:20px}
+
+/* stred */
+.hub{
+  grid-column:2;align-self:center;text-align:center;
+  border:2px solid var(--plum);background:var(--paper-2);padding:20px 16px;
+  position:relative;z-index:2;
+}
+.hub .k{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--plum);margin:0 0 8px;
+}
+.hub .core{
+  font-family:var(--disp);font-weight:800;font-size:22px;line-height:1.1;
+  letter-spacing:-.02em;margin:0 0 8px;
+}
+.hub .core span{display:block;color:var(--plum)}
+.hub .note{margin:0;font-size:13px;line-height:1.35;color:var(--ink-soft)}
+
+/* pater za stredem */
+.spine{
+  position:absolute;left:50%;top:6%;bottom:6%;width:1px;background:var(--rule);
+  transform:translateX(-.5px);z-index:0;
+}
+
+/* vetev */
+.branch{
+  border:1px solid var(--rule);background:var(--paper-2);padding:14px 17px;
+  position:relative;z-index:1;
+}
+.branch h3{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:600;margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--rule);
+}
+.branch ul{margin:0;padding:0;list-style:none}
+.branch li{
+  font-size:14.5px;line-height:1.36;padding:4px 0 4px 15px;position:relative;
+  color:var(--ink-soft);
+}
+.branch li::before{
+  content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;
+  border-radius:50%;
+}
+.branch li b{color:var(--ink);font-weight:600}
+.branch .ch{
+  font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);
+  letter-spacing:.06em;margin:9px 0 0;padding-top:7px;border-top:1px dashed var(--rule);
+}
+
+/* spojnice k pateri — mezera 30px + polovina stredniho sloupce 250px */
+.branch::after{
+  content:"";position:absolute;top:50%;width:155px;height:1px;background:var(--rule);
+}
+.side.left .branch::after{right:-155px}
+.side.right .branch::after{left:-155px}
+
+/* barvy vetvi */
+.b-zaklad{border-left:3px solid var(--plum)}
+.b-zaklad h3{color:var(--plum)}
+.b-zaklad li::before{background:var(--plum)}
+
+.b-stavba{border-left:3px solid var(--teal)}
+.b-stavba h3{color:var(--teal)}
+.b-stavba li::before{background:var(--teal)}
+
+.b-kontakt{border-left:3px solid var(--ink-soft)}
+.b-kontakt h3{color:var(--ink-soft)}
+.b-kontakt li::before{background:var(--ink-soft)}
+
+.b-kontrola{border-left:3px solid var(--plum)}
+.b-kontrola h3{color:var(--plum)}
+.b-kontrola li::before{background:var(--plum)}
+
+.b-provoz{border-left:3px solid var(--teal)}
+.b-provoz h3{color:var(--teal)}
+.b-provoz li::before{background:var(--teal)}
+
+/* ---------- pasy pod mapou ---------- */
+.strip{
+  margin:34px 0 0;border:1px solid var(--rule);background:var(--paper-2);
+  padding:16px 20px;
+}
+.strip.warn{border-left:3px solid var(--plum);background:#EDE3E9}
+.strip.entry{border-left:3px solid var(--teal);background:#E7EDEC}
+.strip h3{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  font-weight:600;margin:0 0 10px;
+}
+.strip.warn h3{color:var(--plum)}
+.strip.entry h3{color:var(--teal)}
+.anti{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.anti span{
+  font-family:var(--mono);font-size:11.5px;background:var(--paper-2);
+  border:1px solid var(--rule);padding:4px 10px;color:var(--ink);
+}
+.strip p{margin:0;font-size:15px;color:var(--ink-soft);max-width:74ch}
+.strip p b{color:var(--ink)}
+
+/* ---------- shrnuti ---------- */
+.twelve{margin:0;padding:0;list-style:none;counter-reset:t;column-count:2;column-gap:40px}
+.twelve li{
+  counter-increment:t;position:relative;padding:0 0 0 32px;margin-bottom:11px;
+  font-size:15.5px;line-height:1.42;break-inside:avoid;
+}
+.twelve li::before{
+  content:counter(t,decimal-leading-zero);position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:11px;color:var(--plum);font-weight:600;
+}
+
+/* ---------- paticka ---------- */
+footer{
+  margin-top:64px;padding:22px 0 60px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+footer a{color:var(--plum);text-decoration:none}
+code{
+  font-family:var(--mono);font-size:.85em;background:var(--paper-2);
+  border:1px solid var(--rule);padding:1px 5px;border-radius:2px;
+}
+
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  body{background:#fff;font-size:10.5pt}
+  header{padding:0 0 14px}
+  h1{font-size:24pt}
+  .langbar{display:none}
+  .branch,.hub,.strip{background:#fff}
+  h2{margin-top:22px}
+  .twelve{column-count:2}
+}
+@media(max-width:900px){
+  .map{grid-template-columns:1fr;gap:16px}
+  .hub{grid-column:1;order:-1}
+  .spine{display:none}
+  .branch::after{display:none}
+  .twelve{column-count:1}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">AI-AGENTI · mind map</p>
+    <h1>The method <em>on one surface</em></h1>
+    <p class="lede">
+      Sixteen chapters of principles, sorted by the question they answer. At the centre sits the
+      sentence everything else follows from — each branch is only its consequence in a different
+      part of the system.
+    </p>
+    <p class="langbar"><span>Language:</span> <a href="mapa-mysleni.html">Čeština</a> <b>English</b></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>The map</h2>
+  <p class="sub">
+    Read from the centre outwards. The left side answers “what is it made of” and “how does it fit
+    together”, the right side “how do you talk to it”, “who keeps it in check” and “how does it
+    live in production”.
+  </p>
+
+  <div class="map">
+    <div class="spine"></div>
+
+    <div class="side left">
+
+      <div class="branch b-zaklad">
+        <h3>Foundation</h3>
+        <ul>
+          <li><b>The model recognises, it does not execute.</b> Three jobs: intent, structure, text.</li>
+          <li>Ownership test: can it be written as <code>if–then</code>? Then it is code.</li>
+          <li>Free text, speech, image, human intent → model. Anything else → code.</li>
+          <li>Determinism is cheaper <b>by an order of magnitude</b>. The difference is not the model, but how much work it is handed.</li>
+        </ul>
+        <p class="ch">chapters 1 · 2 · 16</p>
+      </div>
+
+      <div class="branch b-stavba">
+        <h3>Construction</h3>
+        <ul>
+          <li><b>Anatomy:</b> channels → intent → main mind → fixed processes → gates → output.</li>
+          <li>Modules with contracts. Each has its own CLI, tests and gate.</li>
+          <li>Contracts are frozen <b>before the first line of code</b>.</li>
+          <li>A subagent gets a narrow brief and partial permissions — it has no way to go wrong.</li>
+          <li>The persona is generated from source material and corrected by hand, never written from memory.</li>
+        </ul>
+        <p class="ch">chapters 3 · 4 · 13</p>
+      </div>
+
+    </div>
+
+    <div class="hub">
+      <p class="k">core</p>
+      <p class="core">AI recognises.<span>Code executes.</span></p>
+      <p class="note">
+        Either the process fails and reports it, or it goes well.<br>
+        <b>There is no third possibility.</b>
+      </p>
+    </div>
+
+    <div class="side right">
+
+      <div class="branch b-kontakt">
+        <h3>Contact with the world</h3>
+        <ul>
+          <li><b>Chat on a phone beats a form.</b> Dictating a sentence is faster than six fields.</li>
+          <li>The channel is chosen to fit the situation — someone who is driving gets a voice message, not text.</li>
+          <li>Memory in three layers: durable in the repo, factual in the database, working in the context.</li>
+          <li>Factual memory <b>does not belong in the prompt wholesale</b>.</li>
+          <li>Proactivity: speak up when a question or a task follows from it. Not merely when something happened.</li>
+        </ul>
+        <p class="ch">chapters 5 · 9 · 10</p>
+      </div>
+
+      <div class="branch b-kontrola">
+        <h3>Control</h3>
+        <ul>
+          <li><b>Identity is bound to the channel</b>, not to a name in the text.</li>
+          <li>Whitelist, not blacklist. Anyone not listed has no access.</li>
+          <li>The approval mode is set by <b>how reversible the mistake is</b>, not by trust in the model.</li>
+          <li>Foreign input never triggers an action directly.</li>
+          <li>Cross-check with two independent passes — for numbers, dates, amounts, names.</li>
+        </ul>
+        <p class="ch">chapters 6 · 7 · 8</p>
+      </div>
+
+      <div class="branch b-provoz">
+        <h3>Operation</h3>
+        <ul>
+          <li><b>Silent failure is the worst outcome.</b> An agent that says nothing looks like one that is working.</li>
+          <li>A kill switch that takes one action. Tested, not theoretical.</li>
+          <li>The log records decisions, not just results.</li>
+          <li>Learn from <b>your own corrections</b>, not from metrics. How much you correct is itself a diagnostic.</li>
+          <li>A prompt is never rewritten automatically. Version it, do not overwrite it.</li>
+        </ul>
+        <p class="ch">chapters 11 · 12</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="strip warn">
+    <h3>Anti-patterns — chapter 15</h3>
+    <p class="anti">
+      <span>an agent with free access to every tool</span>
+      <span>AI where an <code>if</code> would do</span>
+      <span>trust instead of reversibility</span>
+      <span>identity taken from a name in the text</span>
+      <span>the whole memory in the prompt</span>
+      <span>silent failure</span>
+      <span>automatic prompt rewriting</span>
+      <span>integration before the modules are tested</span>
+      <span>a persona hand-written in ten minutes</span>
+      <span>a form instead of chat on a phone</span>
+    </p>
+  </div>
+
+  <div class="strip entry">
+    <h3>Entry point — chapter 14</h3>
+    <p>
+      <b>The design sheet.</b> Filled in before the first line of code exists. If the Scenarios
+      section cannot be filled in, the agent has not been thought through — and that is not a
+      reason to start coding and finish the thinking later, it is a reason not to start. The blank
+      template is in <code>sablony/navrhovy-list.en.md</code>, and the phased procedure follows in
+      <code>sablony/BUILD-PREDPIS.en.md</code>.
+    </p>
+  </div>
+
+  <h2>Twelve sentences it all shrinks to</h2>
+  <p class="sub">Chapter 16 of the principles. If you take nothing else from the map, take this.</p>
+
+  <ol class="twelve">
+    <li>AI recognises, code executes.</li>
+    <li>Either the process fails and reports it, or it goes well. The third branch must not exist.</li>
+    <li>The model gets three kinds of job only: intent, structure, text.</li>
+    <li>The persona is generated from sources, not written from memory.</li>
+    <li>Identity is bound to the channel, not to a name.</li>
+    <li>The approval mode is set by how reversible the mistake is, not by trust in the model.</li>
+    <li>Where accuracy matters, verify with two independent passes.</li>
+    <li>Chat on a phone beats a form.</li>
+    <li>An agent that stays quiet when it crashes is worse than no agent.</li>
+    <li>Learn from your own corrections, not from metrics. And never automatically.</li>
+    <li>Modules with contracts, then gates, then integration.</li>
+    <li>Fill in the design sheet before you write the first line.</li>
+  </ol>
+
+  <footer>
+    <span>Source: <code>01-principy/PRINCIPY-stavby-agentu.en.md</code> · procedure: <code>sablony/BUILD-PREDPIS.en.md</code></span>
+    <span><a href="https://github.com/Anamax443/ai-agenti">github.com/Anamax443/ai-agenti</a></span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -37,3 +37,10 @@ formalita — je to seznam podmínek, bez kterých další fáze stojí na písk
 - [ ] Žádná tajemství v repozitáři
 - [ ] Runbook doplněný
 - [ ] Vypínač funguje
+
+## Jazyk
+
+Čeština je hlavní jazyk repozitáře; každý dokument má anglické dvojče
+`<jméno>.en.md` (nebo `.en.html`). Měníš-li jeden, změň ve stejném commitu
+i druhý — kontroluje to `python kontrola/dvojice.py` a stejná kontrola běží v CI.
+Když si ty dvě verze odporují, platí česká.
