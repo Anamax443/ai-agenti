@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Postup stavby — Přepisovač a navazující agent</title>
+<title>Build plan — Transcriber and the follow-on agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -152,23 +152,23 @@ footer{
 
 <header>
   <div class="wrap">
-    <p class="eyebrow">Plán stavby · v1 · srpen 2026</p>
-    <h1>Od nahrávky<br>k <em>agentovi</em>, po fázích</h1>
-    <p class="lede">Osm fází. Každá má jeden cíl, konkrétní kroky a bránu — seznam podmínek,
-    které musí platit, než se pustíš do další. Fáze se nepřeskakují; každá odstraňuje
-    jednu třídu chyb, na kterou by ta následující jinak narazila.</p>
+    <p class="eyebrow">Build plan · v1 · August 2026</p>
+    <h1>From a recording<br>to an <em>agent</em>, phase by phase</h1>
+    <p class="lede">Eight phases. Each has one goal, concrete steps and a gate — the list of
+    conditions that must hold before you start the next one. The phases are not skipped;
+    each removes one class of mistake that the following one would otherwise run into.</p>
     <div class="meta">
-      <div>Odhad celkem<b>18–24 hodin práce</b></div>
-      <div>Kritická cesta<b>Fáze 0 → 3 → 6</b></div>
-      <div>Prostředí<b>Python 3.12 · VS Code · Windows</b></div>
-      <div>Jazyk<b>Čeština · <a href="postup-stavby.en.html" style="color:var(--plum)">English</a></b></div>
+      <div>Total estimate<b>18–24 hours of work</b></div>
+      <div>Critical path<b>Phases 0 → 3 → 6</b></div>
+      <div>Environment<b>Python 3.12 · VS Code · Windows</b></div>
+      <div>Language<b><a href="postup-stavby.html" style="color:var(--plum)">Čeština</a> · English</b></div>
     </div>
   </div>
 </header>
 
 <div class="railbar">
   <div class="wrap railbar-inner">
-    <span class="label">Splněno</span>
+    <span class="label">Done</span>
     <div class="track"><span id="bar"></span></div>
     <span class="count" id="count">0 / 0</span>
   </div>
@@ -185,26 +185,27 @@ footer{
       <span class="cost">~45 min</span>
     </div>
     <div>
-      <span class="blocked">Blokuje vše ostatní</span>
-      <h2>Získat přepis pořadu</h2>
-      <p class="goal">Dokud přepis neexistuje, nelze rozhodnout, jak má agent vypadat.
-      Všechno od fáze 6 dál stojí na tom, co v rozhovoru skutečně zaznělo.</p>
+      <span class="blocked">Blocks everything else</span>
+      <h2>Get the transcript of the show</h2>
+      <p class="goal">Until the transcript exists there is no way to decide what the agent
+      should look like. Everything from phase 6 onwards rests on what was actually said in
+      the interview.</p>
       <ol class="steps">
-        <li>Dokončit běžící <code>whisper-ctranslate2</code>, nebo spustit znovu s modelem <code>medium</code></li>
-        <li>Ověřit, že vznikl <code>.txt</code> a že text dává v češtině smysl</li>
-        <li>Projít výsledek očima a opravit zkomolená jména a termíny</li>
-        <li>Poznamenat si, které pasáže tě zaujaly a proč</li>
+        <li>Finish the running <code>whisper-ctranslate2</code>, or start again with the <code>medium</code> model</li>
+        <li>Verify that a <code>.txt</code> was produced and that the Czech text makes sense</li>
+        <li>Read the result through and fix garbled names and terms</li>
+        <li>Note down which passages caught your attention, and why</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Přepis existuje a je čitelný</li>
-          <li>Vlastní jména jsou opravená</li>
-          <li>Máš vypsané, co si z rozhovoru chceš odnést</li>
+          <li>The transcript exists and is readable</li>
+          <li>Proper nouns are corrected</li>
+          <li>You have written down what you want to take away from the interview</li>
         </ul>
       </div>
-      <p class="note">Poslední bod není formalita. Z hodiny mluveného slova jde vytáhnout
-      dvacet různých závěrů; bez tvého výběru vznikne obecná kaše.</p>
+      <p class="note">The last point is not a formality. Twenty different conclusions can be
+      pulled out of an hour of speech; without your selection what comes out is generic mush.</p>
     </div>
   </section>
 
@@ -217,29 +218,29 @@ footer{
       <span class="cost">~45 min</span>
     </div>
     <div>
-      <h2>Postavit prostředí</h2>
-      <p class="goal">Izolovaný interpret, do kterého nic jiného nesahá. Většina záhad
-      typu „nainstaloval jsem to a on to nevidí" vzniká právě tady.</p>
-<pre><span class="c"># Python 3.12 vedle stávajícího 3.14</span>
+      <h2>Set up the environment</h2>
+      <p class="goal">An isolated interpreter nothing else reaches into. Most of the mysteries
+      of the “I installed it and it can't see it” kind originate right here.</p>
+<pre><span class="c"># Python 3.12 alongside the existing 3.14</span>
 winget install Python.Python.3.12
 
-<span class="c"># projekt a virtuální prostředí</span>
+<span class="c"># the project and a virtual environment</span>
 mkdir C:\Projects\whisper-app; cd C:\Projects\whisper-app
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install faster-whisper yt-dlp
 pip freeze &gt; requirements.txt</pre>
       <ol class="steps">
-        <li>Vypnout Store alias Pythonu — Nastavení → Aplikace → Aliasy spouštění</li>
-        <li>Ve VS Code vybrat interpret z <code>.venv</code></li>
-        <li>Založit <code>.gitignore</code> a první commit do Gitea</li>
+        <li>Disable the Python Store alias — Settings → Apps → App execution aliases</li>
+        <li>In VS Code, select the interpreter from <code>.venv</code></li>
+        <li>Create a <code>.gitignore</code> and make the first commit into Gitea</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li><code>where.exe python</code> vrací jen jednu cestu</li>
-          <li>Import <code>faster_whisper</code> projde bez chyby</li>
-          <li>F5 ve VS Code spustí prázdné okno</li>
+          <li><code>where.exe python</code> returns only one path</li>
+          <li>Importing <code>faster_whisper</code> succeeds</li>
+          <li>F5 in VS Code opens an empty window</li>
         </ul>
       </div>
     </div>
@@ -254,25 +255,25 @@ pip freeze &gt; requirements.txt</pre>
       <span class="cost">~3 h</span>
     </div>
     <div>
-      <h2>Preflight jako první modul</h2>
-      <p class="goal">Kontroly se píší dřív než funkce, kterou hlídají. Jinak se odloží
-      na konec a nenapíšou nikdy.</p>
+      <h2>Preflight as the first module</h2>
+      <p class="goal">The checks are written before the function they guard. Otherwise they
+      get postponed to the end and never written at all.</p>
       <ol class="steps">
-        <li><code>preflight.py</code> — dvanáct kontrol podle zadání, každá vrací <code>Check</code></li>
-        <li>Každý nález nese <em>remedy</em>: hotový příkaz ke zkopírování</li>
-        <li><code>FAIL</code> blokuje spuštění, <code>WARN</code> jen informuje</li>
-        <li>Otestovat na počítači bez knihoven — třeba na druhé stanici</li>
+        <li><code>preflight.py</code> — twelve checks per the brief, each returning a <code>Check</code></li>
+        <li>Every finding carries a <em>remedy</em>: a ready command to copy</li>
+        <li><code>FAIL</code> blocks the run, <code>WARN</code> only informs</li>
+        <li>Test it on a machine without the libraries — a second workstation, say</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Chybějící knihovna se pozná do vteřiny, ne po pěti minutách</li>
-          <li>Nedostupný Hugging Face má vlastní hlášku, ne obecný timeout</li>
-          <li>Každý červený nález nabízí příkaz k nápravě</li>
+          <li>A missing library is noticed within a second, not after five minutes</li>
+          <li>An unreachable Hugging Face gets its own message, not a generic timeout</li>
+          <li>Every red finding offers a command to fix it</li>
         </ul>
       </div>
-      <p class="note">Tohle je ta věc, která ti v konzoli chyběla: model se nestáhl
-      a nic to neřeklo. Preflight je odpověď na přesně tuhle situaci.</p>
+      <p class="note">This is the thing that was missing in the console: the model did not
+      download and nothing said so. Preflight is the answer to exactly that situation.</p>
     </div>
   </section>
 
@@ -285,21 +286,21 @@ pip freeze &gt; requirements.txt</pre>
       <span class="cost">~3 h</span>
     </div>
     <div>
-      <h2>Jádro přepisu, zatím bez okna</h2>
-      <p class="goal">Funkční pipeline ovládaná z příkazové řádky. Model drží v paměti,
-      hlásí postup přes callback, jde přerušit.</p>
+      <h2>The transcription core, still without a window</h2>
+      <p class="goal">A working pipeline driven from the command line. It keeps the model in
+      memory, reports progress through a callback, and can be interrupted.</p>
       <ol class="steps">
-        <li><code>validators.py</code> — existence, velikost, přípona, audio stopa přes PyAV</li>
-        <li><code>transcriber.py</code> — třída držící model, callback <code>(text, procenta)</code></li>
-        <li><code>downloader.py</code> — yt-dlp s progress hookem</li>
-        <li>Kontrola <code>threading.Event</code> u každého segmentu</li>
+        <li><code>validators.py</code> — existence, size, extension, audio stream via PyAV</li>
+        <li><code>transcriber.py</code> — a class holding the model, callback <code>(text, percent)</code></li>
+        <li><code>downloader.py</code> — yt-dlp with a progress hook</li>
+        <li>A <code>threading.Event</code> check at every segment</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Přepis 40minutové nahrávky proběhne z konzole</li>
-          <li>Druhý běh nestahuje model znovu</li>
-          <li>Neexistující soubor selže dřív, než se model načte</li>
+          <li>Transcribing a 40-minute recording runs from the console</li>
+          <li>A second run does not download the model again</li>
+          <li>A non-existent file fails before the model is loaded</li>
         </ul>
       </div>
     </div>
@@ -314,24 +315,24 @@ pip freeze &gt; requirements.txt</pre>
       <span class="cost">~4 h</span>
     </div>
     <div>
-      <h2>Okno a průběžné hlášení</h2>
-      <p class="goal">GUI je jen zobrazovač. Veškerá práce běží ve vlákně na pozadí
-      a komunikuje frontou — do widgetů se z pracovního vlákna nesahá.</p>
-<pre><span class="c"># tok zpráv</span>
+      <h2>The window and progress reporting</h2>
+      <p class="goal">The GUI is only a display. All the work runs on a background thread and
+      communicates through a queue — widgets are never touched from the worker thread.</p>
+<pre><span class="c"># message flow</span>
 worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
                status | progress | log | phase | done | error</pre>
       <ol class="steps">
-        <li>Stavový automat podle kapitoly 7 zadání</li>
-        <li>Progress z <code>segment.end / info.duration</code></li>
-        <li>Odhad zbývajícího času klouzavým průměrem přes 10 segmentů</li>
-        <li>Segmenty průběžně do logu — hned je vidět, zda sedí jazyk</li>
+        <li>The state machine per chapter 7 of the brief</li>
+        <li>Progress from <code>segment.end / info.duration</code></li>
+        <li>Remaining-time estimate as a moving average over 10 segments</li>
+        <li>Segments into the log as they arrive — you see straight away whether the language is right</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Okno nezamrzne ani při načítání modelu</li>
-          <li>Přerušit zastaví běh do pěti sekund</li>
-          <li>Žádná výjimka okno neshodí</li>
+          <li>The window does not freeze even while the model loads</li>
+          <li>Interrupt stops the run within five seconds</li>
+          <li>No exception takes the window down</li>
         </ul>
       </div>
     </div>
@@ -346,23 +347,23 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
       <span class="cost">~2 h</span>
     </div>
     <div>
-      <h2>Zabalit do EXE</h2>
-      <p class="goal">Přenositelná složka, kterou lze zkopírovat na stanici bez Pythonu.</p>
+      <h2>Package it into an EXE</h2>
+      <p class="goal">A portable folder that can be copied onto a machine without Python.</p>
       <ol class="steps">
         <li><code>build.ps1</code> — PyInstaller <code>--onedir --windowed</code></li>
-        <li><code>--collect-all</code> pro ctranslate2, av, faster_whisper, tokenizers, onnxruntime, yt_dlp</li>
-        <li>Otestovat na stanici, kde Python nikdy nebyl</li>
+        <li><code>--collect-all</code> for ctranslate2, av, faster_whisper, tokenizers, onnxruntime, yt_dlp</li>
+        <li>Test it on a machine that has never had Python on it</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>EXE nastartuje na čistém Windows</li>
-          <li>Preflight tam projde zeleně</li>
-          <li>Přepis proběhne celý</li>
+          <li>The EXE starts on a clean Windows</li>
+          <li>Preflight passes green there</li>
+          <li>A transcription runs through to the end</li>
         </ul>
       </div>
-      <p class="note">Balík vyjde přes 300 MB. To je cena za nativní knihovny CTranslate2
-      a nedá se s tím rozumně nic dělat.</p>
+      <p class="note">The bundle comes out at over 300 MB. That is the price of the native
+      CTranslate2 libraries and there is nothing sensible to be done about it.</p>
     </div>
   </section>
 
@@ -372,29 +373,29 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
       <span class="num">06</span>
       <span class="tc">13:30:00</span>
       <span class="tc"><span class="arrow">→</span> 18:00:00</span>
-      <span class="cost">~4,5 h</span>
+      <span class="cost">~4.5 h</span>
     </div>
     <div>
-      <span class="blocked open">Návrh čeká na fázi 00</span>
-      <h2>Z přepisu udělat znalost</h2>
-      <p class="goal">Surový přepis je upovídaný materiál. Tahle fáze z něj dělá něco,
-      k čemu se dá vracet — strukturovaný výtah přes LLM.</p>
+      <span class="blocked open">The design waits on phase 00</span>
+      <h2>Turn the transcript into knowledge</h2>
+      <p class="goal">A raw transcript is verbose material. This phase turns it into something
+      you can come back to — a structured extract via an LLM.</p>
       <ol class="steps">
-        <li>Rozdělit přepis na bloky po ~8 tisících znacích s překryvem</li>
-        <li>Extrakce přes Claude Haiku: témata, tvrzení, jména, doporučení</li>
-        <li>Výstup jako JSON se schématem, ne volný text</li>
-        <li>Uložit do D1 vedle původního přepisu a časových značek</li>
+        <li>Split the transcript into blocks of ~8 thousand characters with overlap</li>
+        <li>Extraction via Claude Haiku: topics, claims, names, recommendations</li>
+        <li>Output as JSON against a schema, not free text</li>
+        <li>Store it in D1 alongside the original transcript and the timestamps</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Z rozhovoru vypadne strukturovaný výtah</li>
-          <li>Každé tvrzení nese časovou značku pro dohledání</li>
-          <li>Výsledek jde porovnat s tvými vlastními poznámkami z fáze 00</li>
+          <li>A structured extract comes out of the interview</li>
+          <li>Every claim carries a timestamp so it can be traced</li>
+          <li>The result can be compared with your own notes from phase 00</li>
         </ul>
       </div>
-      <p class="note">Co přesně se extrahuje, se rozhodne až podle obsahu rozhovoru.
-      Struktura výše je odhad, ne finální schéma.</p>
+      <p class="note">Exactly what gets extracted will be decided from the content of the
+      interview. The structure above is an estimate, not a final schema.</p>
     </div>
   </section>
 
@@ -404,29 +405,30 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
       <span class="num">07</span>
       <span class="tc">18:00:00</span>
       <span class="tc"><span class="arrow">→</span> ??:??:??</span>
-      <span class="cost">otevřený konec</span>
+      <span class="cost">open-ended</span>
     </div>
     <div>
-      <span class="blocked open">Návrh čeká na fázi 00</span>
-      <h2>Agent nad knihovnou přepisů</h2>
-      <p class="goal">Teprve tady dává smysl mluvit o architektuře agenta —
-      až bude z čeho stavět a bude jasné, jaké principy z rozhovoru přebíráš.</p>
+      <span class="blocked open">The design waits on phase 00</span>
+      <h2>An agent over a library of transcripts</h2>
+      <p class="goal">Only here does it make sense to talk about agent architecture — once
+      there is something to build from and it is clear which principles from the interview you
+      are adopting.</p>
       <ol class="steps">
-        <li>RSS watcher: nové díly se přepisují samy</li>
-        <li>Vyhledávání napříč knihovnou přepisů</li>
-        <li>Rozhodnutí o orchestraci — co dělá agent sám, kde se ptá</li>
-        <li>Zpětná vazba: co se osvědčilo, zpět do promptů</li>
+        <li>An RSS watcher: new episodes transcribe themselves</li>
+        <li>Search across the library of transcripts</li>
+        <li>A decision about orchestration — what the agent does alone, where it asks</li>
+        <li>Feedback: what worked, fed back into the prompts</li>
       </ol>
       <div class="gate">
-        <h3>Brána</h3>
+        <h3>Gate</h3>
         <ul>
-          <li>Nový díl se objeví v knihovně bez tvého zásahu</li>
-          <li>Dotaz napříč přepisy vrátí odpověď s odkazem na zdroj a čas</li>
+          <li>A new episode appears in the library without your intervention</li>
+          <li>A query across the transcripts returns an answer with a source and a timestamp</li>
         </ul>
       </div>
-      <p class="note">Tuhle fázi zatím nerozepisuju dál. Rozhovor jsem neslyšel,
-      takže bych vymýšlel architekturu na základě dohadů o tom, co v něm zaznělo.
-      Až pošleš přepis, přepíšeme fáze 06 a 07 podle skutečného obsahu.</p>
+      <p class="note">I am not writing this phase out any further yet. I have not heard the
+      interview, so I would be inventing an architecture on guesses about what was said in it.
+      Once you send the transcript, we rewrite phases 06 and 07 against the real content.</p>
     </div>
   </section>
 
@@ -434,14 +436,14 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
 
 <footer>
   <div class="wrap">
-    Podklad k zadání „Přepisovač audia v1.0" · odhady času počítají s tím,<br>
-    že píšeš s asistencí, ne od nuly · fáze 06 a 07 jsou prozatímní
+    Companion to the brief “Audio transcriber v1.0” · the time estimates assume<br>
+    you are writing with assistance, not from scratch · phases 06 and 07 are provisional
   </div>
 </footer>
 
 <script>
 (function(){
-  // odhaleni fazi pri scrollu
+  // reveal the phases on scroll
   var cues = document.querySelectorAll('.cue');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(es){
@@ -452,7 +454,7 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
     cues.forEach(function(c){ c.classList.add('in'); });
   }
 
-  // odskrtavani podminek (jen v pameti, po obnoveni stranky se vynuluje)
+  // ticking off the conditions (in memory only; reloading the page resets it)
   var items = document.querySelectorAll('.gate li');
   var bar = document.getElementById('bar');
   var count = document.getElementById('count');
@@ -474,5 +476,6 @@ worker ──put──&gt; queue.Queue ──after(100)──&gt; GUI
   refresh();
 })();
 </script>
+
 </body>
 </html>

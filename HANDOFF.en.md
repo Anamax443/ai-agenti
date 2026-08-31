@@ -29,8 +29,10 @@ Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authorit
 - **The repository is now bilingual.** The convention is `<name>.en.md` / `<name>.en.html`;
   where the two disagree, the Czech version wins. The core is translated: the principles, the
   build specification, the design sheet, the sources, the job-watch audit, the agent
-  skeleton, README, AGENTS, CONTRIBUTING, ZALOZENI-REPO, STATUS, and the portfolios in
-  `04-firemni/`.
+  skeleton, README, AGENTS, CONTRIBUTING, ZALOZENI-REPO, STATUS, the diary, both portfolios
+  in `04-firemni/`, all three gwalarn documents, the transcriber brief and both remaining
+  pages (`postup-stavby`, `navrhovy-list-faktury`).
+  **The pair check is green: 28 documents in both languages, 1 recorded exception.**
 - **The new feature carries its own check:** [`kontrola/dvojice.py`](kontrola/dvojice.py)
   verifies that every Czech document has an English twin and vice versa. Exceptions are
   written by hand into `kontrola/bez-prekladu.txt` — a missing translation should be visible,
@@ -38,9 +40,6 @@ Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authorit
   *stale* exception, so the list tidies itself once a file disappears.
 - **In progress:** —
 - **Remaining:**
-  - Finish translating `03-projekty/` (gwalarn, the transcriber brief) and
-    `02-pripady/navrhovy-list-faktury.html`, `05-html/postup-stavby.html`. The pair check
-    lists them by name.
   - **Deleting `03-projekty/prepisovac/kod/` is still blocked on permissions.** The decision
     stands (see the entry below); the command is `git rm -r 03-projekty/prepisovac/kod`.
   - Unchanged: the UX chapter from Albada, Vorel and Lanham, the glossary against the public

@@ -24,7 +24,9 @@ Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného p
 - **Repozitář je nově dvojjazyčný.** Konvence `<jméno>.en.md` / `<jméno>.en.html`,
   při rozporu platí česká verze. Přeloženo jádro: principy, build předpis, návrhový list,
   zdroje, audit job-watch, kostra agenta, README, AGENTS, CONTRIBUTING, ZALOZENI-REPO,
-  STATUS, portfolia v `04-firemni/`.
+  STATUS, deník, obě portfolia v `04-firemni/`, všechny tři dokumenty gwalarnu, zadání
+  přepisovače a obě zbývající stránky (`postup-stavby`, `navrhovy-list-faktury`).
+  **Kontrola dvojic je zelená: 28 dokumentů v obou jazycích, 1 vedená výjimka.**
 - **Nová funkce nese vlastní kontrolu:** [`kontrola/dvojice.py`](kontrola/dvojice.py) ověří,
   že ke každému českému dokumentu existuje anglické dvojče a naopak. Výjimky se zapisují
   ručně do `kontrola/bez-prekladu.txt` — chybějící překlad má být vidět, ne tiše zmizet.
@@ -32,9 +34,6 @@ Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného p
   takže se seznam sám uklidí, až soubor zmizí.
 - **Rozpracované:** —
 - **Zbývá:**
-  - Dopřeložit `03-projekty/` (gwalarn, zadání přepisovače) a
-    `02-pripady/navrhovy-list-faktury.html`, `05-html/postup-stavby.html`.
-    Kontrola dvojic je vypisuje jmenovitě.
   - **Smazání `03-projekty/prepisovac/kod/` pořád visí na oprávnění.** Rozhodnutí platí
     (viz záznam níž), příkaz je `git rm -r 03-projekty/prepisovac/kod`.
   - Beze změny: UX kapitola z Albady, Vorel a Lanham, slovník k veřejným předpisům,
