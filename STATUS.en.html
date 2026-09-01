@@ -51,7 +51,14 @@
     <tr><th>What it is</th><td>A methodological base for building AI agents: principles, a design sheet, a phased build specification and a repository skeleton. Not a framework and not a library — it is <b>the brief an agent gets built against</b>.</td></tr>
     <tr><th>The core in one sentence</th><td><b>AI recognises, code executes.</b> The model gets three kinds of task only: intent recognition, structure extraction, text synthesis. Everything else is deterministic code.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · created 30 Aug 2026</td></tr>
-    <tr><th>State</th><td><span class="pill live">usable</span> The specification has been through its first live application on a running agent (JobWatch) and found four real defects — three fixed as of 1 Sep 2026, the fourth half. A second round found four more, this time in orchestration.</td></tr>
+    <tr><th>State</th><td><span class="pill live">usable</span> <span class="pill prep">unverified</span>
+      <b>Two states on purpose.</b> <i>Usable</i> — the specification has been through a live application on a running agent and found real defects.
+      <i>Unverified</i> — one case (N = 1), measured by the author of the methodology, on an agent that writes into no other system.
+      Repeatability between two measurers has never been measured.</td></tr>
+    <tr><th>Release</th><td><a href="VYDANI.en.md"><code>v0.9</code></a> · 1 Sep 2026 · 49 conditions across nine gates.
+      <b>Known error of the etalon: a catch rate of 4 out of 8</b> on the single documented case — it caught the kill switch, the silent failure,
+      the foreign text and the unmeasurable prompt; it missed all four orchestration defects.
+      Why not 1.0, and what would unlock it, is in the <a href="VYDANI.en.md">release note</a>.</td></tr>
     <tr><th>Checks</th><td>CI on every push: secret scan (gitleaks), link check over <code>*.md</code> (lychee) and the language-pair check (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 

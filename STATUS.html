@@ -50,7 +50,14 @@
     <tr><th>Co to je</th><td>Metodická báze pro stavbu AI agentů: principy, návrhový list, fázový build předpis a kostra repozitáře. Není to framework ani knihovna — je to <b>zadání, podle kterého se agent staví</b>.</td></tr>
     <tr><th>Jádro v jedné větě</th><td><b>AI rozpoznává, kód vykonává.</b> Model dostává jen tři typy úloh: rozpoznání záměru, extrakci struktury, syntézu textu. Všechno ostatní je deterministický kód.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · založeno 30. 8. 2026</td></tr>
-    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch), našel čtyři reálné vady — tři jsou k 1. 9. 2026 opravené, čtvrtá z poloviny. Druhé kolo našlo další čtyři, tentokrát v orchestraci.</td></tr>
+    <tr><th>Stav</th><td><span class="pill live">použitelné</span> <span class="pill prep">neověřené</span>
+      <b>Dvojí stav schválně.</b> <i>Použitelné</i> — předpis prošel ostrým nasazením na běžícím agentovi a našel reálné vady.
+      <i>Neověřené</i> — jeden případ (N = 1), měřený autorem metodiky, na agentovi, který nezapisuje do cizích systémů.
+      Opakovatelnost mezi dvěma měřiči nebyla nikdy změřena.</td></tr>
+    <tr><th>Vydání</th><td><a href="VYDANI.md"><code>v0.9</code></a> · 1. 9. 2026 · 49 podmínek v devíti branách.
+      <b>Známá chyba etalonu: záchytnost 4 z 8</b> na jediném doloženém případu — chytil vypínač, tiché selhání,
+      cizí text a neměřitelný prompt; neodhalil ani jednu ze čtyř vad v orchestraci.
+      Proč ne 1.0 a co by ji odemklo, je v <a href="VYDANI.md">poznámce k vydání</a>.</td></tr>
     <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks), kontrola odkazů v <code>*.md</code> (lychee) a kontrola jazykových dvojic (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 
@@ -65,18 +72,20 @@
     <tr><th><code>00-zdroje/</code></th><td>Odkud metodika pochází — citace a mapa časů/kapitol. Samotné zdroje v repu nejsou.</td></tr>
     <tr><th><code>AGENTS.md</code></th><td>Pravidla pro AI asistenty pracující v repu: kód sem nepatří, odkaž nekopíruj, přepisy cizích zdrojů ven, deník a stavový list drž v souladu.</td></tr>
     <tr><th><code>05-html/</code></th><td><b>Vizuální výstupy</b> — <a href="05-html/manazerske-shrnuti.html">manažerské shrnutí</a> (A4 na výšku), <a href="05-html/mapa-mysleni.html">myšlenková mapa</a>, <a href="05-html/tok-informaci.html">tok informací</a>, <a href="05-html/vyvojovy-diagram.html">vývojový diagram F0–F8</a>. Každý i anglicky.</td></tr>
-    <tr><th><code>kontrola/</code></th><td>Kontrola jazykových dvojic. Co se vědomě nepřekládá, je vypsané v <code>bez-prekladu.txt</code> — chybějící překlad má být vidět.</td></tr>
+    <tr><th><code>sablony/MERENI.md</code></th><td><b>Měřicí protokol.</b> Audit volným textem je neporovnatelný — dva měřiči napíšou dva různé dokumenty. Formulář: u každé podmínky výsledek <code>ano/ne/nelze</code>, stupeň <code>U0</code>–<code>U4</code> a důkaz.</td></tr>
+    <tr><th><code>VYDANI.md</code></th><td>Poznámka k vydání <code>v0.9</code>: co je nové, <b>známá chyba</b>, rozsah platnosti, co je jen tvrzené a co vydání netvrdí.</td></tr>
+    <tr><th><code>kontrola/</code></th><td>Kontrola jazykových dvojic a <b>inventář bran</b> (<code>brany.py</code>) — počet podmínek se počítá z předpisu, nepíše se ručně. Co se vědomě nepřekládá, je v <code>bez-prekladu.txt</code>.</td></tr>
   </table>
 
   <h2>Build předpis: F0–F8</h2>
   <p><b>Brána</b> = seznam podmínek na konci fáze. Dokud neplatí všechny, další fáze se nezačíná.</p>
   <table>
-    <tr><th>F0 · návrh na papíře</th><td>Uzavřený seznam scénářů, dělba model/kód, měřitelné „hotovo".</td></tr>
+    <tr><th>F0 · návrh na papíře</th><td>Uzavřený seznam scénářů, dělba model/kód, měřitelné „hotovo". Přísnost <b>N/Z/V</b> odvozená z odpovědí, ne odhadnutá.</td></tr>
     <tr><th>F1 · ověření jádra</th><td>Nejrizikovější krok změřen <b>na reálném vzorku</b> — přesnost, cena, čas jako čísla. Krátký a syntetický vzorek systematicky lže ve tvůj prospěch.</td></tr>
     <tr><th>F2 · kostra a kontrakty</th><td>Moduly se spustí samostatně, testovací prostředí fyzicky nemá odesílací kanály.</td></tr>
-    <tr><th>F3 · deterministická páteř</th><td>Proces projde s ručním vstupem, ještě bez modelu. Každý konec je vidět: selhalo a víš o tom, dopadlo dobře, nebo je zapsané, že se neví — a řeší se to.</td></tr>
+    <tr><th>F3 · deterministická páteř</th><td>Proces projde s ručním vstupem, ještě bez modelu. Každý konec je vidět: selhalo a víš o tom, dopadlo dobře, nebo je zapsané, že se neví — a řeší se to. <b>Nevratná akce leží na přechodu, ne uvnitř stavu</b>, a konce se vyvolávají acceptance testem.</td></tr>
     <tr><th>F4 · model a evaly</th><td>Model dělá jen svoje tři úlohy. Evaly v CI, metriky tool recall/precision, parameter accuracy. Nepřátelský vstup neposune agenta mimo scénář.</td></tr>
-    <tr><th>F5 · brány a limity</th><td>Režim podle vratnosti chyby, ne podle důvěry. Identita z kanálu. Nejmenší možná moc nástrojů. Autonomie roste v čase a jde odebrat.</td></tr>
+    <tr><th>F5 · brány a limity</th><td>Režim podle vratnosti chyby, ne podle důvěry. Identita z kanálu. Odchozí komunikace pod <b>vlastním, zneplatnitelným údajem agenta</b>; u každého kanálu je uvedený vlastník dat. Nejmenší možná moc nástrojů.</td></tr>
     <tr><th>F6 · selhání a vypínač</th><td>Hlášení jde <b>člověku</b>, ne jen do logu. Vypínač = jeden úkon, vyzkoušený.</td></tr>
     <tr><th>F7 · nasazení</th><td>Vidět běžící verzi, znát náklady, první týden kontrolovat ručně. Chyba vs. rozptyl: 3–5 běhů, práh 80 %.</td></tr>
     <tr><th>F8 · provoz a růst</th><td>Každá chyba i každý povedený průchod do evalů. Sledovat posun rozdělení, ne jen chybovost.</td></tr>

@@ -5,6 +5,38 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (11) — release `v0.9`: a fixed point with its own error written down
+
+- **Why not "final documentation".** In this state there is no standing behind a document by
+  that name: N = 1, a catch rate of 4 out of 8, repeatability unmeasured, and all seven of
+  today's changes sit at level `U1` — in the text, nothing provoked. A document declaring itself
+  final would be exactly the defect we spent the day closing: **a tick that outlived the
+  finding**, one floor up.
+- **A release instead.** [`VYDANI.en.md`](VYDANI.en.md) + CS. The difference is not in care but
+  in what the document claims about itself. It contains:
+  - **why not 1.0** — repeatability unknown, evidence base N = 1,
+  - **the known error: a catch rate of 4 out of 8** on the single documented case,
+  - **the scope of validity** — narrowed for the first time. "Any agent in any domain" is
+    replaced by a list of classes where we **do not know** whether it holds (planning and
+    multi-agent systems, agents writing into other systems, agents operated by an outsider,
+    regulated domains). This partially addresses finding `A2`.
+  - **what is merely claimed** — every change today at `U1`, with a named list of what is missing,
+  - **what the release does not claim** — that the methodology is finished, anything about the
+    law, that prompt injection is closed, that this assessment is independent.
+- **`STATUS` now carries two states** (the answer to our own question `Q2`, variant C):
+  <b>usable</b> × <b>unverified</b>, with both explained and with a *Release* row including the
+  known error. *What is in the repo* gained `MERENI.md`, `VYDANI.md` and the gate inventory.
+- **The management summary has stopped claiming the methodology is finished.** The figure
+  "3 defects" is corrected to **8**, and a paragraph was added noting that of those eight the
+  specification found four itself — the second four were revealed only by an independent check.
+  The next step there is no longer "build another agent" but **run the methodology on an agent
+  of a different class and let it fail there**.
+- **README** carries the release, the state and the known error in its first paragraph.
+- **Verified:** `dvojice.py` (31 pairs) and `brany.py` (49 conditions) green. Tagged `v0.9`.
+- **What makes a 1.0** (in this order): a second audit on an agent of a different class · a
+  repeatability test with two measurers · a third case led by an outsider · the catch rate
+  measured again on a case the rules did not come from.
+
 ## 2026-09-01 (10) — the chapter *Layers of checks — what each one cannot see*
 
 - **Why:** "build a wide layer of checking tests" is the right intent and **a wide layer has

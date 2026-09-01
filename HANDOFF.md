@@ -2,6 +2,36 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (11) — vydání `v0.9`: pevný bod se zapsanou vlastní chybou
+
+- **Proč ne „finální dokumentace".** Za dokument, který se tak jmenuje, se v tomhle stavu
+  postavit nedá: N = 1, záchytnost 4 z 8, opakovatelnost neměřená, a všech sedm dnešních změn
+  je na stupni `U1` — v textu, nic vyvolaného. Dokument prohlašující se za finální by byl přesně
+  ta vada, kterou celý den zavíráme: **fajfka, co přežila nález**, jen o patro výš.
+- **Místo toho vydání.** [`VYDANI.md`](VYDANI.md) + EN. Rozdíl není v pečlivosti, ale v tom, co
+  dokument o sobě tvrdí. Obsahuje:
+  - **proč ne 1.0** — opakovatelnost neznámá, důkazní základna N = 1,
+  - **známou chybu: záchytnost 4 z 8** na jediném doloženém případu,
+  - **rozsah platnosti** — poprvé zúžený. „Libovolný agent pro libovolnou doménu" nahrazeno
+    seznamem tříd, u kterých **nevíme**, jestli to platí (plánovací a multiagentní systémy,
+    agenti zapisující do cizích systémů, agenti provozovaní cizím člověkem, regulované domény).
+    Tím je částečně zapracován nález `A2`.
+  - **co je jen tvrzené** — všechny dnešní změny na `U1`, se jmenovitým seznamem toho, co chybí,
+  - **co vydání netvrdí** — hotovost metodiky, cokoli o právu, uzavření prompt injection,
+    nezávislost zdejšího hodnocení.
+- **`STATUS` má dvojí stav** (odpověď na vlastní otázku `Q2`, varianta C): <b>použitelné</b> ×
+  <b>neověřené</b>, s vysvětlením obojího a s řádkem *Vydání* včetně známé chyby. Do *Co v repu
+  je* přibyly `MERENI.md`, `VYDANI.md` a inventář bran.
+- **Manažerské shrnutí přestalo tvrdit, že je metodika hotová.** Číslo „3 vady" opraveno na
+  **8**, a přibyl odstavec, že z těch osmi našel předpis sám čtyři — druhou čtveřici odhalila až
+  nezávislá kontrola. Další krok tam nově není „postavit dalšího agenta", ale **pustit metodiku
+  na agenta jiné třídy a nechat ji tam selhat**.
+- **README** nese vydání, stav a známou chybu hned v prvním odstavci.
+- **Ověřeno:** `dvojice.py` (31 dvojic) i `brany.py` (49 podmínek) zelené. Označeno tagem `v0.9`.
+- **Co udělá 1.0** (v tomhle pořadí): druhý audit na agentovi jiné třídy · test opakovatelnosti
+  dvěma měřiči · třetí případ vedený cizím člověkem · záchytnost změřená znovu na případu, ze
+  kterého pravidla nevznikla.
+
 ## 2026-09-01 (10) — kapitola *Kontrolní vrstvy — co která nevidí*
 
 - **Proč:** „stavět širokou vrstvu kontrolních testů" je správný záměr a **širokou vrstvu už
