@@ -5,6 +5,29 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 — JobWatch audit aftermath: all findings closed, and one finding back into the specification
+- **Done:** an **Aftermath** section was added to
+  [`02-pripady/AUDIT-job-watch.en.md`](02-pripady/AUDIT-job-watch.en.md). Within two days all four
+  findings had fallen, in the very order the audit prescribed (crash reporting → kill switch →
+  wrapping foreign text → evals and prompt versioning). **F1 got its number:** scoring accuracy
+  measured on 23 real listings inside the deployed version — precision 100 %, recall and effective
+  recall 100 %, coverage 100 %.
+- **A finding FOR THE SPECIFICATION (not yet incorporated, a proposal):** gate F4 requires "evals run
+  in CI". For an agent whose default backend is a **binding available only at runtime** (Cloudflare
+  Workers AI) that is unachievable — CI would measure a different model than the deciding one. The
+  JobWatch set paid for this twice: first it called the paid model directly, then it failed to pass
+  the backend choice, so it measured the free rung even with the paid model selected. **Proposal:**
+  in F4, distinguish a backend reachable from CI (current wording) from one that exists only at
+  runtime ("on the deployed version, manually, with a record, and the run notes which rung answered").
+  Without that, the gate forces you either to lie or to measure the wrong thing.
+- **A second insight:** *a green set stops discriminating.* After the fixes JobWatch is 23/23, which
+  turns the instrument into an ornament. F8 ("evals grow") is therefore not administration but the
+  condition for the measurement to keep meaning anything.
+- **Updated:** `STATUS.html` + `.en.html` (three defects → four, all fixed, F1 number added),
+  `05-html/manazerske-shrnuti.html` + `.en.html` (an aftermath paragraph).
+- **Remaining:** fold the proposed F4 amendment into `sablony/BUILD-PREDPIS.md` — for now it is only
+  described in the audit; the specification itself is unchanged.
+
 ## 2026-08-31 — visual outputs, bilingualism, the pair check
 
 - **Done — four new pages in `05-html/`,** in Czech and English, in the same visual language

@@ -121,3 +121,61 @@ A flowchart of the run as it is today and after the fix lives in the project's o
 repository:
 [`BEH-AGENTA.html`](https://github.com/Anamax443/job-watch/blob/main/BEH-AGENTA.html).
 The detailed record of the finding is in the `HANDOFF.md` of the same repository.
+
+---
+
+# Aftermath — 1 Sep 2026: all four findings closed
+
+The audit was written on 30 Aug. Within two days every finding had fallen, and **in the order the
+audit itself prescribed** (crash reporting → a real kill switch → wrapping foreign text → evals and
+prompt versioning). This record exists because only the aftermath shows whether the audit was worth
+anything.
+
+| Finding | Phase | State |
+|---|---|---|
+| The kill switch did not kill | F6 | ✅ a flag in `meta`, read before every batch (31 Aug) |
+| A crashed run was silent | F6 | ✅ from `catch` to Telegram; an external kill is caught by a watchdog for unfinished runs |
+| Foreign text unwrapped | F4 | ✅ an `<inzerat>` tag plus a sentence in the system prompt stating there are no instructions inside |
+| Prompt change unmeasurable | F4 | ✅ `PROMPT_VERSION` in every run, a CI gate, a set of 23 cases |
+
+**F1 got its number.** The audit said "scoring accuracy has no number; the bugs were found only in
+production". On 1 Sep it was measured on 23 real ads inside the deployed version: **precision 100 %,
+recall and effective recall 100 %, coverage 100 %**.
+
+## Three things that only the aftermath revealed
+
+**1. An instrument can point at the wrong thing — and that is worse than none.** The first version of
+the evaluation set called the paid model directly, while production scored via the free backend. The
+set was therefore honestly measuring a rung of the ladder that did not decide in production. And then
+again: even after that fix, the set did not pass the backend choice to `scoreJob`, so it measured the
+free rung even when the paid model was selected in Settings. **The specification needs the question
+"does your eval measure the rung that decides?"**, not merely "do you have an eval?".
+
+**2. A headline number hides whose achievement it is.** The free model gave zero to three real leads.
+Two of them were solved by the paid model; the third was not — it fell only when the deterministic
+region cap was fixed. Watching only the set result, it would have looked like a single achievement of
+the model.
+
+**3. A green set stops discriminating.** After the fixes the set is 23/23. That turns the instrument
+into an ornament: while it was failing, it was saying something new. **F8 ("evals grow") is therefore
+not administration but the condition for the measurement to keep meaning anything.**
+
+## A finding FOR THE SPECIFICATION, not for the project
+
+Gate F4 requires **"evals run in CI and are above the threshold"**. For JobWatch that **cannot be
+met**: the default backend is the `env.AI` binding, which does not exist outside the Worker. CI would
+measure a different model than the one that decides — precisely the defect the gate is meant to remove.
+
+The honest variant reads **"evals on the deployed version, triggered manually, with a record"**, and
+that is how the project does it: a button on `/tests`, the same `scoreJob`, the same prompt, the same
+backend ladder, and the result records **which rung answered**.
+
+The other half of the same gate — *"a prompt change without running the evals does not pass"* — is
+only half met in the project: CI guards the version bump, not that the evals ran. On 1 Sep that was
+confirmed live: the prompt changed, the gate happily let it through, and the model part was measured
+two messages later, by hand.
+
+**Proposed amendment to the specification:** in phase F4, distinguish two cases — a backend reachable
+from CI (the current wording holds) and a backend that exists only at runtime (then "on the deployed
+version, manually, with a record, and the run notes which rung answered"). Without that, the gate
+forces you either to lie or to measure the wrong thing.

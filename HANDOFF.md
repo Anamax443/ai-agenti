@@ -2,6 +2,27 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 — dohra auditu JobWatche: všechny nálezy uzavřené, a jeden nález zpátky do předpisu
+- **Hotové:** do [`02-pripady/AUDIT-job-watch.md`](02-pripady/AUDIT-job-watch.md) přibyla sekce
+  **Dohra**. Za dva dny padly všechny čtyři nálezy, a to v pořadí, které audit sám předepsal
+  (hlášení o pádu → vypínač → obal cizího textu → evaly a verze promptu). **F1 dostalo číslo:**
+  přesnost skórování změřena na 23 reálných inzerátech uvnitř nasazené verze — precision 100 %,
+  recall i efektivní recall 100 %, coverage 100 %.
+- **Nález DO PŘEDPISU (nezapracovaný, návrh):** brána F4 žádá „evaly běží v CI". U agenta, jehož
+  výchozí backend je **binding dostupný jen za běhu** (Cloudflare Workers AI), je to nesplnitelné
+  — v CI by se měřil jiný model než ten, který rozhoduje. Sada v JobWatchi na to dvakrát doplatila:
+  poprvé volala placený model napřímo, podruhé nepředávala volbu backendu, takže měřila free příčku
+  i při zvoleném placeném modelu. **Návrh:** u F4 rozlišit backend dostupný z CI (dnešní znění)
+  a backend existující jen za běhu („na nasazené verzi, ručně, s protokolem, a v běhu je zapsané,
+  která příčka odpověděla"). Bez toho brána nutí buď lhát, nebo měřit vedle.
+- **Druhý poznatek:** *zelená sada přestává rozlišovat.* Po opravách je JobWatch 23/23, čímž se
+  z měřicího přístroje stává ozdoba. F8 („evaly rostou") tedy není administrativa, ale podmínka,
+  aby měření dál něco znamenalo.
+- **Aktualizováno:** `STATUS.html` + `.en.html` (tři vady → čtyři, všechny opravené, přidané číslo
+  za F1), `05-html/manazerske-shrnuti.html` + `.en.html` (odstavec o dohře).
+- **Zbývá:** zapracovat návrh úpravy F4 do `sablony/BUILD-PREDPIS.md` — zatím je jen popsaný
+  v auditu, samotný předpis se nemění.
+
 ## 2026-08-31 — vizuální výstupy, dvojjazyčnost, kontrola dvojic
 
 - **Hotové — čtyři nové stránky v `05-html/`,** česky i anglicky, ve stejném vizuálním

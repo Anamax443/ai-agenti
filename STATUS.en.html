@@ -89,14 +89,22 @@
 
   <h2>First live application: JobWatch</h2>
   <p>The specification was applied to <a href="https://github.com/Anamax443/job-watch">JobWatch</a> — a daily agent
-  running live on Cloudflare. The result is a record that the specification works: it found <b>three defects
-  that the tests had not</b>, because it asked different questions than tests do.</p>
+  running live on Cloudflare. The result is a record that the specification works: it found <b>four defects
+  that the tests had not</b>, because it asked different questions than tests do. <b>All four were fixed and
+  deployed by 1 Sep 2026</b>, in the very order the audit prescribed.</p>
   <table>
-    <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill prep">F6</span></td></tr>
-    <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill prep">F6</span></td></tr>
-    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. <span class="pill prep">F4</span></td></tr>
+    <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill live">fixed 31 Aug</span></td></tr>
+    <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill live">fixed 31 Aug</span></td></tr>
+    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. <span class="pill live">fixed 1 Sep</span></td></tr>
+    <tr><th>Unmeasurable prompt</th><td>Prompts without a version and without an evaluation set — a change had nothing to be measured against. <span class="pill live">fixed 1 Sep</span></td></tr>
   </table>
-  <p>The full analysis, including what held up: <a href="02-pripady/AUDIT-job-watch.en.md"><code>02-pripady/AUDIT-job-watch.en.md</code></a>.</p>
+  <p><b>And F1 got its number.</b> The audit said scoring accuracy had none. On 1 Sep it was measured on 23 real
+  listings inside the deployed version: precision 100 %, recall and effective recall 100 %, coverage 100 %.
+  Along the way it turned out that <b>an instrument can point at the wrong thing</b> — twice the set measured a
+  different rung of the backend ladder than the one deciding in production. That is a finding <b>for the
+  specification</b>: gate F4 requires “evals run in CI”, but for an agent whose default backend exists only at
+  runtime that is unachievable.</p>
+  <p>The full analysis, including the aftermath and a proposed amendment: <a href="02-pripady/AUDIT-job-watch.en.md"><code>02-pripady/AUDIT-job-watch.en.md</code></a>.</p>
 
   <h2>Where the methodology comes from</h2>
   <table>

@@ -50,7 +50,7 @@
     <tr><th>Co to je</th><td>Metodická báze pro stavbu AI agentů: principy, návrhový list, fázový build předpis a kostra repozitáře. Není to framework ani knihovna — je to <b>zadání, podle kterého se agent staví</b>.</td></tr>
     <tr><th>Jádro v jedné větě</th><td><b>AI rozpoznává, kód vykonává.</b> Model dostává jen tři typy úloh: rozpoznání záměru, extrakci struktury, syntézu textu. Všechno ostatní je deterministický kód.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · založeno 30. 8. 2026</td></tr>
-    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch) a našel tři reálné vady.</td></tr>
+    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch), našel čtyři reálné vady — a všechny jsou k 1. 9. 2026 opravené.</td></tr>
     <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks), kontrola odkazů v <code>*.md</code> (lychee) a kontrola jazykových dvojic (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 
@@ -88,14 +88,21 @@
 
   <h2>První ostré použití: JobWatch</h2>
   <p>Předpis se pustil na <a href="https://github.com/Anamax443/job-watch">JobWatch</a> — denního agenta,
-  který běží naostro na Cloudflare. Výsledek je záznam o tom, že předpis funguje: našel <b>tři vady,
-  které roky testů nenašly</b>, protože se ptal na jiné otázky než testy.</p>
+  který běží naostro na Cloudflare. Výsledek je záznam o tom, že předpis funguje: našel <b>čtyři vady,
+  které roky testů nenašly</b>, protože se ptal na jiné otázky než testy. <b>Všechny čtyři jsou
+  k 1. 9. 2026 opravené a nasazené</b>, a to v pořadí, které audit sám předepsal.</p>
   <table>
-    <tr><th>Vypínač</th><td>Tlačítko Stop uzavřelo záznam běhu, ale pipeline žádný stop příznak nečetla a běžela dál. <span class="pill prep">F6</span></td></tr>
-    <tr><th>Tichý pád</th><td>Výjimka skončila v logu; notifikace se posílaly jen na nálezy, takže „nic nenašel" a „spadlo to" vypadaly zvenčí stejně. <span class="pill prep">F6</span></td></tr>
-    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. <span class="pill prep">F4</span></td></tr>
+    <tr><th>Vypínač</th><td>Tlačítko Stop uzavřelo záznam běhu, ale pipeline žádný stop příznak nečetla a běžela dál. <span class="pill live">opraveno 31. 8.</span></td></tr>
+    <tr><th>Tichý pád</th><td>Výjimka skončila v logu; notifikace se posílaly jen na nálezy, takže „nic nenašel" a „spadlo to" vypadaly zvenčí stejně. <span class="pill live">opraveno 31. 8.</span></td></tr>
+    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. <span class="pill live">opraveno 1. 9.</span></td></tr>
+    <tr><th>Neměřitelný prompt</th><td>Prompty bez verze a bez evaluační sady — změnu nebylo proti čemu měřit. <span class="pill live">opraveno 1. 9.</span></td></tr>
   </table>
-  <p>Celý rozbor včetně toho, co naopak obstálo: <a href="02-pripady/AUDIT-job-watch.md"><code>02-pripady/AUDIT-job-watch.md</code></a>.</p>
+  <p><b>A F1 dostalo číslo.</b> Audit psal, že přesnost skórování číslo nemá. 1. 9. změřeno na 23 reálných
+  inzerátech uvnitř nasazené verze: precision 100 %, recall i efektivní recall 100 %, coverage 100 %.
+  Cestou se ukázalo, že <b>měřicí přístroj může mířit vedle</b> — sada dvakrát měřila jinou příčku
+  žebříku backendů, než která v produkci rozhodovala. To je nález <b>do předpisu</b>: brána F4 žádá
+  „evaly běží v CI“, jenže u agenta, jehož výchozí backend existuje jen za běhu, je to nesplnitelné.</p>
+  <p>Celý rozbor včetně dohry a návrhu úpravy předpisu: <a href="02-pripady/AUDIT-job-watch.md"><code>02-pripady/AUDIT-job-watch.md</code></a>.</p>
 
   <h2>Odkud metodika pochází</h2>
   <table>

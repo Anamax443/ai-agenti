@@ -108,3 +108,57 @@ textu → evaly a verze promptu.
 Vývojový diagram běhu dnes a po opravě je v repozitáři projektu:
 [`BEH-AGENTA.html`](https://github.com/Anamax443/job-watch/blob/main/BEH-AGENTA.html).
 Podrobný záznam nálezu v `HANDOFF.md` téhož repozitáře.
+
+---
+
+# Dohra — 1. 9. 2026: všechny čtyři nálezy uzavřené
+
+Audit vznikl 30. 8. Za dva dny padly všechny nálezy, a to **v pořadí, které audit sám
+předepsal** (hlášení o pádu → skutečný vypínač → obal cizího textu → evaly a verze promptu).
+Tenhle záznam je tu proto, že teprve dohra ukazuje, jestli byl audit k něčemu.
+
+| Nález | Fáze | Stav |
+|---|---|---|
+| Vypínač nevypínal | F6 | ✅ příznak v `meta`, běh ho čte před každou dávkou (31. 8.) |
+| Pád běhu byl tichý | F6 | ✅ z `catch` do Telegramu; zabití zvenčí chytá hlídač nedoběhlých běhů |
+| Cizí text bez obalu | F4 | ✅ značka `<inzerat>` + věta v systémovém promptu, že uvnitř nejsou pokyny |
+| Změna promptu neměřitelná | F4 | ✅ `PROMPT_VERSION` v každém běhu, brána v CI, sada 23 případů |
+
+**F1 dostalo číslo.** Audit psal „přesnost skórování nemá číslo; chyby se našly až v provozu".
+1. 9. změřeno na 23 reálných inzerátech uvnitř nasazené verze: **precision 100 %, recall
+i efektivní recall 100 %, coverage 100 %**.
+
+## Tři věci, které se ukázaly až v dohře
+
+**1. Měřicí přístroj může mířit vedle — a to je horší než žádný.** První verze evaluační sady
+volala placený model napřímo, zatímco produkce skórovala přes free backend. Sada tedy poctivě
+měřila příčku žebříku, která v produkci nerozhodovala. Ještě podruhé: i po opravě sada
+nepředávala `scoreJob` volbu backendu, takže měřila free příčku i ve chvíli, kdy byl v Nastavení
+zvolený placený model. **Do předpisu patří otázka „měří tvůj eval tu příčku, která rozhoduje?"**,
+ne jen „máš eval?".
+
+**2. Souhrnné číslo skryje, čí je zásluha.** Free model dal nulu třem reálným leadům. Dva z nich
+vyřešil placený model, třetí ne — ten padl až opravou deterministického stropu regionu. Kdyby se
+sledoval jen výsledek sady, vypadalo by to jako jedna zásluha modelu.
+
+**3. Zelená sada přestává rozlišovat.** Po opravách je sada 23/23. Tím se z měřicího přístroje
+stává ozdoba: dokud padala, říkala něco nového. **F8 („evaly rostou") tedy není administrativa,
+ale podmínka, aby měření dál něco znamenalo.**
+
+## Nález DO PŘEDPISU, ne do projektu
+
+Brána F4 žádá **„evaly běží v CI a jsou nad prahem"**. U JobWatche to **splnit nejde**: výchozí
+backend je binding `env.AI`, který mimo Worker neexistuje. V CI by se měřil jiný model než ten,
+který rozhoduje — tedy přesně ta vada, kterou má brána odstranit.
+
+Poctivá varianta zní **„evaly na nasazené verzi, spouštěné ručně, s protokolem"** a v projektu
+je udělaná takhle: tlačítko na `/tests`, tentýž `scoreJob`, tentýž prompt, tentýž žebřík
+backendů, a ve výsledku je zapsané, **která příčka odpověděla**.
+
+Druhá půlka téže brány — *„změna promptu bez běhu evalů neprojde"* — je v projektu splněná jen
+zpola: CI hlídá zvýšení verze, ne to, že evaly proběhly. 1. 9. se to potvrdilo živě: prompt se
+změnil, brána spokojeně pustila dál a modelová část se změřila až o dvě zprávy později, ručně.
+
+**Návrh úpravy předpisu:** u fáze F4 rozlišit dva případy — backend dostupný z CI (platí dnešní
+znění) a backend existující jen za běhu (pak „na nasazené verzi, ručně, s protokolem, a v běhu
+je zapsané, která příčka odpověděla"). Bez toho brána nutí buď lhát, nebo měřit vedle.

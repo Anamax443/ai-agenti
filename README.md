@@ -24,7 +24,7 @@ fáze F0–F8, každá s bránou, kterou musíš projít, než začne další.
 
 Jak předpis dopadl v ostrém provozu, ukazuje
 **[02-pripady/AUDIT-job-watch.md](02-pripady/AUDIT-job-watch.md)** — na běžícím agentovi
-našel tři vady, které testy nenašly.
+našel čtyři vady, které testy nenašly — a všechny jsou k 1. 9. 2026 opravené.
 
 ### Když to potřebuješ ukázat někomu jinému
 
