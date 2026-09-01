@@ -2,6 +2,45 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (6) — z metodiky etalon: měřicí protokol a inventář bran
+
+- **Proč:** etalon není dobrý text, je to **měřidlo**. Audit psaný volným textem je čtivý
+  a neporovnatelný — dva měřiči napíšou dva různé dokumenty a nejde z nich odečíst, jestli
+  se shodli. A měřidlo musí znát svou vlastní chybu.
+- **Hotové — [`kontrola/brany.py`](kontrola/brany.py).** Nejlevnější robustní řešení:
+  **žádný druhý seznam podmínek.** Zdrojem pravdy zůstává `BUILD-PREDPIS.md` a všechno
+  ostatní se z něj odvozuje — počet, inventář i prázdný měřicí protokol.
+  - `python kontrola/brany.py` — kontrola, běží v CI vedle `dvojice.py`
+  - `python kontrola/brany.py --seznam` — inventář s identifikátory
+  - `python kontrola/brany.py --protokol v0.9` — prázdný formulář na stdout
+- **Co to zavírá natrvalo:** ručně psaný počet podmínek. V podkladu pro oponenturu stálo
+  postupně **38, 37, 41 a 42** na čtyřech místech a našla to až cizí recenze (`B3`). Skript
+  navíc hlídá, že **CS a EN mají stejný počet podmínek v každé bráně** — půlka přeložené
+  brány je stejná vada jako chybějící překlad, jen se hůř hledá.
+  Aktuálně: **45 podmínek** · F0 5 · F1 3 · F2 5 · F3 9 · F4 8 · F5 4 · F6 5 · F7 3 · F8 3.
+- **Hotové — [`sablony/MERENI.md`](sablony/MERENI.md)** (CS i EN): pravidla měření.
+  - u každé podmínky **výsledek** (`ano` / `ne` / `nelze`), **stupeň** `U0`–`U4` a **důkaz**,
+  - minimální stupeň uzavření určuje **přísnost** agenta (N → U1, Z → U2, V → U3),
+  - **`nelze` je plnohodnotný výsledek.** Bez něj se měřič tlačí do ano/ne i tam, kde brána
+    na agenta nesedí — přesně tak vznikl spor o F4 u runtime backendu. Ta brána měla dostat
+    `nelze` s poznámkou, ne `ne`.
+  - **u `ano` je povinný důkaz, a příkaz sám důkaz není** — důkazem je jeho výstup (`B4`).
+- **Kalibrace etalonu — první číslo o něm samém.** Formulář má povinný blok *„nálezy, které
+  měření nenašlo"*, doplňovaný později. Dnes je doložený jeden: při prvním ostrém použití
+  našel předpis **4 z 8** vad, které se u téhož agenta nakonec prokázaly — chytil vypínač,
+  tiché selhání, cizí text a neměřitelný prompt, a **neodhalil ani jednu ze čtyř vad
+  v orchestraci**. Záchytnost **50 % na jednom vzorku**. Slabé číslo, ale etalon bez čísla
+  je horší. Že by dnešní znění chytilo 8 z 8, **není měření** — ty položky z těch vad vznikly.
+- **Vydání a poziční identifikátory.** Měření se odkazuje na vydání (`ai-agenti v0.9`, tag
+  `audit-2-freeze`), ne na větev. `F3.4` platí uvnitř vydání; po vložení podmínky se posune
+  a to je v pořádku — význam pevně určuje verze, stejně jako u `ISO 27001:2013 A.9.2.3`.
+- **Ověřeno:** `python kontrola/brany.py` i `python kontrola/dvojice.py` — zelené, CI má
+  nový job `brany`.
+- **Zbývá:** vyplnit první protokol pro JobWatch (ukáže, kolik z 45 podmínek u něj vyjde
+  `nelze`) · **test opakovatelnosti**: dva měřiči, tentýž agent, odečíst rozdíl — bez toho
+  je opakovatelnost neznámá · `A2` rozsah platnosti („libovolný agent" je u etalonu
+  neobhajitelné) · dál `N1` pětice v předpisu, `N4`, `A6`, `A4`, `N6`.
+
 ## 2026-09-01 (5) — stavový model: nevratná akce leží na přechodu, ne uvnitř stavu (N3)
 
 - **Proč:** tři ze čtyř orchestračních vad JobWatche byly chybějící verzí téhle jediné věci.

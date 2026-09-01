@@ -5,6 +5,52 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (6) — from methodology to etalon: a measurement protocol and a gate inventory
+
+- **Why:** an etalon is not a good text, it is an **instrument**. An audit written as free
+  text reads well and is not comparable — two measurers produce two different documents and
+  there is no subtracting one from the other. And an instrument must know its own error.
+- **Done — [`kontrola/brany.py`](kontrola/brany.py).** The cheapest robust solution:
+  **no second list of conditions.** `BUILD-PREDPIS.md` stays the source of truth and
+  everything else is derived from it — the count, the inventory and the blank protocol.
+  - `python kontrola/brany.py` — the check, runs in CI beside `dvojice.py`
+  - `python kontrola/brany.py --seznam` — inventory with identifiers
+  - `python kontrola/brany.py --protokol v0.9` — a blank form on stdout
+- **What this closes for good:** the hand-written count of conditions. The oponentura dossier
+  stated **38, 37, 41 and 42** in four places and it took an outside review to notice (`B3`).
+  The script also enforces that **CS and EN hold the same number of conditions in every
+  gate** — half a translated gate is the same defect as a missing translation, only harder
+  to find. Currently: **45 conditions** · F0 5 · F1 3 · F2 5 · F3 9 · F4 8 · F5 4 · F6 5 ·
+  F7 3 · F8 3.
+- **Done — [`sablony/MERENI.en.md`](sablony/MERENI.en.md)** (CS and EN): the rules of
+  measurement.
+  - for each condition a **result** (`ano` / `ne` / `nelze`), a **level** `U0`–`U4` and
+    **evidence**,
+  - the minimum closure level is set by the agent's **strictness** (N → U1, Z → U2, V → U3),
+  - **`nelze` is a full-fledged result.** Without it the measurer is pushed into yes/no even
+    where the gate does not fit — exactly how the F4 dispute over a runtime backend arose.
+    That gate should have been marked `nelze` with a note, not `ne`.
+  - **for `ano` evidence is mandatory, and a command is not evidence** — its output is (`B4`).
+- **Calibration of the etalon — the first number about itself.** The form has a mandatory
+  block *"findings the measurement did not catch"*, filled in later. One is documented today:
+  on its first live use the specification found **4 out of 8** defects eventually proven in
+  the same agent — it caught the kill switch, the silent failure, the foreign text and the
+  unmeasurable prompt, and **missed all four orchestration defects**. A catch rate of
+  **50 % on one sample**. A weak number, but an etalon without one is worse. That the current
+  wording would catch 8 out of 8 is **not a measurement** — those items came from those
+  defects.
+- **Releases and positional identifiers.** A measurement refers to a release
+  (`ai-agenti v0.9`, tag `audit-2-freeze`), not to a branch. `F3.4` holds within a release;
+  it shifts when a condition is inserted, and that is fine — the version pins the meaning,
+  just as with `ISO 27001:2013 A.9.2.3`.
+- **Verified:** `python kontrola/brany.py` and `python kontrola/dvojice.py` — green; CI has
+  a new `brany` job.
+- **Remaining:** fill in the first protocol for JobWatch (it will show how many of the 45
+  conditions come out `nelze`) · **a repeatability test**: two measurers, the same agent,
+  subtract the difference — without it repeatability is unknown · `A2` the scope of validity
+  ("any agent" is indefensible for an etalon) · and further `N1` the quintuple in the
+  specification, `N4`, `A6`, `A4`, `N6`.
+
 ## 2026-09-01 (5) — the state model: an irreversible action sits on a transition, not inside a state (N3)
 
 - **Why:** three of the four orchestration defects in JobWatch were the missing version of this

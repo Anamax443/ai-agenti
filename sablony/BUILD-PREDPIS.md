@@ -4,6 +4,9 @@ Fázový postup, který platí pro libovolného agenta. Konkrétní plán jednoh
 projektu vypadá jako [05-html/postup-stavby.html](../05-html/postup-stavby.html);
 tenhle dokument je předloha, ze které se takový plán píše.
 
+Měření hotového agenta proti tomuhle předpisu popisuje [MERENI.md](MERENI.md);
+prázdný formulář se generuje příkazem `python kontrola/brany.py --protokol <verze>`.
+
 **Brána** = seznam podmínek na konci fáze. Dokud neplatí všechny, další fáze
 se nezačíná. Každá brána zachytává jednu třídu chyb, na kterou by následující
 fáze jinak narazila — a to dráž.
