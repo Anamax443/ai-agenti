@@ -2,6 +2,51 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (4) — riziko má dvě osy: vratnost akce × dopad systému
+
+- **Proč:** externí oponentura (`A3`) ukázala, že klasifikace podle vratnosti akce sama
+  nestačí. Agent, který jen čte životopisy a doporučuje pořadí, nemá jedinou nevratnou
+  akci — podle §7 tedy nejnižší režim „běž sám, jen informuj". Přitom rozhoduje, kdo se
+  dostane k pohovoru, a pro vyřazeného člověka je ta chyba nevratná. Opačně platí totéž:
+  „agent s vysokým dopadem" neřekne, které z jeho čtyřiceti volání potřebuje schválení.
+- **Hotové — principy §7 přepsané na dvě osy** (CS i EN):
+  - **osa akce** (vratnost) určuje **režim** jednotlivé akce — beze změny, jen pojmenovaná,
+  - **osa systému** (dopad) určuje **přísnost**, s jakou se všechno ověřuje. Pět otázek:
+    kdo je předmětem rozhodnutí · co ovlivní · s jakými daty · v jakém rozsahu · pozná se
+    chyba včas. Z odpovědí plyne stupeň **N / Z / V**.
+- **Přísnost něco mění, jinak by to byl další štítek.** Tabulka „co přísnost mění" váže
+  stupeň na zjednodušení fází, povinné těžké zápory v evalech, **minimální stupeň
+  uzavření nálezu** (N → U1, Z → U2, V → U3), adresáta hlášení, dohled a periodu revize
+  scénářů. U stupně **V** navíc: rozhodnutí o člověku má člověka v kruhu **i když je
+  vratné** — vrátit se dá zápis, ne to, že se na někoho nedostalo.
+- **Tím padá i `N5`.** Tabulka „Co u malého agenta přeskočit" už nestojí na subjektivním
+  „jednoduchý agent pro sebe sama". Nově: zjednodušit smíš jen při přísnosti **N** a
+  zároveň bez nevratné reputační či fyzické akce; platí-li jen jedno, jde zjednodušit
+  všechno kromě F4 a F5; neplatí-li ani jedno, předpis platí celý. Důvod je v textu:
+  každý autor svého agenta zná a považuje ho za jednoduchý, protože zná jeho **záměr** —
+  vratnost a dopad záměr neznají, jen následek.
+- **Brána F0** dostala položku: přísnost je **odvozená z odpovědí** v návrhovém listu,
+  ne odhadnutá, a je napsané, co z ní plyne.
+- **Návrhový list** má novou sekci *Přísnost — osa systému*: pět otázek s odpověďmi
+  a zaškrtávacím sloupcem, výsledný stupeň a řádek „co z toho plyne". Nevyplňuje se stupeň,
+  vyplňují se odpovědi.
+- **Oprava vlastní nepřesnosti.** Nález `N5` (a `O2` z posudku P2) tvrdil, že štítek
+  „Riziková kategorie (AI Act)" nemá **žádný** důsledek. Přesnější je: jeden důsledek měl
+  („u toho se předpis nezkracuje"), ale jen jako věta v návrhovém listu — nebyl navázaný
+  na brány ani na tabulku zjednodušení. Teď je.
+- **Kvalifikováno tvrzení o AI Actu** (nález `B8`): řádek o označování AI nově zní „podle
+  role a jurisdikce; naše pravidlo: vždy" místo „povinné (AI Act)". Právní posouzení tím
+  není hotové — jen se přestalo vydávat interní pravidlo za obecnou zákonnou povinnost.
+- **Ověřeno:** `python kontrola/dvojice.py` — zelené.
+- **Poznámka k tagu `audit-2-freeze`:** ten ukazuje na `85a45cd` a je cílem druhého auditu.
+  Tahle změna je **až za ním** a do auditu nevstupuje — jinak by to bylo zase zpětné
+  doladění (nález `B7`).
+- **Zbývá:** `N3` stavový model · `N1` důkazní pětice v předpisu · `N4` kontrakt rolí
+  a metriky podle role modelu · `A6` vrstva bezpečnosti nástrojů (allowlist, validace
+  argumentů, výstupní kontrola, testy exfiltrace) · `A4` rozdělení eval sad na regresní /
+  challenge / skrytou · `A2` zúžení rozsahu „libovolný agent" · `N6` ukončení · `N8`
+  strojová kontrola konzistence. A pořád především: **druhý audit**.
+
 ## 2026-09-01 (3) — nosná věta opravena: tři stavy místo dvou; oponentura našla, co osm vlastních nálezů nenašlo
 
 - **Proč:** tři externí posudky podkladu. Nejostřejší nález (`A1`) říká, že věta „buď proces

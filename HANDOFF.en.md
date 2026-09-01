@@ -5,6 +5,57 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (4) — risk has two axes: action reversibility × system impact
+
+- **Why:** the external review (`A3`) showed that classifying by action reversibility alone
+  is not enough. An agent that merely reads CVs and proposes a ranking has no irreversible
+  action — under §7 that is the lowest mode, "act alone, just report". Yet it decides who
+  gets an interview, and for the person filtered out the mistake is irreversible. The
+  converse holds too: "a high-impact agent" says nothing about which of its forty calls
+  needs approval.
+- **Done — principles §7 rewritten around two axes** (CS and EN):
+  - the **action axis** (reversibility) sets the **mode** of an individual action —
+    unchanged, only named,
+  - the **system axis** (impact) sets the **strictness** with which everything is verified.
+    Five questions: who the decision is about · what it affects · on what data · at what
+    scale · whether a mistake is noticed in time. The answers produce a level **N / Z / V**.
+- **Strictness has consequences, otherwise it would be one more label.** A "what strictness
+  changes" table binds the level to phase simplification, mandatory hard negatives in evals,
+  the **minimum closure level for a finding** (N → U1, Z → U2, V → U3), the recipient of
+  crash reports, oversight, and the scenario-review cadence. At level **V** additionally:
+  a decision about a person has a human in the loop **even when it is reversible** — a
+  record can be undone; being passed over cannot.
+- **This also closes `N5`.** The "what to skip for a small agent" table no longer rests on
+  the subjective "a simple agent built for yourself". Now: you may simplify only at
+  strictness **N** and with no irreversible reputational or physical action; if only one
+  holds, everything except F4 and F5 may be trimmed; if neither holds, the specification
+  applies in full. The reason is in the text: every author knows their own agent and finds
+  it simple because they know its **intent** — reversibility and impact do not know the
+  intent, only the consequence.
+- **Gate F0** gained an item: the strictness is **derived from the answers** in the design
+  sheet, not guessed, and what follows from it is written down.
+- **The design sheet** has a new section *Strictness — the system axis*: five questions with
+  answers and a tick column, the resulting level, and a "what follows from it" line. You do
+  not fill in the level; you fill in the answers.
+- **A correction of our own imprecision.** Finding `N5` (and `O2` from review P2) claimed the
+  "Risk category (AI Act)" label had **no** consequence. More precisely: it had one ("the
+  specification is not abridged for those"), but only as a sentence in the design sheet — it
+  was not wired to the gates or to the simplification table. Now it is.
+- **The AI Act claim is qualified** (finding `B8`): the disclosure row now reads "depends on
+  role and jurisdiction; our rule: always" instead of "mandatory (AI Act)". That does not
+  settle the legal assessment — it only stops presenting an internal rule as a general
+  statutory duty.
+- **Verified:** `python kontrola/dvojice.py` — green.
+- **Note on the `audit-2-freeze` tag:** it points at `85a45cd` and is the target of the
+  second audit. This change sits **after** it and does not enter the audit — otherwise it
+  would be retrospective fitting again (finding `B7`).
+- **Remaining:** `N3` the state model · `N1` the evidence quintuple in the specification ·
+  `N4` the role contract and metrics per model role · `A6` the tool-security layer
+  (allowlist, argument validation, output control, exfiltration tests) · `A4` splitting eval
+  sets into regression / challenge / held-out · `A2` narrowing the "any agent" scope · `N6`
+  decommissioning · `N8` a machine consistency check. And above all, still: **the second
+  audit**.
+
 ## 2026-09-01 (3) — the core sentence corrected: three states instead of two; the review found what eight self-findings did not
 
 - **Why:** three external reviews of the dossier. The sharpest finding (`A1`) is that the

@@ -31,6 +31,8 @@ fáze jinak narazila — a to dráž.
 - [ ] Scénáře jsou vyplněné a je jich konečný počet
 - [ ] U každého kroku je napsáno, jestli ho dělá model, nebo kód
 - [ ] Každá nevratná akce má v tabulce Brány svůj režim
+- [ ] **Přísnost (N/Z/V) je odvozená z odpovědí v návrhovém listu**, ne odhadnutá —
+      a je napsané, co z ní plyne (viz [principy §7](../01-principy/PRINCIPY-stavby-agentu.md))
 - [ ] Je jasné, **kdy je agent hotový** — měřitelně, ne „až bude fungovat"
 
 > Nejde-li vyplnit sekce Scénáře, agent není promyšlený. To není důvod
@@ -293,9 +295,23 @@ K tomu implicitní signály od lidí: jak často se ptají znovu jinými slovy a
 
 ## Co u malého agenta přeskočit
 
-Předpis je maximum. U jednoduchého agenta pro sebe sama zůstávají povinné
-**F0, F1, F3, F6** — návrh, ověření jádra na reálných datech, deterministická
-páteř a vypínač. Zbytek se dá zeštíhlit:
+Předpis je maximum. **Zeštíhlit ale nesmíš podle toho, jak malý ti agent připadá.**
+Rozhoduje dvojice odpovědí z návrhového listu:
+
+> Zjednodušit smíš, jen když platí **obojí**:
+> 1. přísnost je **N** (osa systému, [principy §7](../01-principy/PRINCIPY-stavby-agentu.md)),
+> 2. žádná akce agenta není nevratná reputačně ani fyzicky (osa akce).
+>
+> Platí-li jen jedno, zjednodušit lze všechno **kromě F4 a F5**.
+> Neplatí-li ani jedno, předpis platí celý.
+
+Tohle nahrazuje dřívější „u jednoduchého agenta pro sebe sama". Ta kategorie byla
+subjektivní a rozhodoval o ní ten, kdo měl na zjednodušení zájem — každý autor svého
+agenta zná a považuje ho za jednoduchý, protože zná jeho **záměr**. Vratnost a dopad
+záměr neznají, jen následek.
+
+Při přísnosti N zůstávají povinné **F0, F1, F3, F6** — návrh, ověření jádra na reálných
+datech, deterministická páteř a vypínač. Zbytek se dá zeštíhlit:
 
 | Fáze | Zeštíhlení |
 |---|---|

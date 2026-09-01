@@ -185,6 +185,10 @@ What decides is not how much you trust the model, but **how expensive the mistak
 Bartoš lets invoices be paid without approval because money sent to a known supplier can
 be recovered. Not because he trusts the AI.
 
+**Risk has two axes and you need both.**
+
+### The action axis — reversibility. It sets the **mode** of each individual action.
+
 | Reversibility of the mistake | Mode | Example |
 |---|---|---|
 | Full, within minutes | act alone, just report | calendar entry, e-mail label |
@@ -194,6 +198,46 @@ be recovered. Not because he trusts the AI.
 
 The test for every action: *what happens if it gets it wrong, and how long does it take
 to undo.* The answer sets the mode.
+
+### The system axis — impact. It sets the **strictness** with which everything is verified.
+
+| Question | Strictness grows from left to right |
+|---|---|
+| **Who is the decision about?** | a person outside the company › a customer › a colleague › only you |
+| **What does the decision affect?** | employment, credit, health, law, safety › money › convenience |
+| **On what data?** | personal, health, secret › company › public |
+| **At what scale?** | thousands of cases › dozens › single ones |
+| **Is a mistake noticed in time?** | only at the other end › during a spot check › immediately |
+
+The answers produce one of three levels:
+
+- **N — normal:** no answer from the left-hand side. A personal tool, an internal aid.
+- **Z — raised:** at least one answer from the left-hand side.
+- **V — high:** a decision **about a person** (employment, credit, health, law, safety),
+  or personal data at scale.
+
+**Why one axis is not enough.** An agent that only reads CVs and proposes a ranking has no
+irreversible action at all — on the action axis that is the lowest mode, "act alone, just
+report". Yet it decides who gets an interview: for the person filtered out, the mistake is
+irreversible, and it shows up only as never being invited. Conversely, "a high-impact
+agent" says nothing about which of its forty calls needs approval. **The action axis sets
+the mode, the system axis the strictness. Either one alone is blind.**
+
+### What strictness changes
+
+A level with no consequence is decoration. Hence, explicitly:
+
+| | **N** | **Z** | **V** |
+|---|---|---|---|
+| Abridging phases (build spec) | allowed | **not allowed** | not allowed |
+| Evals (F4) | per the gate | + hard negatives mandatory | + the set is reviewed by someone else |
+| A finding may be closed at level | U1 (in the code) | **U2** (covered by a test) | **U3** (provoked in an environment) |
+| Crash reporting (F6) | to the owner | to the owner and a deputy | + a deadline by which someone must respond |
+| Oversight (F5) | per reversibility | per reversibility | **+ a person on every decision about a person, even a reversible one** |
+| Reviewing the scenario list (F8) | now and then | every six months | quarterly |
+
+The last row under **V** is the one that matters: for a decision about a person,
+reversibility does not decide. A record can be undone; being passed over cannot.
 
 **Two gates instead of one.** For repeated work, approve the plan once for the whole
 series and then only the individual irreversible steps. This saves clicking without
@@ -386,6 +430,7 @@ BUILD ORDER:          what comes first, what blocks what
 4. The persona is generated from sources, not written from memory.
 5. Identity is bound to the channel, not to a name.
 6. The approval mode is set by the reversibility of the mistake, not by trust in the model.
+6b. Reversibility sets the mode of an action, impact on people sets the strictness of the whole. You need both axes.
 7. Where accuracy matters, verify with two independent passes.
 8. Chat on a phone beats a form.
 9. An agent that stays quiet when it crashes is worse than no agent.

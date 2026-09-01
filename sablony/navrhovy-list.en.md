@@ -58,14 +58,34 @@ something you have never tried to break is guessing.
 
 | Question | Answer |
 |---|---|
-| Does it disclose it is an AI when communicating outward? | mandatory (AI Act) |
+| Does it disclose it is an AI when communicating outward? | depends on role and jurisdiction; our rule: always |
 | Does it process personal data? | what, whose, on what legal basis |
 | Risk category (AI Act) | minimal / limited / **high** |
 | Retention — what is deleted and when | |
 | Where the data physically sits | |
 
-High risk covers, among other things, personnel selection, assessment, and access to
-services. The specification is not abridged for those.
+### Strictness — the system axis
+
+Fill in the answers, not the level directly. The level follows from them (principles §7).
+
+| Question | Answer | Left? |
+|---|---|---|
+| Who is the decision about? *(person outside the company › customer › colleague › only me)* | | ☐ |
+| What does the decision affect? *(employment, credit, health, law, safety › money › convenience)* | | ☐ |
+| On what data? *(personal, health, secret › company › public)* | | ☐ |
+| At what scale? *(thousands › dozens › single ones)* | | ☐ |
+| Is a mistake noticed in time? *(only at the other end › during a check › immediately)* | | ☐ |
+
+**Strictness:** ☐ N — normal · ☐ Z — raised (at least one “left”) ·
+☐ V — high (a decision about a person, or personal data at scale)
+
+**What follows from it** *(write it out, so it is not just a label)*:
+phase simplification · minimum closure level for a finding · evals · reporting · oversight ·
+review cadence.
+
+Personnel selection, assessment and access to services are **V** always. The specification
+is not abridged for those, and a decision about a person has a human in the loop even when
+it is reversible.
 
 ---
 

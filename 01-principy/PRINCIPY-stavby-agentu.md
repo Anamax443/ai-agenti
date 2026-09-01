@@ -186,6 +186,10 @@ Rozhodující není, jak moc modelu věříš, ale **jak drahá je chyba.**
 Bartoš nechává platit faktury bez schválení proto, že peníze od známého
 dodavatele se dají vrátit. Ne proto, že by AI věřil.
 
+**Riziko má dvě osy a potřebuješ obě.**
+
+### Osa akce — vratnost. Určuje **režim** každé jednotlivé akce.
+
 | Vratnost chyby | Režim | Příklad |
 |---|---|---|
 | Plná, do minut | běž sám, jen informuj | zápis do kalendáře, štítek v e-mailu |
@@ -195,6 +199,46 @@ dodavatele se dají vrátit. Ne proto, že by AI věřil.
 
 Test pro každou akci: *co se stane, když to udělá špatně, a jak dlouho
 trvá to vrátit.* Odpověď určí režim.
+
+### Osa systému — dopad. Určuje **přísnost**, s jakou se všechno ověřuje.
+
+| Otázka | Přísnost roste zleva doprava |
+|---|---|
+| **Kdo je předmětem rozhodnutí?** | člověk mimo firmu › zákazník › kolega › jen ty |
+| **Co rozhodnutí ovlivní?** | zaměstnání, úvěr, zdraví, právo, bezpečnost › peníze › pohodlí |
+| **S jakými daty?** | osobní, zdravotní, tajná › firemní › veřejná |
+| **V jakém rozsahu?** | tisíce případů › desítky › jednotky |
+| **Pozná se chyba včas?** | až u protistrany › při namátkové kontrole › hned |
+
+Z odpovědí plyne jeden ze tří stupňů:
+
+- **N — normální:** žádná odpověď z levé části. Osobní nástroj, interní pomůcka.
+- **Z — zvýšená:** aspoň jedna odpověď z levé části.
+- **V — vysoká:** rozhodnutí **o člověku** (zaměstnání, úvěr, zdraví, právo, bezpečnost),
+  nebo osobní údaje ve velkém rozsahu.
+
+**Proč nestačí jedna osa.** Agent, který jen čte životopisy a doporučuje pořadí, nemá
+jedinou nevratnou akci — podle osy akce je to nejnižší režim, „běž sám, jen informuj".
+Přitom rozhoduje, kdo se dostane k pohovoru: pro vyřazeného člověka je ta chyba nevratná
+a pozná se až tím, že ho nikdo nepozval. Opačně: „agent s vysokým dopadem" sám o sobě
+neřekne, které z jeho čtyřiceti volání potřebuje schválení. **Osa akce určuje režim, osa
+systému přísnost. Jedna bez druhé je slepá.**
+
+### Co přísnost mění
+
+Stupeň, ze kterého nic neplyne, je ozdoba. Proto výslovně:
+
+| | **N** | **Z** | **V** |
+|---|---|---|---|
+| Zjednodušení fází (build předpis) | povolené | **zakázané** | zakázané |
+| Evaly (F4) | podle brány | + těžké zápory povinně | + sadu zkontroluje někdo jiný |
+| Nález se smí zavřít na stupni | U1 (v kódu) | **U2** (kryto testem) | **U3** (vyvoláno v prostředí) |
+| Hlášení o pádu (F6) | vlastníkovi | vlastníkovi i zástupci | + lhůta, do kdy musí někdo odpovědět |
+| Dohled (F5) | podle vratnosti | podle vratnosti | **+ člověk u každého rozhodnutí o osobě, i když je vratné** |
+| Revize seznamu scénářů (F8) | jednou za čas | pololetně | čtvrtletně |
+
+Poslední řádek u **V** je ten podstatný: u rozhodnutí o člověku nerozhoduje vratnost.
+Vrátit se dá zápis, ne to, že se na někoho nedostalo.
 
 **Dvě brány místo jedné.** U opakovaných úloh schvaluj plán jednou pro
 celou sérii a pak už jen jednotlivé nevratné kroky. Šetří to klikání
@@ -388,6 +432,7 @@ POŘADÍ STAVBY:        co první, co blokuje co
 4. Osobnost se generuje ze zdrojů, ne píše z hlavy.
 5. Identita se váže na kanál, ne na jméno.
 6. Režim schvalování určuje vratnost chyby, ne důvěra k modelu.
+6b. Vratnost určuje režim akce, dopad na lidi určuje přísnost celku. Potřebuješ obě osy.
 7. Kde záleží na přesnosti, ověřuj dvěma nezávislými průchody.
 8. Chat na mobilu poráží formulář.
 9. Agent, který se neozve, když spadne, je horší než žádný.

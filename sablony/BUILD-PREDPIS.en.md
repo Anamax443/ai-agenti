@@ -34,6 +34,9 @@ would otherwise run into — and more expensively.
 - [ ] The scenarios are filled in and there is a finite number of them
 - [ ] Every step states whether the model or the code does it
 - [ ] Every irreversible action has its mode in the Gates table
+- [ ] **The strictness (N/Z/V) is derived from the answers in the design sheet**, not
+      guessed — and what follows from it is written down (see
+      [principles §7](../01-principy/PRINCIPY-stavby-agentu.en.md))
 - [ ] It is clear **when the agent is finished** — measurably, not “once it works”
 
 > If the Scenarios section cannot be filled in, the agent has not been thought through.
@@ -301,9 +304,24 @@ often they give up halfway. Both arrive before a complaint does.
 
 ## What a small agent may skip
 
-The specification is a maximum. For a simple agent built for yourself, **F0, F1, F3 and
-F6** stay mandatory — design, verification of the core on real data, the deterministic
-backbone and the kill switch. The rest can be trimmed:
+The specification is a maximum. **But you do not get to slim it down because the agent
+feels small to you.** What decides is a pair of answers from the design sheet:
+
+> You may simplify only when **both** hold:
+> 1. the strictness is **N** (the system axis,
+>    [principles §7](../01-principy/PRINCIPY-stavby-agentu.en.md)),
+> 2. no action of the agent is irreversible reputationally or physically (the action axis).
+>
+> If only one holds, everything **except F4 and F5** may be slimmed down.
+> If neither holds, the specification applies in full.
+
+This replaces the earlier “a simple agent built for yourself”. That category was
+subjective and was decided by the person with an interest in simplifying — every author
+knows their own agent and considers it simple, because they know its **intent**.
+Reversibility and impact do not know the intent, only the consequence.
+
+At strictness N, **F0, F1, F3 and F6** stay mandatory — design, verification of the core on
+real data, the deterministic backbone and the kill switch. The rest can be trimmed:
 
 | Phase | Trimmed to |
 |---|---|

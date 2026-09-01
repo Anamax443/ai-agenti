@@ -55,14 +55,32 @@ Napsat obranu proti něčemu, co jsi nikdy nezkusil prolomit, je hádání.
 
 | Otázka | Odpověď |
 |---|---|
-| Označuje se AI při komunikaci ven? | povinné (AI Act) |
+| Označuje se AI při komunikaci ven? | podle role a jurisdikce; naše pravidlo: vždy |
 | Zpracovává osobní údaje? | jaké, čí, na jakém základě |
 | Riziková kategorie (AI Act) | minimální / omezená / **vysoká** |
 | Retence — co se maže a kdy | |
 | Kde data fyzicky leží | |
 
-Vysoké riziko je mimo jiné výběr lidí, hodnocení a přístup ke službám.
-U toho se předpis nezkracuje.
+### Přísnost — osa systému
+
+Vyplň odpovědi, ne rovnou stupeň. Stupeň z nich plyne (viz principy §7).
+
+| Otázka | Odpověď | Vlevo? |
+|---|---|---|
+| Kdo je předmětem rozhodnutí? *(člověk mimo firmu › zákazník › kolega › jen já)* | | ☐ |
+| Co rozhodnutí ovlivní? *(zaměstnání, úvěr, zdraví, právo, bezpečnost › peníze › pohodlí)* | | ☐ |
+| S jakými daty? *(osobní, zdravotní, tajná › firemní › veřejná)* | | ☐ |
+| V jakém rozsahu? *(tisíce › desítky › jednotky)* | | ☐ |
+| Pozná se chyba včas? *(až u protistrany › při kontrole › hned)* | | ☐ |
+
+**Přísnost:** ☐ N — normální · ☐ Z — zvýšená (aspoň jedno „vlevo") ·
+☐ V — vysoká (rozhodnutí o člověku, nebo osobní údaje ve velkém)
+
+**Co z toho plyne** *(vypiš, ať to není jen štítek)*:
+zjednodušení fází · minimální stupeň uzavření nálezu · evaly · hlášení · dohled · revize.
+
+Výběr lidí, hodnocení a přístup ke službám je **V** vždycky. U toho se předpis nezkracuje
+a rozhodnutí o osobě má člověka v kruhu, i když je vratné.
 
 ---
 
