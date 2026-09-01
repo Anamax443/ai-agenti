@@ -2,6 +2,35 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (9) — `OA2` vyřešeno: strop je v robotovi, ne v zákazu na orchestrátoru
+
+- **Spor:** *cizí vstup nesmí spustit akci* proti *orchestrátor žádnou pravomoc nemá, jen
+  předává pokyny, a co zvládne robot, dělá robot*.
+- **Rozhodnuto: obojí platí a první polovina nestačí.** Rozpoznání záměru z cizího textu je
+  legitimní (principy §6 ho dovolují), ale **výběr agendy není akce — je to výběr privilegované
+  cesty**. Recepční bez pravomocí pořád rozhoduje, kterými dveřmi projdeš. Zákaz na
+  orchestrátoru posune problém o patro níž, neodstraní ho.
+- **Silnější je druhá polovina.** „Co zvládne robot, dělá robot" je ta skutečná obrana — ale
+  musí dělat o krok víc než svoje úkoly: **rozhodnutí orchestrátoru vždy prochází
+  deterministickou vrstvou, která stropuje rozsah** (schránka, složky, období, nástroje, limit,
+  nutnost člověka). Model může být klidně přesměrovaný a škoda se nekoná, protože strop není
+  v jeho rukou. Táž věc jako filtr regionu v JobWatchi — tam šlo o skóre, tady o to, co se vůbec
+  dostane do kontextu.
+- **Nová kapitola 4 zadání farmy: modelová situace** — přesměrovaný orchestrátor krok za krokem,
+  ve dvou variantách (bez stropu a se stropem), s tabulkou, která obrana zabrala a která ne.
+  Kapitoly 4–8 přečíslované na 5–9.
+- **Nejdůležitější věta z toho:** *schválení člověkem je poslední brána, ne první.* Ve variantě
+  bez stropu odtekla data poskytovateli modelu **dvě brány předtím**, než se návrh dostal
+  k člověku. Zákaz odeslání proti tomu nedělá nic.
+- **Doplněno ke škálování modelů:** *nejlevnější příčka žebříku není levný model, je to kód.*
+  Každý krok, který spolkne deterministická vrstva, nemá cenu, halucinaci ani injection.
+  U orchestrátoru běžícího na každý příchozí e-mail je největší úspora ten dotaz, který se vůbec
+  nepoloží — tedy jedna odpověď na robustnost i na cenu zároveň.
+- **Do F1 přibyla druhá metrika:** kolik z připravených útočných zpráv dokáže agendu přehodit.
+  Vysoká hodnota není důvod přestat, ale důvod postavit strop dřív než agendy.
+- **Ověřeno:** `dvojice.py` i `brany.py` zelené.
+- **Otevřené zůstávají `OA1`, `OA3`, `OA4`, `OA5`.**
+
 ## 2026-09-01 (8) — zadání farmy agentů do `03-projekty/`, ať se dá pokračovat odjinud
 
 - **Proč:** rozbor návrhu „farmy AI agentů" a rozhodnutí o e-mailových kanálech proběhly

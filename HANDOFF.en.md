@@ -5,6 +5,37 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (9) — `OA2` resolved: the cap lives in the robot, not in a prohibition on the orchestrator
+
+- **The disagreement:** *foreign input must not trigger an action* against *the orchestrator has
+  no authority, it only passes instructions on, and whatever a robot can handle is handled by
+  the robot*.
+- **Decided: both hold and the first half is not enough.** Recognising intent from foreign text
+  is legitimate (principles §6 allow it), but **choosing an agenda is not an action — it is the
+  choice of a privileged path**. A receptionist without authority still decides which door you
+  go through. A prohibition on the orchestrator moves the problem one floor down; it does not
+  remove it.
+- **The second half is the stronger one.** "Whatever the robot can handle is handled by the
+  robot" is the real defence — but it has to do one step more than its own tasks: **the
+  orchestrator's decision always passes through a deterministic layer that caps the scope**
+  (mailbox, folders, period, tools, limit, need for a human). The model may well be redirected
+  and no damage follows, because the cap is not in its hands. The same thing as the region
+  filter in JobWatch — there it was about a score, here about what gets into the context at all.
+- **New chapter 4 of the farm brief: a worked example** — the redirected orchestrator step by
+  step, in two variants (without and with the cap), with a table of which defence worked and
+  which did not. Chapters 4–8 renumbered to 5–9.
+- **The most important sentence:** *human approval is the last gate, not the first.* In the
+  variant without a cap the data reached the model provider **two gates before** the draft ever
+  got to a person. A ban on sending does nothing about that.
+- **Added to model scaling:** *the cheapest rung of the ladder is not a cheap model, it is code.*
+  Every step the deterministic layer absorbs has no cost, no hallucination and no injection. For
+  an orchestrator running on every incoming e-mail the biggest saving is the query never made —
+  one answer to robustness and price at once.
+- **F1 gained a second metric:** how many of the prepared attack messages can flip the agenda. A
+  high value is not a reason to stop, it is a reason to build the cap before the agendas.
+- **Verified:** `dvojice.py` and `brany.py` green.
+- **Still open: `OA1`, `OA3`, `OA4`, `OA5`.**
+
 ## 2026-09-01 (8) — the agent-farm brief lands in `03-projekty/`, so the work can continue elsewhere
 
 - **Why:** the analysis of the "AI agent farm" design and the decisions about e-mail channels
