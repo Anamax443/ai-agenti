@@ -124,9 +124,15 @@ The detailed record of the finding is in the `HANDOFF.md` of the same repository
 
 ---
 
-# Aftermath — 1 Sep 2026: all four findings closed
+# Aftermath — 1 Sep 2026: three findings closed, the fourth half
 
-The audit was written on 30 Aug. Within two days every finding had fallen, and **in the order the
+> **The section below was written on the morning of 1 Sep and declared all four findings closed.
+> That was not true.** The correction sits at the end of this same document ("A correction to this
+> aftermath"). The heading, the table and the F1 number have been corrected against it — the
+> original wording stays in git history, not here, so that a green claim does not outlive the
+> finding.
+
+The audit was written on 30 Aug. Within two days the findings had fallen, and **in the order the
 audit itself prescribed** (crash reporting → a real kill switch → wrapping foreign text → evals and
 prompt versioning). This record exists because only the aftermath shows whether the audit was worth
 anything.
@@ -135,12 +141,15 @@ anything.
 |---|---|---|
 | The kill switch did not kill | F6 | ✅ a flag in `meta`, read before every batch (31 Aug) |
 | A crashed run was silent | F6 | ✅ from `catch` to Telegram; an external kill is caught by a watchdog for unfinished runs |
-| Foreign text unwrapped | F4 | ✅ an `<inzerat>` tag plus a sentence in the system prompt stating there are no instructions inside |
+| Foreign text unwrapped | F4 | ⚠️ **half only** — the tag and the untrusted-data sentence live in `score.ts` alone; `enrich.ts` and `discover.ts` have no such boundary (see the correction below) |
 | Prompt change unmeasurable | F4 | ✅ `PROMPT_VERSION` in every run, a CI gate, a set of 23 cases |
 
-**F1 got its number.** The audit said "scoring accuracy has no number; the bugs were found only in
-production". On 1 Sep it was measured on 23 real ads inside the deployed version: **precision 100 %,
-recall and effective recall 100 %, coverage 100 %**.
+**F1 got its number — but a weak one.** The audit said "scoring accuracy has no number; the bugs
+were found only in production". On 1 Sep it was measured on 23 real ads inside the deployed version:
+**precision 100 %, recall and effective recall 100 %, coverage 100 %**. **It says nothing about the
+model's ability to discriminate:** all 17 negative cases in the set are rejected by the
+deterministic prefilter before they ever reach the model. Not one hard negative. See the correction
+below.
 
 ## Three things that only the aftermath revealed
 

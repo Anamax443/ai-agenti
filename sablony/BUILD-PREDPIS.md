@@ -12,7 +12,7 @@ fáze jinak narazila — a to dráž.
 |---|---|
 | **Vstup** | nápad na agenta a člověk, který ho bude vlastnit |
 | **Výstup** | agent v provozu, s runbookem, evaly a vypínačem |
-| **Kritická cesta** | F0 → F1 → F3 → F5 |
+| **Kritická cesta** | F0 → F1 → F3 → F6 |
 | **Kde se to nejčastěji zvrtne** | přeskočení F1 a F3 — model se pustí dřív, než existuje proces |
 
 ---
@@ -104,12 +104,21 @@ takovým, jaký by jinak vyrobil model. Tohle je ta část, která nese následk
 zápis do databáze, platba, odeslání. Musí být hotová a otestovaná dřív,
 než k ní model dostane přístup.
 
+**„Dva konce" se prokazují vyvoláním, ne tvrzením.** Unit testy nad čistými funkcemi sem
+nedosáhnou: vada nebývá v kroku, ale v orchestraci kolem něj. Doložený případ — u JobWatche
+neodhalilo 159 testů, 15 kontrol regionu ani 26 evalů čtyři vady naráz: selhání všech zdrojů
+skončilo zeleným během, neodeslaná notifikace se už nikdy nezopakovala, dva souběžné běhy si
+přepsaly stop příznak a zastavený běh se v historii tvářil jako úspěšný.
+
 **Brána**
 
 - [ ] S1 projde od začátku do konce s ručním vstupem
 - [ ] Když se něco nepovede, proces **spadne s hlášením** — ne potichu
 - [ ] Existují jen dva konce: selhalo a víš o tom, nebo dopadlo dobře
 - [ ] Opakovaný běh nedělá věc dvakrát (idempotence u nevratných kroků)
+- [ ] Každý konec je **vyvolaný acceptance testem**, ne jen popsaný: všechny zdroje dolů ·
+      selhání po zápisu a před odesláním · dva souběžné běhy · zastavení uprostřed
+- [ ] Dva běhy si nemůžou přepsat stav — buď druhý běh nejde spustit, nebo má běh zámek
 
 ---
 
@@ -120,7 +129,7 @@ Nic jiného.
 
 - Prompt do `prompts/`, verzovaný jako kód, s číslem verze v zápisu běhu
 - Osobnost vygenerovat ze zdrojového materiálu a opravit, nepsat z hlavy
-- Naplnit [evaly](kostra-agenta/evals/) — 20–40 reálných vstupů
+- Naplnit [evaly](kostra-agenta/evals/) — 20–40 reálných vstupů, **včetně těžkých záporů**
 - Kde záleží na číslech, zapojit křížovou kontrolu dvěma nezávislými průchody
 
 **Metriky, které u agenta dávají smysl.** „Prošlo / neprošlo" je málo — potřebuješ
@@ -138,10 +147,23 @@ Rozdíl mezi „zavolal špatný nástroj" a „zavolal správný nástroj se š
 částkou" je rozdíl mezi zmatením a škodou. Jedno číslo ti ho neřekne.
 U extrakce hodnoť pole po poli, ne celý výstup jako jeden test.
 
+**Sada bez těžkých záporů měří jen sama sebe.** Zápor, který zahodí deterministický filtr,
+o modelu nevypovídá — model ho nikdy neuvidí. Cenu má jen zápor, který filtrem projde
+a odmítnout ho musí model. Doložený případ: JobWatch má 17 záporných případů a všech 17
+odmítne prefiltr, takže deklarovaná precision 100 % o schopnosti rozlišovat neříká nic.
+
 **Brána**
 
-- [ ] Evaly běží v CI a jsou nad prahem (klasifikace 90 %+, extrakce po polích)
-- [ ] Změna promptu bez běhu evalů neprojde
+- [ ] Evaly jsou nad prahem (klasifikace 90 %+, extrakce po polích) a **měří tu příčku, která
+      rozhoduje v produkci**: je-li backend dostupný z CI, běží v CI; existuje-li jen za běhu
+      (binding, tajemství jen v produkci), měří se na nasazené verzi, ručně, s protokolem,
+      a v běhu je zapsané, která příčka odpověděla. Dokud takový eval neproběhl, je nasazení
+      **kandidát**, ne schválená verze
+- [ ] Sada obsahuje **záporné případy, které projdou deterministickým filtrem** — jinak neměří
+      schopnost modelu odmítnout
+- [ ] Změna promptu bez běhu evalů neprojde — brána hlídá **běh evalů**, ne jen zvýšení verze
+- [ ] Cizí text je ohraničený a označený za nedůvěryhodná data **na každém volání modelu**,
+      ne jen na tom hlavním — a nejdřív tam, kde má model nástroje
 - [ ] Model nemá přístup k žádné nevratné akci napřímo — jen přes proces z F3
 - [ ] Nepřátelský vstup neposune agenta mimo scénář (viz návrhový list)
 - [ ] U sporných výstupů vrací model **vlastní míru jistoty** a pod prahem se ptá
@@ -203,10 +225,12 @@ přehození práce.
 
 **Brána**
 
-- [ ] Agent se zastaví jedním úkonem a ověřil jsi to
+- [ ] Agent se zastaví jedním úkonem a ověřil jsi to **za běhu**, ne na stojícím systému
 - [ ] Simulovaný pád procesu dorazí vlastníkovi do minut
 - [ ] Ticho agenta je rozeznatelné od „nebylo co dělat"
 - [ ] Obnova ze zálohy je aspoň jednou nanečisto vyzkoušená
+- [ ] Zastavený běh zůstane zastavený: závěrečný zápis ho nepřepíše na úspěch a souběžný běh
+      mu nesmaže stop příznak
 
 ---
 

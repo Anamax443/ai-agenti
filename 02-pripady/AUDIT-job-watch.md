@@ -111,9 +111,14 @@ Podrobný záznam nálezu v `HANDOFF.md` téhož repozitáře.
 
 ---
 
-# Dohra — 1. 9. 2026: všechny čtyři nálezy uzavřené
+# Dohra — 1. 9. 2026: tři nálezy uzavřené, čtvrtý z poloviny
 
-Audit vznikl 30. 8. Za dva dny padly všechny nálezy, a to **v pořadí, které audit sám
+> **Sekce níž vznikla 1. 9. dopoledne a prohlašovala všechny čtyři nálezy za uzavřené.
+> Nebyla to pravda.** Uvádí to na pravou míru „Oprava téhle dohry“ na konci dokumentu.
+> Nadpis, tabulka i číslo za F1 jsou opravené podle ní — původní znění zůstalo v historii
+> gitu, ne tady, aby zelené tvrzení nepřežilo nález.
+
+Audit vznikl 30. 8. Za dva dny padly nálezy, a to **v pořadí, které audit sám
 předepsal** (hlášení o pádu → skutečný vypínač → obal cizího textu → evaly a verze promptu).
 Tenhle záznam je tu proto, že teprve dohra ukazuje, jestli byl audit k něčemu.
 
@@ -121,12 +126,14 @@ Tenhle záznam je tu proto, že teprve dohra ukazuje, jestli byl audit k něčem
 |---|---|---|
 | Vypínač nevypínal | F6 | ✅ příznak v `meta`, běh ho čte před každou dávkou (31. 8.) |
 | Pád běhu byl tichý | F6 | ✅ z `catch` do Telegramu; zabití zvenčí chytá hlídač nedoběhlých běhů |
-| Cizí text bez obalu | F4 | ✅ značka `<inzerat>` + věta v systémovém promptu, že uvnitř nejsou pokyny |
+| Cizí text bez obalu | F4 | ⚠️ **jen z poloviny** — značka `<inzerat>` a věta o nedůvěryhodných datech jsou pouze ve `score.ts`; `enrich.ts` a `discover.ts` hranici nemají (viz Oprava níž) |
 | Změna promptu neměřitelná | F4 | ✅ `PROMPT_VERSION` v každém běhu, brána v CI, sada 23 případů |
 
-**F1 dostalo číslo.** Audit psal „přesnost skórování nemá číslo; chyby se našly až v provozu".
-1. 9. změřeno na 23 reálných inzerátech uvnitř nasazené verze: **precision 100 %, recall
-i efektivní recall 100 %, coverage 100 %**.
+**F1 dostalo číslo — ale slabé.** Audit psal „přesnost skórování nemá číslo; chyby se našly
+až v provozu". 1. 9. změřeno na 23 reálných inzerátech uvnitř nasazené verze: **precision 100 %,
+recall i efektivní recall 100 %, coverage 100 %**. **O schopnosti modelu rozlišovat to ale
+nevypovídá:** všech 17 záporných případů sady odmítne deterministický prefiltr dřív, než se
+k modelu dostanou. Sada neobsahuje jediný těžký zápor. Viz Oprava níž.
 
 ## Tři věci, které se ukázaly až v dohře
 

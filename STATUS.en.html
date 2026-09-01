@@ -51,7 +51,7 @@
     <tr><th>What it is</th><td>A methodological base for building AI agents: principles, a design sheet, a phased build specification and a repository skeleton. Not a framework and not a library — it is <b>the brief an agent gets built against</b>.</td></tr>
     <tr><th>The core in one sentence</th><td><b>AI recognises, code executes.</b> The model gets three kinds of task only: intent recognition, structure extraction, text synthesis. Everything else is deterministic code.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · created 30 Aug 2026</td></tr>
-    <tr><th>State</th><td><span class="pill live">usable</span> The specification has been through its first live application on a running agent (JobWatch) and found three real defects.</td></tr>
+    <tr><th>State</th><td><span class="pill live">usable</span> The specification has been through its first live application on a running agent (JobWatch) and found four real defects — three fixed as of 1 Sep 2026, the fourth half. A second round found four more, this time in orchestration.</td></tr>
     <tr><th>Checks</th><td>CI on every push: secret scan (gitleaks), link check over <code>*.md</code> (lychee) and the language-pair check (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 
@@ -94,11 +94,13 @@
   <table>
     <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill live">fixed 31 Aug</span></td></tr>
     <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill live">fixed 31 Aug</span></td></tr>
-    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. <span class="pill live">fixed 1 Sep</span></td></tr>
+    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. Only the scoring path got the wrapper; <code>enrich.ts</code> and <code>discover.ts</code> still feed foreign text to a model armed with <code>web_search</code>/<code>web_fetch</code>, with no boundary. <span class="pill prep">half, 1 Sep</span></td></tr>
     <tr><th>Unmeasurable prompt</th><td>Prompts without a version and without an evaluation set — a change had nothing to be measured against. <span class="pill live">fixed 1 Sep</span></td></tr>
   </table>
-  <p><b>And F1 got its number.</b> The audit said scoring accuracy had none. On 1 Sep it was measured on 23 real
+  <p><b>And F1 got its number — but a weak one.</b> The audit said scoring accuracy had none. On 1 Sep it was measured on 23 real
   listings inside the deployed version: precision 100 %, recall and effective recall 100 %, coverage 100 %.
+  <b>It says nothing about the model's ability to discriminate:</b> all 17 negative cases in the set are
+  rejected by the deterministic prefilter before they reach the model — not one hard negative.
   Along the way it turned out that <b>an instrument can point at the wrong thing</b> — twice the set measured a
   different rung of the backend ladder than the one deciding in production. That is a finding <b>for the
   specification</b>: gate F4 requires “evals run in CI”, but for an agent whose default backend exists only at

@@ -15,7 +15,7 @@ would otherwise run into — and more expensively.
 |---|---|
 | **Input** | an idea for an agent, and a person who will own it |
 | **Output** | an agent in operation, with a runbook, evals and a kill switch |
-| **Critical path** | F0 → F1 → F3 → F5 |
+| **Critical path** | F0 → F1 → F3 → F6 |
 | **Where it usually goes wrong** | skipping F1 and F3 — the model gets started before a process exists |
 
 ---
@@ -109,12 +109,22 @@ Take scenario S1 and run it end to end with **hand-written input** — the kind 
 would otherwise produce. This is the part that carries consequences: the database write,
 the payment, the send. It has to be finished and tested before the model gets access to it.
 
+**"Two outcomes" is proven by provocation, not by assertion.** Unit tests over pure functions
+cannot reach here: the defect is rarely in a step, it is in the orchestration around it.
+A documented case — in JobWatch, 159 tests, 15 region checks and 26 evals missed four defects at
+once: a total source failure ended as a green run, an unsent notification was never retried, two
+concurrent runs overwrote each other's stop flag, and a stopped run looked successful in history.
+
 **Gate**
 
 - [ ] S1 passes from start to finish with manual input
 - [ ] When something goes wrong, the process **fails with a report** — not silently
 - [ ] There are only two outcomes: it failed and you know, or it went well
 - [ ] A repeated run does not do the thing twice (idempotence on irreversible steps)
+- [ ] Every outcome is **provoked by an acceptance test**, not merely described: all sources down ·
+      failure after the write and before the send · two concurrent runs · a stop mid-run
+- [ ] Two runs cannot overwrite each other's state — either a second run cannot start, or a run
+      holds a lease
 
 ---
 
@@ -124,7 +134,7 @@ the payment, the send. It has to be finished and tested before the model gets ac
 
 - The prompt goes in `prompts/`, versioned like code, with the version number in the run record
 - Generate the persona from source material and correct it; do not write it from memory
-- Populate the [evals](kostra-agenta/evals/) — 20–40 real inputs
+- Populate the [evals](kostra-agenta/evals/) — 20–40 real inputs, **hard negatives included**
 - Where numbers matter, add a cross-check with two independent passes
 
 **Metrics that make sense for an agent.** “Passed / failed” is not enough — you need to
@@ -142,10 +152,25 @@ The difference between “called the wrong tool” and “called the right tool 
 amount” is the difference between confusion and damage. A single number will not tell you
 which. For extraction, score field by field, not the whole output as one test.
 
+**A set without hard negatives only measures itself.** A negative the deterministic filter throws
+away says nothing about the model — the model never sees it. Only a negative that survives the
+filter, one the model itself must reject, carries information. A documented case: JobWatch has 17
+negative cases and the prefilter rejects all 17, so its stated precision of 100 % says nothing
+about the ability to discriminate.
+
 **Gate**
 
-- [ ] The evals run in CI and are above the threshold (classification 90 %+, extraction per field)
-- [ ] A prompt change without an eval run does not land
+- [ ] The evals are above the threshold (classification 90 %+, extraction per field) and **measure
+      the rung that decides in production**: if the backend is reachable from CI, they run in CI;
+      if it exists only at runtime (a binding, secrets only in production), they run against the
+      deployed version, by hand, with a protocol, and the run records which rung answered. Until
+      such an eval has run, a deployment is a **candidate**, not an approved version
+- [ ] The set contains **negative cases that survive the deterministic filter** — otherwise it does
+      not measure the model's ability to refuse
+- [ ] A prompt change without an eval run does not land — the gate watches the **eval run**, not
+      merely a version bump
+- [ ] Foreign text is delimited and marked as untrusted data **at every model call**, not just the
+      main one — and first where the model holds tools
 - [ ] The model has no direct access to any irreversible action — only through the F3 process
 - [ ] Hostile input does not push the agent off-scenario (see the design sheet)
 - [ ] For borderline outputs the model returns **its own confidence** and asks when below threshold
@@ -208,10 +233,12 @@ escalation without context is just passing the work along.
 
 **Gate**
 
-- [ ] The agent stops with one action and you have verified it
+- [ ] The agent stops with one action and you have verified it **while it was running**, not on an idle system
 - [ ] A simulated process crash reaches the owner within minutes
 - [ ] The agent's silence is distinguishable from “there was nothing to do”
 - [ ] Restoring from backup has been rehearsed at least once
+- [ ] A stopped run stays stopped: the closing write does not flip it back to success, and a
+      concurrent run cannot clear its stop flag
 
 ---
 

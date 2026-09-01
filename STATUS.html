@@ -50,7 +50,7 @@
     <tr><th>Co to je</th><td>Metodická báze pro stavbu AI agentů: principy, návrhový list, fázový build předpis a kostra repozitáře. Není to framework ani knihovna — je to <b>zadání, podle kterého se agent staví</b>.</td></tr>
     <tr><th>Jádro v jedné větě</th><td><b>AI rozpoznává, kód vykonává.</b> Model dostává jen tři typy úloh: rozpoznání záměru, extrakci struktury, syntézu textu. Všechno ostatní je deterministický kód.</td></tr>
     <tr><th>Repo</th><td><a href="https://github.com/Anamax443/ai-agenti"><code>Anamax443/ai-agenti</code></a> · public · založeno 30. 8. 2026</td></tr>
-    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch), našel čtyři reálné vady — a všechny jsou k 1. 9. 2026 opravené.</td></tr>
+    <tr><th>Stav</th><td><span class="pill live">použitelné</span> Předpis prošel prvním ostrým nasazením na běžícím agentovi (JobWatch), našel čtyři reálné vady — tři jsou k 1. 9. 2026 opravené, čtvrtá z poloviny. Druhé kolo našlo další čtyři, tentokrát v orchestraci.</td></tr>
     <tr><th>Kontrola</th><td>CI při každém pushi: sken tajemství (gitleaks), kontrola odkazů v <code>*.md</code> (lychee) a kontrola jazykových dvojic (<code>kontrola/dvojice.py</code>).</td></tr>
   </table>
 
@@ -93,11 +93,13 @@
   <table>
     <tr><th>Vypínač</th><td>Tlačítko Stop uzavřelo záznam běhu, ale pipeline žádný stop příznak nečetla a běžela dál. <span class="pill live">opraveno 31. 8.</span></td></tr>
     <tr><th>Tichý pád</th><td>Výjimka skončila v logu; notifikace se posílaly jen na nálezy, takže „nic nenašel" a „spadlo to" vypadaly zvenčí stejně. <span class="pill live">opraveno 31. 8.</span></td></tr>
-    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. <span class="pill live">opraveno 1. 9.</span></td></tr>
+    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. Obal dostala jen cesta skórování; <code>enrich.ts</code> a <code>discover.ts</code> pouštějí cizí text do modelu s <code>web_search</code>/<code>web_fetch</code> dál bez hranice. <span class="pill prep">z poloviny 1. 9.</span></td></tr>
     <tr><th>Neměřitelný prompt</th><td>Prompty bez verze a bez evaluační sady — změnu nebylo proti čemu měřit. <span class="pill live">opraveno 1. 9.</span></td></tr>
   </table>
-  <p><b>A F1 dostalo číslo.</b> Audit psal, že přesnost skórování číslo nemá. 1. 9. změřeno na 23 reálných
+  <p><b>A F1 dostalo číslo — ale slabé.</b> Audit psal, že přesnost skórování číslo nemá. 1. 9. změřeno na 23 reálných
   inzerátech uvnitř nasazené verze: precision 100 %, recall i efektivní recall 100 %, coverage 100 %.
+  <b>O schopnosti modelu rozlišovat to nevypovídá:</b> všech 17 záporných případů sady odmítne
+  deterministický prefiltr dřív, než se k modelu dostanou — sada nemá jediný těžký zápor.
   Cestou se ukázalo, že <b>měřicí přístroj může mířit vedle</b> — sada dvakrát měřila jinou příčku
   žebříku backendů, než která v produkci rozhodovala. To je nález <b>do předpisu</b>: brána F4 žádá
   „evaly běží v CI“, jenže u agenta, jehož výchozí backend existuje jen za běhu, je to nesplnitelné.</p>

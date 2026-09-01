@@ -281,10 +281,12 @@ footer a{color:var(--plum);text-decoration:none}
         promises — and that is a different question.
       </p>
       <p class="after">
-        <b>Aftermath as of 1 Sep 2026:</b> every finding has been fixed and deployed, in the very
-        order the audit prescribed. On top of that, the quality of the assessment itself now has a
-        number — on 23 real cases inside the deployed version, both precision and recall come out at
-        100 %. Along the way it turned out that <b>an instrument can point at the wrong thing</b>:
+        <b>Aftermath as of 1 Sep 2026:</b> three findings have been fixed and deployed, the fourth
+        half, in the very order the audit prescribed. On top of that, the quality of the assessment
+        itself now has a number — on 23 real cases inside the deployed version, both precision and
+        recall come out at 100 %. That number is weak, though: the set holds not one negative case
+        that survives the deterministic filter, so it says nothing about the model's ability to
+        discriminate. Along the way it turned out that <b>an instrument can point at the wrong thing</b>:
         twice the set measured a different model than the one deciding in production. That is a
         lesson feeding back into the specification.
       </p>

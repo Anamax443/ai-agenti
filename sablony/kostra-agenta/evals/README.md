@@ -24,6 +24,21 @@ umožňuje počítat metriky automaticky:
 }
 ```
 
+## Složení sady, ne jen počet
+
+Dvacet případů jde naplnit tak, že sada neměří nic. Rozhoduje složení:
+
+| Třída | Proč tam musí být |
+|---|---|
+| **těžké zápory** | zápor, který zahodí deterministický filtr, model nikdy neuvidí — nevypovídá o něm |
+| **kladné případy na hraně** | těsně nad prahem, ne učebnicové |
+| **útok** | vstup, který se agenta snaží dostat mimo scénář |
+| **poškozený vstup** | překlepy, chybějící pole, komolení |
+
+Sada bez těžkých záporů vyrábí falešnou jistotu. Doložený případ: JobWatch má 17 záporných
+případů a všech 17 odmítne prefiltr dřív, než se k modelu dostanou — deklarovaná precision
+100 % tedy o schopnosti modelu rozlišovat neříká nic.
+
 ## Metriky
 
 Jedno číslo „prošlo / neprošlo" ti neřekne, co se pokazilo:
@@ -44,6 +59,8 @@ Rozdíl mezi „zavolal špatný nástroj" a „zavolal správný nástroj se š
 - klasifikace: 90 % a víc
 - extrakce polí: hodnoť pole po poli, ne celý výstup jako jeden test
 - nasazení blokuj, když kterákoli metrika spadne pod minulý běh
+- měř **tu příčku, která rozhoduje v produkci** — sada, která volá jiný model nebo jiný backend
+  než ostrý běh, měří vedle a vyrábí falešnou jistotu
 
 ## Jak sadu rozšiřovat
 

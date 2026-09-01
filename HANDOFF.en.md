@@ -5,6 +5,35 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (evening, 2) — the correction propagated into the summaries; the specification gained acceptance tests and hard negatives
+
+- **Why:** commit `ed0b7bb` corrected the body of the audit, but the green claim stayed exactly
+  where a reader looks first — the aftermath heading, the findings table row, the pill in
+  `STATUS.html`, the "precision 100 %" number and the management summary. **The tick outlived the
+  finding** — the same defect one floor up from the one the audit describes in JobWatch.
+- **Done — summaries brought in line with the correction** (CS and EN): the aftermath heading in
+  the audit, the table row for finding 3 (✅ → ⚠️ half), the F1 number qualified (all 17 negatives
+  are rejected by the prefilter, so precision 100 % says nothing about discrimination), the State
+  row and the Foreign text row in `STATUS.html`, the aftermath paragraph in
+  `05-html/manazerske-shrnuti.html`.
+- **Done — three changes to the specification**, each with a documented case from the second round:
+  - **F3 and F6 gained acceptance tests for provoked failures.** "Two outcomes" is proven by
+    provocation, not by a unit test over a pure function — 159 tests and 26 evals missed four
+    orchestration defects in JobWatch. New items: all sources down, failure after the write and
+    before the send, two concurrent runs, a stop mid-run, and that a stopped run stays stopped.
+  - **F4 now distinguishes a CI-reachable backend from a runtime-only one** (the open item from the
+    morning of 1 Sep) and additionally requires **hard negatives** — a negative the deterministic
+    filter throws away says nothing about the model. Also added to `kostra-agenta/evals/README.md`
+    (composition, not just count). In addition: foreign text must be wrapped **at every model call**,
+    first where the model holds tools — that is exactly where JobWatch broke.
+  - **Contradiction fixed:** the critical path read `F0 → F1 → F3 → F5` while the same document
+    calls the kill switch in **F6** unskippable. Corrected to `F0 → F1 → F3 → F6`.
+- **Verified:** `python kontrola/dvojice.py` — green.
+- **Remaining:** a second audit on an agent of a different class (one that writes or sends
+  outward) — the evidence base is still N = 1. Unchanged: deleting `03-projekty/prepisovac/kod/`,
+  `AGENTS.md` into the other repos, the UX chapter from Albada, Vorel and Lanham, the glossary,
+  gwalarn.
+
 ## 2026-09-01 — JobWatch audit aftermath: all findings closed, and one finding back into the specification
 - **Done:** an **Aftermath** section was added to
   [`02-pripady/AUDIT-job-watch.en.md`](02-pripady/AUDIT-job-watch.en.md). Within two days all four

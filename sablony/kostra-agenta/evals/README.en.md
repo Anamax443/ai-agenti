@@ -29,6 +29,21 @@ possible to compute the metrics automatically:
 The field names stay Czech — they are the on-disk format shared with the Czech original,
 not prose.
 
+## Composition, not just count
+
+Twenty cases can be filled in such a way that the set measures nothing. Composition decides:
+
+| Class | Why it has to be there |
+|---|---|
+| **hard negatives** | a negative the deterministic filter throws away is never seen by the model — it says nothing about it |
+| **positives near the edge** | just above the threshold, not textbook ones |
+| **attack** | input trying to push the agent off-scenario |
+| **damaged input** | typos, missing fields, mangling |
+
+A set without hard negatives manufactures false confidence. A documented case: JobWatch has 17
+negative cases and the prefilter rejects all 17 before they reach the model — so its stated
+precision of 100 % says nothing about the model's ability to discriminate.
+
 ## Metrics
 
 A single “passed / failed” number will not tell you what went wrong:
@@ -49,6 +64,8 @@ amount” is the difference between confusion and damage.
 - classification: 90 % or better
 - field extraction: score field by field, not the whole output as one test
 - block the deployment when any metric drops below the previous run
+- measure **the rung that decides in production** — a set calling a different model or a different
+  backend than the live run measures beside the point and manufactures false confidence
 
 ## How to grow the set
 

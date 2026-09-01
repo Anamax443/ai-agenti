@@ -2,6 +2,33 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (večer, 2) — oprava se rozvedla do souhrnů; předpis dostal acceptance testy a těžké zápory
+
+- **Proč:** commit `ed0b7bb` opravil tělo auditu, ale zelené tvrzení zůstalo tam, kam se čtenář
+  dívá první — v nadpisu dohry, v řádku tabulky nálezů, v pilulce ve `STATUS.html`, u čísla
+  „precision 100 %" a v manažerském shrnutí. **Fajfka přežila nález** — tentýž defekt o patro výš,
+  než jaký audit popisuje u JobWatche.
+- **Hotové — souhrny uvedeny do souladu s opravou** (CS i EN): nadpis dohry v auditu, řádek
+  tabulky u nálezu č. 3 (✅ → ⚠️ z poloviny), číslo za F1 doplněno o výhradu (všech 17 záporů
+  odmítne prefiltr, takže precision 100 % nevypovídá o rozlišovací schopnosti), řádek Stav
+  a řádek Cizí text ve `STATUS.html`, odstavec dohry v `05-html/manazerske-shrnuti.html`.
+- **Hotové — tři změny předpisu**, každá s doloženým případem z druhého kola:
+  - **F3 a F6 dostaly acceptance testy vyvolaných selhání.** Tvrzení „dva konce" se prokazuje
+    vyvoláním, ne unit testem nad čistou funkcí — čtyři vady v orchestraci JobWatche neodhalilo
+    159 testů ani 26 evalů. Přibyly položky: všechny zdroje dolů, selhání po zápisu a před
+    odesláním, dva souběžné běhy, zastavení uprostřed, a že zastavený běh zůstane zastavený.
+  - **F4 rozlišuje backend z CI a backend jen za běhu** (nezapracovaný bod z 1. 9. dopoledne)
+    a nově žádá **těžké zápory** v sadě — zápor, který zahodí deterministický filtr, o modelu
+    nevypovídá. Doplněno i do `kostra-agenta/evals/README.md` (složení sady, ne jen počet).
+    Doplňkově: obal cizího textu se žádá **na každém volání modelu**, nejdřív tam, kde má model
+    nástroje — právě to u JobWatche prasklo.
+  - **Oprava rozporu:** kritická cesta zněla `F0 → F1 → F3 → F5`, začímž týž dokument označuje
+    za nepřeskočitelný vypínač ve **F6**. Opraveno na `F0 → F1 → F3 → F6`.
+- **Ověřeno:** `python kontrola/dvojice.py` — zelené.
+- **Zbývá:** druhý audit na agentovi jiné třídy (něco zapisuje nebo posílá ven) — zatím je
+  důkazní základna N = 1. Beze změny: smazání `03-projekty/prepisovac/kod/`, `AGENTS.md` do
+  ostatních repů, UX kapitola z Albady, Vorel a Lanham, slovník, gwalarn.
+
 ## 2026-09-01 — dohra auditu JobWatche: všechny nálezy uzavřené, a jeden nález zpátky do předpisu
 - **Hotové:** do [`02-pripady/AUDIT-job-watch.md`](02-pripady/AUDIT-job-watch.md) přibyla sekce
   **Dohra**. Za dva dny padly všechny čtyři nálezy, a to v pořadí, které audit sám předepsal
