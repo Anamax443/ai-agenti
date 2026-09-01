@@ -179,3 +179,37 @@ two messages later, by hand.
 from CI (the current wording holds) and a backend that exists only at runtime (then "on the deployed
 version, manually, with a record, and the run notes which rung answered"). Without that, the gate
 forces you either to lie or to measure the wrong thing.
+
+## A correction to this aftermath — evening of 1 Sep 2026
+
+**The section above declared all four findings closed. That is not true, and an independent review
+caught it.** Finding 3 (foreign text unwrapped) is **only half closed**: the `<inzerat>` delimiter
+and the untrusted-data sentence live in `score.ts`, but `enrich.ts` and `discover.ts` have no such
+boundary — and those are precisely the paths that let the model onto foreign websites via
+`web_search`/`web_fetch`. The original audit said as much ("the enrichment step additionally lets the
+model loose on third-party websites"), and it was still overlooked when closing the finding. The
+prompts in both files also live outside `prompts.ts`, so they are covered neither by
+`PROMPT_VERSION` nor by the CI gate.
+
+**A second factual correction:** the negative class of the eval set is weaker than the section above
+claimed — **17 of 17** negatives are rejected by the deterministic prefilter, not 16. The model
+therefore never sees a single hard negative case, and precision of 100 % says nothing about its
+ability to discriminate.
+
+**And a finding for the specification, sharper than the one about evals in CI.** The review found
+four defects that 159 tests, 15 region checks and 26 deterministic evals had not — because they all
+sit in **orchestration**, not in individual functions:
+
+1. all sources failing ends in a green run (no `failed/degraded` state),
+2. an unsent notification is never retried (no outbox with retry),
+3. `POST /api/run` has no lock — two runs at once, and the second erases the first one’s stop flag,
+4. a stopped run is written back to `ok = 1` by the final flush.
+
+Those are exactly phases **F3** and **F6**, which the specification marks as unskippable. **Lesson:
+the F3 gate asks "are there only two outcomes?" but does not ask how you prove it.** Unit tests over
+pure functions cannot prove it — that needs an operational acceptance test which actually induces
+those states (all sources down, a failed send, two concurrent requests, a stop mid-run).
+
+**Proposal for the specification:** add mandatory **induced-failure acceptance tests** to F3 and F6,
+not just a claim in the design sheet. And add to F8 that *a green eval set stops discriminating* —
+after the fixes it was 23/23 and the agent still failed F3 and F6.

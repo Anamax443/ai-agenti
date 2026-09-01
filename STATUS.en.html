@@ -90,8 +90,7 @@
   <h2>First live application: JobWatch</h2>
   <p>The specification was applied to <a href="https://github.com/Anamax443/job-watch">JobWatch</a> — a daily agent
   running live on Cloudflare. The result is a record that the specification works: it found <b>four defects
-  that the tests had not</b>, because it asked different questions than tests do. <b>All four were fixed and
-  deployed by 1 Sep 2026</b>, in the very order the audit prescribed.</p>
+  that the tests had not</b>, because it asked different questions than tests do. <b>Three were fixed and deployed by 1 Sep 2026, the fourth half</b>, in the very order the audit prescribed.</p>
   <table>
     <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill live">fixed 31 Aug</span></td></tr>
     <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill live">fixed 31 Aug</span></td></tr>

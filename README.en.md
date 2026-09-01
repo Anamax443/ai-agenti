@@ -25,7 +25,7 @@ gate you have to pass before the next one begins.
 
 How the specification did in live operation is shown by
 **[02-pripady/AUDIT-job-watch.en.md](02-pripady/AUDIT-job-watch.en.md)** — on a running
-agent it found four defects the tests had not — all of them fixed by 1 Sep 2026.
+agent it found four defects the tests had not. Three are fixed, the fourth half — and a second round of testing found four more, this time in orchestration.
 
 ### When you need to show it to somebody else
 

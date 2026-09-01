@@ -162,3 +162,35 @@ změnil, brána spokojeně pustila dál a modelová část se změřila až o dv
 **Návrh úpravy předpisu:** u fáze F4 rozlišit dva případy — backend dostupný z CI (platí dnešní
 znění) a backend existující jen za běhu (pak „na nasazené verzi, ručně, s protokolem, a v běhu
 je zapsané, která příčka odpověděla"). Bez toho brána nutí buď lhát, nebo měřit vedle.
+
+## Oprava téhle dohry — 1. 9. 2026 večer
+
+**Sekce výše prohlašovala všechny čtyři nálezy za uzavřené. Není to pravda a nezávislá recenze to
+trefila.** Nález č. 3 (cizí text bez obalu) je uzavřený **jen z poloviny**: ohraničení `<inzerat>`
+a věta o nedůvěryhodných datech jsou ve `score.ts`, ale `enrich.ts` a `discover.ts` stejnou hranici
+nemají — a přitom právě ony pouštějí model na cizí weby přes `web_search`/`web_fetch`. Sám původní
+audit to psal („obohacovací krok navíc pouští model na cizí weby"), a přesto se to při zavírání
+nálezu přehlédlo. Prompty v obou souborech navíc nebydlí v `prompts.ts`, takže je nekryje ani
+`PROMPT_VERSION`, ani brána v CI.
+
+**Druhá oprava faktu:** záporná třída eval sady je slabší, než sekce výše tvrdila — **17 ze 17**
+negativů odmítne deterministický prefiltr, ne 16. Model tedy nedostane ani jeden těžký záporný
+případ a precision 100 % o jeho schopnosti rozlišovat neříká nic.
+
+**A nález pro předpis, tentokrát ostřejší než ten o evalech v CI.** Recenze našla čtyři vady, které
+neodhalilo 159 testů, 15 kontrol regionu ani 26 deterministických evalů — protože všechny sedí
+v **orchestraci**, ne v jednotlivých funkcích:
+
+1. selhání všech zdrojů skončí zeleným během (chybí stav `failed/degraded`),
+2. neodeslaná notifikace se nikdy nezopakuje (chybí outbox s retry),
+3. `POST /api/run` nemá zámek — dva běhy naráz, a druhý navíc smaže stop příznak prvního,
+4. zastavený běh přepíše závěrečný zápis zpátky na `ok = 1`.
+
+To jsou přesně fáze **F3** a **F6**, které předpis označuje za nepřeskočitelné. **Poučení: brána
+u F3 se ptá „existují jen dva konce?", ale neptá se, čím to prokážeš.** Unit testy nad čistými
+funkcemi to prokázat nemůžou — je na to potřeba provozní acceptance test, který ty stavy skutečně
+vyvolá (všechny zdroje dolů, selhané odeslání, dva souběžné požadavky, stop uprostřed běhu).
+
+**Návrh do předpisu:** k F3 a F6 doplnit povinné **acceptance testy vyvolaných selhání**, ne jen
+tvrzení v návrhovém listu. A k F8 přidat, že *zelená eval sada přestává rozlišovat* — po opravách
+byla 23/23 a přesto agent neprošel F3 ani F6.
