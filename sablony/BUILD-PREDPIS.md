@@ -97,6 +97,8 @@ Měř tři věci, každou číslem:
 - [ ] Volání nástrojů jde v testu vypnout **konfigurací** (u API je to parametr
       `tool_choice: none`), ne podmínkou v kódu
 - [ ] Žádné tajemství v gitu, jen `*.example`
+- [ ] Pravidlo, které platí na víc místech, hlídá **invariant nad zdrojákem**, ne kázeň
+      (např. „každý soubor, který deklaruje nástroj, ohraničuje cizí text")
 
 ---
 
@@ -339,6 +341,57 @@ K tomu implicitní signály od lidí: jak často se ptají znovu jinými slovy a
 - [ ] Evalů přibývá s provozem
 - [ ] Změny promptu mají review jako změny kódu
 - [ ] Jednou za čas: sedí ještě seznam scénářů, nebo se agent někam rozlezl?
+- [ ] Každá kontrolní vrstva má **doložený případ, který chytila** — vrstva bez úlovku neměří
+
+---
+
+## Kontrolní vrstvy — co která nevidí
+
+Široká vrstva testů nestačí, a je to doložené. JobWatch měl **159 testů, 15 kontrol regionu
+a 26 evalů** — a ani jeden z nich nechytil čtyři vady v orchestraci. Ne proto, že by jich bylo
+málo. Proto, že **všechny testovaly uvnitř komponent a vada byla mezi nimi**: každá z těch
+funkcí se chovala správně sama o sobě.
+
+Vrstvy se proto nevybírají podle počtu, ale podle toho, **co která strukturálně nevidí**:
+
+| Vrstva | Chytá | Strukturálně nechytá |
+|---|---|---|
+| jednotkové testy nad čistými funkcemi | logiku uvnitř kroku | vztahy mezi kroky |
+| **invarianty nad zdrojákem** | „zapomnělo se to použít jinde" | jestli je to věcně správně |
+| deterministické evaly | prefiltr, deduplikaci, normalizaci | kvalitu modelu |
+| modelové evaly | rozpoznávání a rozlišování | orchestraci — a **lžou, měří-li jinou příčku** |
+| acceptance testy vyvolaných selhání | orchestraci: zdroje dolů, souběh, stop, timeout | co nikoho nenapadlo vyvolat |
+| adversariální sada | injection, přesměrování rozhodnutí | nový typ útoku |
+| provozní pozorovatelnost | drift, náklady, kde to vázne | cokoli **předem** |
+| cizí oči | předpoklady, na které autor nevidí | je to drahé a pomalé |
+
+Tabulka vznikla z matice osmi doložených vad jednoho agenta proti sedmi mechanismům. Sloupec
+vpravo není teorie — je to seznam toho, co se u něj skutečně nechytilo.
+
+**Nejlevnější vrstva jsou invarianty nad zdrojákem.** Ne testy chování, ale tvrzení o kódu:
+*„žádný soubor mimo `prompts.ts` nedefinuje vlastní systémový prompt"*, *„každý soubor, který
+deklaruje nástroj, ohraničuje cizí text"*. Mají pár řádků, běží v CI a chytají přesně tu třídu,
+která nejčastěji kouše: **pravidlo se zavedlo a někde se zapomnělo použít.** U JobWatche druhý
+z těch invariantů při prvním běhu rovnou označil soubor, o kterém se nemluvilo.
+
+**Nejlepší kontrola ale není test, je strop.** Test běží jednou v CI. Deterministická vrstva,
+která stropuje rozsah, běží **při každém průchodu** a nedá se obejít tím, že tě něco nenapadlo
+otestovat. Kde jde vybrat mezi „otestovat, že to model neudělá" a „zařídit, že to nejde",
+platí druhé.
+
+**A vrstva, která nikdy nespadne, přestala měřit.** Sada, která je dlouho 23/23, se z měřicího
+přístroje stala ozdoba. Proto:
+
+> **Každá kontrolní vrstva musí mít doložený případ, který chytila.** Vrstva bez úlovku není
+> obrana — je to běžící kód, o kterém nevíš, jestli něco měří.
+
+**Pořadí, když se staví od nuly** (podle poměru užitek/práce):
+
+1. invarianty nad zdrojákem — nejlevnější, chytají zapomenutí,
+2. deterministický strop — není test, ale drží za běhu,
+3. acceptance testy vyvolaných selhání — drahé jednou, pak zdarma,
+4. adversariální sada,
+5. modelové evaly, a to s těžkými zápory.
 
 ---
 

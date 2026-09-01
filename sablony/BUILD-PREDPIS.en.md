@@ -105,6 +105,8 @@ Measure three things, each as a number:
 - [ ] Tool calls can be switched off in tests **by configuration** (with an API that is
       the `tool_choice: none` parameter), not by a condition in the code
 - [ ] No secrets in git, only `*.example`
+- [ ] A rule that applies in more than one place is enforced by an **invariant over the
+      source**, not by discipline (e.g. "every file declaring a tool delimits foreign text")
 
 ---
 
@@ -353,6 +355,60 @@ often they give up halfway. Both arrive before a complaint does.
 - [ ] The eval set grows with operation
 - [ ] Prompt changes get review like code changes
 - [ ] Every so often: does the scenario list still hold, or has the agent crept somewhere?
+- [ ] Every layer of checks has a **documented case it caught** — a layer with no catch is not
+      measuring
+
+---
+
+## Layers of checks — what each one cannot see
+
+A wide layer of tests is not enough, and that is documented. JobWatch had **159 tests, 15
+region checks and 26 evals** — and not one of them caught the four orchestration defects. Not
+because there were too few. Because **they all tested inside components and the defect was
+between them**: each of those functions behaved correctly on its own.
+
+Layers are therefore chosen not by count but by **what each one structurally cannot see**:
+
+| Layer | Catches | Structurally misses |
+|---|---|---|
+| unit tests over pure functions | the logic inside a step | the relations between steps |
+| **invariants over the source** | "it was forgotten somewhere else" | whether it is factually right |
+| deterministic evals | the prefilter, deduplication, normalisation | the quality of the model |
+| model evals | recognition and discrimination | orchestration — and **they lie if they measure another rung** |
+| acceptance tests for provoked failures | orchestration: sources down, concurrency, stop, timeout | whatever nobody thought to provoke |
+| an adversarial set | injection, redirection of a decision | a new kind of attack |
+| operational observability | drift, cost, where things get stuck | anything **in advance** |
+| outside eyes | assumptions the author cannot see | it is expensive and slow |
+
+The table comes from a matrix of eight documented defects of one agent against seven
+mechanisms. The right-hand column is not theory — it is the list of what actually went
+uncaught there.
+
+**The cheapest layer is invariants over the source.** Not tests of behaviour but claims about
+the code: *"no file outside `prompts.ts` defines its own system prompt"*, *"every file that
+declares a tool delimits foreign text"*. They are a few lines, they run in CI, and they catch
+precisely the class that bites most often: **a rule was introduced and somewhere it was
+forgotten.** In JobWatch the second of those invariants flagged, on its very first run, a file
+nobody had mentioned.
+
+**But the best check is not a test, it is a cap.** A test runs once in CI. The deterministic
+layer that caps the scope runs **on every pass** and cannot be bypassed by something you never
+thought to test. Where you can choose between "test that the model will not do it" and "make it
+impossible", take the second.
+
+**And a layer that never fails has stopped measuring.** A set that has been 23/23 for a long
+time has turned from an instrument into an ornament. Hence:
+
+> **Every layer of checks must have a documented case it caught.** A layer with no catch is not
+> a defence — it is running code you do not know is measuring anything.
+
+**The order when building from scratch** (by benefit/effort):
+
+1. invariants over the source — cheapest, they catch forgetting,
+2. the deterministic cap — not a test, but it holds at runtime,
+3. acceptance tests for provoked failures — expensive once, free afterwards,
+4. an adversarial set,
+5. model evals, and with hard negatives.
 
 ---
 

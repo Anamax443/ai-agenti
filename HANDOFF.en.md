@@ -5,6 +5,38 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (10) — the chapter *Layers of checks — what each one cannot see*
+
+- **Why:** "build a wide layer of checking tests" is the right intent and **a wide layer has
+  already failed once**. JobWatch had 159 tests, 15 region checks and 26 evals — and not one of
+  them caught the four orchestration defects. Not because there were too few, but because
+  **they all tested inside components and the defect was between them**.
+- **Done — a new chapter in the specification** (CS and EN), between F8 and *What a small agent
+  may skip*. A table of eight layers, each with **what it catches** and **what it structurally
+  misses**. It comes from the matrix of eight documented defects × seven mechanisms in the
+  oponentura dossier, so the right-hand column is not theory — it is the list of what actually
+  went uncaught in JobWatch.
+- **The three sentences the chapter is about:**
+  - **The cheapest layer is invariants over the source.** Not tests of behaviour but claims
+    about the code. A few lines, they run in CI, and they catch the class "a rule was introduced
+    and somewhere it was forgotten" — exactly the one that bit this morning over wrapping
+    foreign text.
+  - **The best check is not a test, it is a cap.** A test runs once in CI; the deterministic
+    layer runs on every pass and cannot be bypassed by something you never thought to test.
+    Where you can choose between "test that the model will not do it" and "make it impossible",
+    take the second.
+  - **A layer that never fails has stopped measuring.** A set that has been 23/23 for a long
+    time is an ornament, not an instrument.
+- **The binding rule:** *every layer of checks must have a documented case it caught.* A layer
+  with no catch is not a defence; it is running code you do not know is measuring anything.
+- **Two new conditions:** into F2 *"a rule applying in more than one place is enforced by an
+  invariant over the source, not by discipline"*, into F8 *"every layer of checks has a
+  documented case it caught"*. There are now **49** conditions (F2 6, F8 4).
+- **Verified:** `dvojice.py` and `brany.py` green.
+- **Remaining:** `N1` the evidence quintuple · `N4` the role contract · `A6` the tool-security
+  layer · `A4` splitting eval sets · `A2` the scope of validity · `N6` decommissioning · `N8` a
+  machine consistency check. And above all **the second audit** and **a repeatability test**.
+
 ## 2026-09-01 (9) — `OA2` resolved: the cap lives in the robot, not in a prohibition on the orchestrator
 
 - **The disagreement:** *foreign input must not trigger an action* against *the orchestrator has

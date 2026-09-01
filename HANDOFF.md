@@ -2,6 +2,34 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (10) — kapitola *Kontrolní vrstvy — co která nevidí*
+
+- **Proč:** „stavět širokou vrstvu kontrolních testů" je správný záměr a **širokou vrstvu už
+  jednou selhala**. JobWatch měl 159 testů, 15 kontrol regionu a 26 evalů — a ani jeden
+  z nich nechytil čtyři vady v orchestraci. Ne proto, že by jich bylo málo, ale protože
+  **všechny testovaly uvnitř komponent a vada byla mezi nimi**.
+- **Hotové — nová kapitola v předpisu** (CS i EN), mezi F8 a *Co u malého agenta přeskočit*.
+  Tabulka osmi vrstev, u každé **co chytá** a **co strukturálně nechytá**. Vznikla z matice
+  osmi doložených vad × sedmi mechanismů z podkladu pro oponenturu, takže pravý sloupec není
+  teorie — je to seznam toho, co se u JobWatche skutečně nechytilo.
+- **Tři věty, o které v té kapitole jde:**
+  - **Nejlevnější vrstva jsou invarianty nad zdrojákem.** Ne testy chování, ale tvrzení
+    o kódu. Pár řádků, běží v CI, a chytají třídu „pravidlo se zavedlo a někde se zapomnělo
+    použít" — přesně tu, která dnes ráno kousla u obalu cizího textu.
+  - **Nejlepší kontrola není test, je strop.** Test běží jednou v CI; deterministická vrstva
+    běží při každém průchodu a nedá se obejít tím, že tě něco nenapadlo otestovat. Kde jde
+    vybrat mezi „otestovat, že to model neudělá" a „zařídit, že to nejde", platí druhé.
+  - **Vrstva, která nikdy nespadne, přestala měřit.** Sada dlouho 23/23 je ozdoba, ne přístroj.
+- **Závazné pravidlo:** *každá kontrolní vrstva musí mít doložený případ, který chytila.*
+  Vrstva bez úlovku není obrana, je to běžící kód, o kterém nevíš, jestli něco měří.
+- **Dvě nové podmínky:** do F2 *„pravidlo platné na víc místech hlídá invariant nad zdrojákem,
+  ne kázeň"*, do F8 *„každá kontrolní vrstva má doložený případ, který chytila"*.
+  Podmínek je nově **49** (F2 6, F8 4).
+- **Ověřeno:** `dvojice.py` i `brany.py` zelené.
+- **Zbývá:** `N1` důkazní pětice · `N4` kontrakt rolí · `A6` vrstva bezpečnosti nástrojů ·
+  `A4` rozdělení eval sad · `A2` rozsah platnosti · `N6` ukončení · `N8` strojová kontrola
+  konzistence. A především **druhý audit** a **test opakovatelnosti**.
+
 ## 2026-09-01 (9) — `OA2` vyřešeno: strop je v robotovi, ne v zákazu na orchestrátoru
 
 - **Spor:** *cizí vstup nesmí spustit akci* proti *orchestrátor žádnou pravomoc nemá, jen
