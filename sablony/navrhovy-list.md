@@ -178,6 +178,36 @@ Ne když se jen něco stalo.
 
 ---
 
+## Stavy a přechody
+
+Povinné, má-li agent **aspoň jednu nevratnou akci** (odeslání ven, zápis do cizího systému,
+platba). Nevratná akce leží na **přechodu**, ne uvnitř stavu.
+
+**Stavy** _(uzavřený seznam — co v něm není, nesmí nastat)_
+
+| Stav | Co znamená | Terminální? |
+|---|---|---|
+| | | ano / ne |
+| | | ano / ne |
+
+**Přechody**
+
+| Z | Do | Co ho spouští | Nevratná akce? | Když selže uprostřed |
+|---|---|---|---|---|
+| | | | ano / ne | |
+| | | | ano / ne | |
+
+**Čtyři otázky** _(odpověz i tehdy, když stavy vypíšeš — právě na nich se to láme)_
+
+| Otázka | Odpověď |
+|---|---|
+| Kde leží stav mezi „zapsáno" a „odesláno"? | |
+| Kdo vlastní běh a co smí druhý běh? | |
+| Které stavy jsou terminální? | |
+| Co se stane s neznámým výsledkem vzdáleného volání? | |
+
+---
+
 ## Moduly
 
 | ID | Modul | Kontrakt (vstup → výstup) | Závisí na |

@@ -304,6 +304,10 @@ něco stalo.
   zpráva. Agent, který mlčí, vypadá stejně jako agent, který pracuje.
 - **Idempotence.** Každý kanál doručuje opakovaně. Klíč z ID zprávy,
   ne z obsahu.
+- **Nevratná akce leží na přechodu, ne uvnitř stavu.** Odeslání, platba a zápis do cizího
+  systému nejsou stavy, jsou to hrany mezi nimi. Kdo si to takhle nakreslí, musí odpovědět
+  na otázku „co když přechod selže uprostřed" — a přesně tam vzniká ztracená zpráva
+  i dvojí provedení.
 - **Neznámý výsledek je stav, ne chyba.** Vzdálené volání proběhne, odpověď se
   ztratí — agent neví, co se stalo. Ten stav se **zapisuje** (`neznamy`,
   `ceka_na_smireni`) a řeší se dotazem na cílový systém, idempotentním opakováním,

@@ -5,6 +5,51 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (5) — the state model: an irreversible action sits on a transition, not inside a state (N3)
+
+- **Why:** three of the four orchestration defects in JobWatch were the missing version of this
+  one thing. "An observable outcome" is a claim about the result; a state model is **the
+  artefact you can check it against**. Without one there is no saying what an ending is —
+  `ok = 1` written by the closing step is a write, not a finish.
+- **Done — F3 gained states and transitions** (CS and EN). The load-bearing rule: **an
+  irreversible action always sits on a transition, never inside a state.** A send, a payment
+  and a write into someone else's system are not states, they are the edges between them — and
+  once it is drawn that way, the author has to answer the question that otherwise gets skipped:
+  *what if the transition fails halfway?*
+- **Four questions, each with a documented defect:**
+
+  | Question | What it prevents |
+  |---|---|
+  | Where is the state between "written" and "sent"? | the score stored, the message unsent, the queue never returns to it |
+  | Who owns the run, and what may a second run do? | two concurrent runs overwrite each other's state; the second clears the first one's stop flag |
+  | Which states are terminal? | a stopped run flipped back to success by the closing write |
+  | What happens to an unknown outcome? | the call went through, the reply was lost |
+
+  All four are defects of one single agent, and **none came from carelessness** — each of those
+  functions behaves correctly on its own. The defect lives in the relation between them, and
+  that only becomes visible on the diagram.
+- **Patterns stay outside the specification** (the answer to `Q7`): outbox, lease, idempotency
+  key and a dead-letter queue are **named** but not prescribed. Code does not belong here, and
+  a pattern bound to a language and a platform ages faster than the question. The specification
+  asks for the answers to those four questions — whoever knows them will find the pattern;
+  whoever does not will misuse it anyway.
+- **Gate F3** has two new items: the states and transitions listed in the design sheet with the
+  irreversible action on a transition, and, for every such transition, what happens if it fails
+  halfway. Tied to **the existence of an irreversible action**, not to the size of the agent —
+  for an RSS reader it would be ceremony.
+- **The design sheet** has a new section *States and transitions*: a closed list of states with
+  a terminality flag, a transition table with "irreversible action?" and "if it fails halfway"
+  columns, and those four questions separately — because that is where it breaks even when
+  someone does list the states.
+- **Principles §11** gained the matching rule in one sentence.
+- **Verified:** `python kontrola/dvojice.py` — green. The gates now hold **45** conditions
+  (42 + 1 strictness in F0 + 2 states in F3); CS and EN agree.
+- **Note:** the change sits after the `audit-2-freeze` tag and does not enter the second audit.
+- **Remaining:** `N1` the evidence quintuple in the specification · `N4` the role contract and
+  metrics per model role · `A6` the tool-security layer · `A4` splitting eval sets into
+  regression / challenge / held-out · `A2` narrowing the "any agent" scope · `N6`
+  decommissioning · `N8` a machine consistency check. And above all **the second audit**.
+
 ## 2026-09-01 (4) — risk has two axes: action reversibility × system impact
 
 - **Why:** the external review (`A3`) showed that classifying by action reversibility alone

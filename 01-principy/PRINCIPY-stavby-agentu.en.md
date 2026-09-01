@@ -301,6 +301,10 @@ when **a question or a task follows from it** — not merely when something happ
   An agent that says nothing looks exactly like an agent that is working.
 - **Idempotence.** Every channel delivers more than once. Key off the message ID, not the
   content.
+- **An irreversible action sits on a transition, not inside a state.** A send, a payment and
+  a write into someone else's system are not states, they are the edges between them. Draw it
+  that way and you have to answer "what if the transition fails halfway" — which is exactly
+  where a lost message and a double execution come from.
 - **An unknown outcome is a state, not an error.** The remote call goes through, the reply
   is lost — the agent does not know what happened. That state is **recorded** (`unknown`,
   `reconciliation_required`) and resolved by querying the target system, retrying

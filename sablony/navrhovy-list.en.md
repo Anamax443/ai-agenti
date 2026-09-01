@@ -183,6 +183,37 @@ happened.
 
 ---
 
+## States and transitions
+
+Mandatory if the agent has **at least one irreversible action** (a send outward, a write into
+someone else's system, a payment). An irreversible action sits on a **transition**, not inside
+a state.
+
+**States** _(a closed list — what is not in it must not happen)_
+
+| State | What it means | Terminal? |
+|---|---|---|
+| | | yes / no |
+| | | yes / no |
+
+**Transitions**
+
+| From | To | What triggers it | Irreversible action? | If it fails halfway |
+|---|---|---|---|---|
+| | | | yes / no | |
+| | | | yes / no | |
+
+**Four questions** _(answer them even after listing the states — this is where it breaks)_
+
+| Question | Answer |
+|---|---|
+| Where is the state between "written" and "sent"? | |
+| Who owns the run, and what may a second run do? | |
+| Which states are terminal? | |
+| What happens to an unknown outcome of a remote call? | |
+
+---
+
 ## Modules
 
 | ID | Module | Contract (input → output) | Depends on |

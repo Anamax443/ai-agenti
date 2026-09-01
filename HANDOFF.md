@@ -2,6 +2,48 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (5) — stavový model: nevratná akce leží na přechodu, ne uvnitř stavu (N3)
+
+- **Proč:** tři ze čtyř orchestračních vad JobWatche byly chybějící verzí téhle jediné věci.
+  „Pozorovatelný konec" je tvrzení o výsledku; stavový model je **artefakt, na kterém se to
+  dá ověřit**. Bez něj se nedá říct, co je konec — `ok = 1` zapsané závěrečným krokem je
+  zápis, ne doběhnutí.
+- **Hotové — F3 dostala stavy a přechody** (CS i EN). Nosné pravidlo: **nevratná akce leží
+  vždy na přechodu, ne uvnitř stavu.** Odeslání, platba a zápis do cizího systému nejsou
+  stavy, jsou to hrany mezi nimi — a jakmile se to takhle nakreslí, musí autor odpovědět na
+  otázku, která se jinak přehlédne: *co když přechod selže uprostřed?*
+- **Čtyři otázky, každá s doloženou vadou:**
+
+  | Otázka | Čemu předchází |
+  |---|---|
+  | Kde leží stav mezi „zapsáno" a „odesláno"? | skóre uložené, zpráva neodeslaná, fronta se k ní nevrátí |
+  | Kdo vlastní běh a co smí druhý běh? | dva souběžné běhy si přepíšou stav; druhý smaže stop příznak prvního |
+  | Které stavy jsou terminální? | zastavený běh přepsaný závěrečným zápisem na úspěšný |
+  | Co se stane s neznámým výsledkem? | volání proběhlo, odpověď se ztratila |
+
+  Všechny čtyři jsou vady jednoho jediného agenta, a **žádná nevznikla z nepozornosti** —
+  každá z těch funkcí se chová správně sama o sobě. Vada je ve vztahu mezi nimi a ten je
+  vidět teprve na diagramu.
+- **Vzory zůstávají mimo předpis** (odpověď na `Q7`): outbox, lease, idempotency key a fronta
+  pro nedoručitelné se **jmenují**, ale nepředepisují. Kód sem nepatří a vzor vázaný na jazyk
+  a platformu zastará dřív než otázka. Předpis žádá odpovědi na ty čtyři otázky — kdo je zná,
+  vzor si najde; kdo je nezná, použije ho beztak špatně.
+- **Brána F3** má dvě nové položky: stavy a přechody vyjmenované v návrhovém listu s nevratnou
+  akcí na přechodu, a u každého takového přechodu napsané, co se stane při selhání uprostřed.
+  Vázané na **existenci nevratné akce**, ne na velikost agenta — u čtečky RSS by to byla
+  ceremonie.
+- **Návrhový list** má novou sekci *Stavy a přechody*: uzavřený seznam stavů s příznakem
+  terminality, tabulka přechodů se sloupci „nevratná akce?" a „když selže uprostřed", a ty
+  čtyři otázky zvlášť — protože právě na nich se to láme i tehdy, když stavy někdo vypíše.
+- **Principy §11** dostaly odpovídající zásadu jednou větou.
+- **Ověřeno:** `python kontrola/dvojice.py` — zelené. Podmínek v branách je nově **45**
+  (42 + 1 přísnost ve F0 + 2 stavy ve F3), CS i EN se shodují.
+- **Poznámka:** změna leží za tagem `audit-2-freeze` a do druhého auditu nevstupuje.
+- **Zbývá:** `N1` důkazní pětice v předpisu · `N4` kontrakt rolí a metriky podle role modelu ·
+  `A6` vrstva bezpečnosti nástrojů · `A4` rozdělení eval sad na regresní / challenge / skrytou ·
+  `A2` zúžení rozsahu „libovolný agent" · `N6` ukončení · `N8` strojová kontrola konzistence.
+  A především **druhý audit**.
+
 ## 2026-09-01 (4) — riziko má dvě osy: vratnost akce × dopad systému
 
 - **Proč:** externí oponentura (`A3`) ukázala, že klasifikace podle vratnosti akce sama

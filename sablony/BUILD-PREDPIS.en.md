@@ -119,9 +119,40 @@ A documented case — in JobWatch, 159 tests, 15 region checks and 26 evals miss
 once: a total source failure ended as a green run, an unsent notification was never retried, two
 concurrent runs overwrote each other's stop flag, and a stopped run looked successful in history.
 
+**List the states and the allowed transitions.** "An observable outcome" is a claim about
+the result; a state model is **the artefact you can check it against**. Without one there is
+no saying what an ending is: `ok = 1` written by the closing step is a write, not a finish.
+
+The rule everything else follows from: **an irreversible action always sits on a transition,
+never inside a state.** A send, a payment, a write into someone else's system are not states
+— they are the edges between them. Once you draw it that way, you have to answer the question
+that otherwise gets skipped: *what if the transition fails halfway?*
+
+| The question a state model answers | What it prevents |
+|---|---|
+| Where is the state between "written" and "sent"? | the score stored, the message unsent — and the queue never comes back to it |
+| Who owns the run, and what may a second run do? | two concurrent runs overwrite each other's state; the second clears the first one's stop flag |
+| Which states are terminal? | a stopped run that the closing write flips back to success |
+| What happens to an unknown outcome? | the call went through, the reply was lost — and nobody knows whether to retry |
+
+All four right-hand cells are documented defects of one single agent. They did not come from
+carelessness: **each of those functions behaves correctly on its own.** The defect lives in
+the relation between them, and that only becomes visible on the diagram.
+
+Patterns for this exist — outbox, lease, idempotency key, a dead-letter queue. The
+specification does **not** prescribe them: code does not belong here, and a pattern bound to
+a language and a platform ages faster than the question does. It prescribes the answers to
+those four questions. Whoever knows them will find the pattern; whoever does not will misuse
+it anyway.
+
 **Gate**
 
 - [ ] S1 passes from start to finish with manual input
+- [ ] If the agent has at least one irreversible action: **the states and allowed transitions
+      are listed** in the design sheet, and **every irreversible action sits on a transition**,
+      not inside a state
+- [ ] For every transition carrying an irreversible action it is written down **what happens
+      if it fails halfway**
 - [ ] When something goes wrong, the process **fails with a report** — not silently
 - [ ] Every ending is **observable**: known success, known failure, or a recorded unknown
       outcome — no silent branch

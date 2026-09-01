@@ -112,9 +112,37 @@ neodhalilo 159 testů, 15 kontrol regionu ani 26 evalů čtyři vady naráz: sel
 skončilo zeleným během, neodeslaná notifikace se už nikdy nezopakovala, dva souběžné běhy si
 přepsaly stop příznak a zastavený běh se v historii tvářil jako úspěšný.
 
+**Vyjmenuj stavy a povolené přechody.** „Pozorovatelný konec" je tvrzení o výsledku;
+stavový model je **artefakt, na kterém se to dá ověřit**. Bez něj se nedá říct, co je konec:
+`ok = 1` zapsané závěrečným krokem je zápis, ne doběhnutí.
+
+Pravidlo, ze kterého plyne zbytek: **nevratná akce leží vždy na přechodu, ne uvnitř stavu.**
+Odeslání, platba, zápis do cizího systému nejsou stavy — jsou to hrany mezi nimi. Jakmile je
+takhle nakreslíš, musíš odpovědět na otázku, která se jinak přehlédne: *co když přechod selže
+uprostřed?*
+
+| Otázka, kterou stavový model zodpoví | Čemu předchází |
+|---|---|
+| Kde leží stav mezi „zapsáno" a „odesláno"? | skóre uložené, zpráva neodeslaná — a fronta se k ní nikdy nevrátí |
+| Kdo vlastní běh a co smí druhý běh? | dva souběžné běhy si přepíšou stav; druhý smaže stop příznak prvního |
+| Které stavy jsou terminální? | zastavený běh, který závěrečný zápis přepíše na úspěšný |
+| Co se stane s neznámým výsledkem? | volání proběhlo, odpověď se ztratila — a nikdo neví, jestli opakovat |
+
+Všechny čtyři sloupce vpravo jsou doložené vady jednoho jediného agenta. Nevznikly
+z nepozornosti: **každá z těch funkcí se chová správně sama o sobě.** Vada je ve vztahu
+mezi nimi, a ten je vidět teprve na diagramu.
+
+Vzory na to existují — outbox, lease, idempotency key, fronta pro nedoručitelné. Předpis je
+**nepředepisuje**: kód sem nepatří a vzor vázaný na jazyk a platformu zastará dřív než
+otázka. Předepisuje odpovědi na ty čtyři otázky. Kdo je zná, vzor si najde; kdo je nezná,
+vzor beztak použije špatně.
+
 **Brána**
 
 - [ ] S1 projde od začátku do konce s ručním vstupem
+- [ ] Má-li agent aspoň jednu nevratnou akci: **stavy a povolené přechody jsou vyjmenované**
+      v návrhovém listu a **každá nevratná akce leží na přechodu**, ne uvnitř stavu
+- [ ] U každého přechodu s nevratnou akcí je napsané, **co se stane, když selže uprostřed**
 - [ ] Když se něco nepovede, proces **spadne s hlášením** — ne potichu
 - [ ] Každý konec je **pozorovatelný**: známý úspěch, známé selhání, nebo zaznamenaný
       neznámý výsledek — žádná tichá větev
