@@ -5,6 +5,56 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (8) — the agent-farm brief lands in `03-projekty/`, so the work can continue elsewhere
+
+- **Why:** the analysis of the "AI agent farm" design and the decisions about e-mail channels
+  happened in conversation and existed nowhere.
+  [`03-projekty/farma/ZADANI-farma.en.md`](03-projekty/farma/ZADANI-farma.en.md) (CS and EN)
+  records them as a **design artefact at phase F0** — not built, and deliberately not to be
+  built yet.
+- **Eight findings against the design** (`FA1`–`FA8`), most serious first:
+  - `FA1` **the scenario list is not closed and cannot be** — six agendas × sub-agendas ×
+    "compound task"; the *Analysis across agendas* agenda is unbounded by construction. The
+    specification rests on a closed list; this design has none. Related to `A2` (the etalon's
+    scope of validity).
+  - `FA2` the strictness is **V**, not N → no phase may be simplified.
+  - `FA3` **foreign input triggers an agenda** — the attacker does not steer the output but the
+    **routing**. A class of injection the specification does not name.
+  - `FA4` irreversible actions sit on transitions and the design is silent about them. A
+    Message-ID generated **before** sending is a free idempotency key.
+  - `FA5` one shared approval covering calendar + Fio + e-mail.
+  - `FA6` the F1 numbers are missing — for an orchestrator running on every e-mail, cost ×
+    volume is the single most important figure.
+  - `FA7` the tool-security layer — a hole on both sides; the specification is silent too (`A6`).
+  - `FA8` **mailbox access is always the whole history.** IMAP does not hand over "new mail",
+    it hands over the archive, Sent and Trash years back; `SEARCH SINCE` is client restraint,
+    not a permission boundary. The limit has to live **in code, not in the prompt** — the
+    documented reason is JobWatch's region filter. And it is an opportunity too: the history is
+    the real sample F1 asks for, and it can be used **via an export, without the agent ever
+    getting access to the mailbox**.
+- **Decided about the three mailboxes:**
+  - `mtrnka@axima.cz` — **keep out of the farm.** The data belongs to the employer; the agent
+    would write in the company's name and send company content to a third-party model. Through
+    O365/Entra it would require tenant admin consent anyway.
+  - `maxla@seznam.cz` — **usable.** Verified in Seznam's documentation: the application
+    password is separate from the account password (enforced), **requires 2FA**, **cannot be
+    deleted, only changed**, is **a single one**, and covers IMAP/POP3 + SMTP + CalDAV at once.
+    So: the agent does not get the account password and the kill switch works, but it is **one
+    credential shared by every client of the mailbox** and **the scope cannot be limited** —
+    recorded as a deliberate exception to least privilege. The `U3` verification procedure
+    (curl over IMAP, change the password, the old one must fail) is in the brief.
+  - `bass443@gmail.com` — a clean case, OAuth with limited scopes.
+  - **The rule across all of them:** *a case must not cross a mailbox boundary.*
+- **Also recorded: what is not yet in the specification** — rules for the **model ladder** (the
+  rung is chosen per step, "a cheaper one is enough" is measured, escalation is a visible event)
+  with the documented precedent from JobWatch (free recall 50 % vs. paid 83 %), and the
+  requirement that the **schema be generated** from the state model × run records — per **edge**,
+  not per node, because all four orchestration defects in JobWatch sat on edges.
+- **Verified:** `dvojice.py` and `brany.py` green.
+- **What next for the farm:** F1 on the orchestrator's routing from an exported sample · one
+  agenda in full instead of six by halves · and the question of whether JobWatch fits the farm
+  as agenda number one. Five open questions `OA1`–`OA5` close the brief.
+
 ## 2026-09-01 (7) — outgoing identity and the owner of the data (F5)
 
 - **Where it came from:** a practical question about the agent-farm design — when the agent

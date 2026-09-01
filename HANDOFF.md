@@ -2,6 +2,52 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (8) — zadání farmy agentů do `03-projekty/`, ať se dá pokračovat odjinud
+
+- **Proč:** rozbor návrhu „farmy AI agentů" a rozhodnutí o e-mailových kanálech proběhly
+  v konverzaci a nikde nebyly. [`03-projekty/farma/ZADANI-farma.md`](03-projekty/farma/ZADANI-farma.md)
+  (CS i EN) je zapisuje jako **návrhový artefakt ve fázi F0** — nepostaveno a záměrně se to
+  zatím stavět nemá.
+- **Osm nálezů proti návrhu** (`FA1`–`FA8`), nejzávažnější první:
+  - `FA1` **seznam scénářů není uzavřený a být nemůže** — šest agend × podagendy × „složený
+    úkol"; agenda *Analýzy napříč agendami* je neohraničená ze své podstaty. Předpis stojí na
+    uzavřeném seznamu, tenhle návrh ho nemá. Souvisí s `A2` (rozsah platnosti etalonu).
+  - `FA2` přísnost je **V**, ne N → žádné zjednodušení fází.
+  - `FA3` **cizí vstup spouští agendu** — útočník neovlivňuje výstup, ale **routing**. Třída
+    injection, kterou předpis nepojmenoval.
+  - `FA4` nevratné akce leží na přechodech a návrh o nich mlčí. Message-ID vygenerované
+    **před** odesláním je idempotency key zdarma.
+  - `FA5` jedno společné schválení pro kalendář + Fio + e-mail.
+  - `FA6` chybí čísla z F1 — u orchestrátoru běžícího na každý e-mail je cena × objem ta
+    nejdůležitější číslice.
+  - `FA7` vrstva bezpečnosti nástrojů — díra na obou stranách, mlčí o ní i předpis (`A6`).
+  - `FA8` **přístup do schránky je vždycky celá historie.** IMAP nedává „novou poštu", dává
+    archiv, Odeslané i Koš roky zpátky; `SEARCH SINCE` je zdrženlivost klienta, ne hranice
+    oprávnění. Omezení musí být **v kódu, ne v promptu** — doložený důvod je filtr regionu
+    z JobWatche. A zároveň je to příležitost: historie je reálný vzorek pro F1, a dá se
+    použít **exportem, aniž by agent dostal ke schránce přístup**.
+- **Rozhodnuto o třech schránkách:**
+  - `mtrnka@axima.cz` — **do farmy nedávat.** Data patří zaměstnavateli, agent by z ní psal
+    jménem firmy a posílal firemní obsah do modelu třetí strany. Přes O365/Entra by to stejně
+    vyžadovalo souhlas správce tenantu.
+  - `maxla@seznam.cz` — **použitelná.** Ověřeno v dokumentaci Seznamu: heslo pro aplikace je
+    oddělené od hesla k účtu (vynuceně), **vyžaduje 2FA**, **nejde smazat, jen změnit**, je
+    **jediné** a pokrývá IMAP/POP3 + SMTP + CalDAV naráz. Takže: agent nedostane heslo k účtu
+    a vypínač funguje, ale je to **jeden sdílený údaj pro všechny klienty schránky** a **rozsah
+    nejde omezit** — zapsáno jako vědomá výjimka z nejmenší moci. Postup ověření na `U3`
+    (curl přes IMAP, změna hesla, staré musí selhat) je v zadání.
+  - `bass443@gmail.com` — čistý případ, OAuth s omezenými rozsahy.
+  - **Pravidlo napříč:** *případ nesmí překročit hranici schránky.*
+- **Zapsáno i to, co ještě není v předpisu:** pravidla pro **žebřík modelů** (příčka se volí
+  per krok, „stačí levnější" se měří, eskalace je viditelná událost) s doloženým precedentem
+  z JobWatche (free recall 50 % vs. placený 83 %), a požadavek, aby se **schéma generovalo**
+  ze stavového modelu × záznamů běhů — po **hranách**, ne po uzlech, protože všechny čtyři
+  orchestrační vady JobWatche byly na hranách.
+- **Ověřeno:** `dvojice.py` i `brany.py` zelené.
+- **Co dál u farmy:** F1 na routingu orchestrátoru z exportovaného vzorku · jedna agenda celá
+  místo šesti napůl · a otázka, jestli se JobWatch do farmy vejde jako agenda číslo jedna.
+  Pět otevřených otázek `OA1`–`OA5` je na konci zadání.
+
 ## 2026-09-01 (7) — odchozí identita a vlastník dat (F5)
 
 - **Odkud to přišlo:** z praktické otázky u návrhu farmy — když agent odpovídá na e-mail,
