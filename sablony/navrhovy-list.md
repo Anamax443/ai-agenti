@@ -19,12 +19,25 @@ zejména sekce *Scénáře*, agent není promyšlený a stavět se nemá.
 
 ## Vstupy
 
-| Kanál | Kdo smí | Ověření identity |
-|---|---|---|
-| | | |
+| Kanál | Kdo smí | Ověření identity | Čí jsou data | Souhlas dal |
+|---|---|---|---|---|
+| | | | | |
 
 Identita se váže na kanál (telefonní číslo, ID, podpis webhooku),
 nikdy na jméno v textu.
+
+Sloupec **Čí jsou data** není formalita: firemní schránka není tvoje schránka. Když se
+vlastník dat liší od vlastníka agenta, vyplň i **kdo dal souhlas a v jakém rozsahu**.
+
+**Odchozí kanály**
+
+| Kanál | Adresa / identita navenek | Vlastní údaj agenta | Jak se zneplatní | Označení AI |
+|---|---|---|---|---|
+| | | ano / ne | | podle režimu schválení |
+
+Odpovídá se z kanálu, který protistrana zná — ale pod **vlastním, samostatně
+zneplatnitelným** údajem agenta. Sloupec „jak se zneplatní" je zároveň vypínač z F6:
+nesmí to být změna hesla vlastníka.
 
 ---
 

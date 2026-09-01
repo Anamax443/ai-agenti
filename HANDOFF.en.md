@@ -5,6 +5,38 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (7) — outgoing identity and the owner of the data (F5)
+
+- **Where it came from:** a practical question about the agent-farm design — when the agent
+  replies to an e-mail, should it reply from the same mailbox? The answer is yes for the
+  **channel** and no for the **identity**, and the specification had no rule for it: `§6`
+  only covered identity on the **incoming** side.
+- **Outgoing identity: a known channel, an own key.** Replies must go from the channel the
+  other side knows — from another address, threading and deliverability both fall apart. That
+  does not mean the agent should hold **your** credentials. It gets its own, with the smallest
+  scope and **revocable on its own**: switching the agent off is then one action, not a change
+  of the owner's password. That ties the outgoing channel to the F6 kill switch.
+- **Whose data is in that channel.** The specification silently assumed the owner of the agent
+  is also the owner of the data. **For a company mailbox that does not hold** — the agent
+  writes in the company's name, reads other people's data and sends it to a third-party model.
+  That is not the agent owner's decision. Every channel now records the owner of the data and,
+  when it differs, **who gave consent and for what scope**.
+- **The `B8` contradiction is fixed too.** The condition read "outgoing communication is
+  labelled as written by an AI" and `§6` claimed "the AI Act requires it" without
+  qualification. The label now follows the **approval mode**: what leaves without a human is
+  labelled; for a reply a person has read and approved, the responsibility is theirs. And it
+  says explicitly that this is **our rule, not a quotation of the law**.
+- **The design sheet** has two new columns under inputs (*whose data* · *consent given by*)
+  and a new table of **outgoing channels** (outward address · the agent's own credential ·
+  **how it is revoked** · AI label). The "how it is revoked" column is the F6 kill switch —
+  it must not be a change of the owner's password.
+- **Verified:** `dvojice.py` and `brany.py` green. There are now **47** conditions (F5 from 4
+  to 6), and **I did not have to write that anywhere** — it is computed. That is the first
+  practical payoff of yesterday's inventory.
+- **Remaining:** the first filled-in protocol for JobWatch · a repeatability test (two
+  measurers) · `A2` the scope of validity · `N1` the quintuple in the specification · `N4` ·
+  `A6` · `A4` · `N6`.
+
 ## 2026-09-01 (6) — from methodology to etalon: a measurement protocol and a gate inventory
 
 - **Why:** an etalon is not a good text, it is an **instrument**. An audit written as free

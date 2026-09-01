@@ -231,12 +231,30 @@ trestá: Klarna v roce 2024 nahradila kolem 700 lidí v podpoře chatbotem, obje
 stížností vyletěl a v roce 2025 nabírala lidi zpět. Stejně důležitá je cesta
 zpátky — způsob, jak agentovi pravomoc odebrat, když se ukáže, že na ni nemá.
 
+**Odchozí identita: známý kanál, vlastní klíč.** Odpovídat se musí z kanálu, který
+protistrana zná — z jiné adresy se rozpadne vlákno i doručitelnost. Z toho ale neplyne, že
+agent má držet **tvoje** přihlašovací údaje. Dostane vlastní, s nejmenším potřebným
+rozsahem a **samostatně zneplatnitelný**: vypnutí agenta pak je jeden úkon, ne změna hesla
+vlastníka. Ke každé odchozí zprávě patří dohledatelná značka (hlavička, ID případu) a kopie
+navázaná na případ.
+
+**Čí jsou data v tom kanálu?** Předpis dlouho mlčky předpokládal, že vlastník agenta je
+i vlastníkem dat. U firemní schránky to neplatí: agent z ní píše **jménem firmy** a čte
+cizí data, která navíc posílá do modelu třetí strany. To není rozhodnutí vlastníka agenta.
+Když se vlastník dat a vlastník agenta liší, musí být zapsané **kdo dal souhlas a v jakém
+rozsahu** — jinak se ta otázka nikdy nepoloží, protože technicky nic nebrání.
+
 **Brána**
 
 - [ ] Nevratná akce nad limit nejde provést bez schválení člověkem
 - [ ] Vydávání se za jiného uživatele je ošetřené na úrovni kanálu
 - [ ] Brána bez odpovědi do X hodin má definované chování
-- [ ] Odchozí komunikace nese označení, že ji psala AI
+- [ ] Odchozí komunikace odcházející **bez schválení člověkem** nese označení, že ji psala
+      AI. U schválené odpovědi nese odpovědnost schvalovatel
+- [ ] Agent má na každý odchozí kanál **vlastní přihlašovací údaj**, samostatně
+      zneplatnitelný a s nejmenším potřebným rozsahem — ne údaj vlastníka
+- [ ] U každého kanálu je uvedený **vlastník dat**; když to není vlastník agenta, je
+      zaznamenané, kdo dal souhlas a v jakém rozsahu
 
 ---
 

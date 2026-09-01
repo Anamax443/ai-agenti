@@ -22,9 +22,9 @@ Czech original: [navrhovy-list.md](navrhovy-list.md)
 
 ## Inputs
 
-| Channel | Who may use it | Identity verification |
-|---|---|---|
-| | | |
+| Channel | Who may use it | Identity verification | Whose data | Consent given by |
+|---|---|---|---|---|
+| | | | | |
 
 Identity is bound to the channel (phone number, ID, webhook signature), never to a name
 in the text.

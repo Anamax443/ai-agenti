@@ -175,8 +175,16 @@ Praktická pravidla:
   přeskládat kalendář než on sám.
 - **Cizí vstup nikdy nespouští akci přímo.** E-mail od neznámého projde
   rozpoznáním záměru a skončí v denním přehledu, ne v procesu.
-- **Agent přiznává, že je AI.** Vyžaduje to AI Act, a v praxi to funguje
-  líp než opak.
+- **Agent přiznává, že je AI**, když píše ven **bez schválení člověkem**. U odpovědi,
+  kterou člověk přečetl a schválil, nese odpovědnost on a označení je jeho volba.
+  Právní minimum se liší podle role a jurisdikce; tohle je naše pravidlo, ne citace zákona.
+- **Odchozí identita: známý kanál, vlastní klíč.** Odpovídá se z kanálu, který protistrana
+  zná (jinak se rozpadne vlákno a doručitelnost), ale **pod vlastním přihlašovacím údajem
+  agenta**, který jde zneplatnit samostatně. Vypnout agenta pak je jeden úkon, ne změna
+  tvého hesla.
+- **U každého kanálu musí být jasné, čí jsou data.** Firemní schránka není tvoje schránka:
+  agent z ní píše jménem firmy a čte cizí data. Když vlastník dat není vlastník agenta,
+  musí být zapsané, kdo dal souhlas a v jakém rozsahu.
 
 ---
 

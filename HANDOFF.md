@@ -2,6 +2,36 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (7) — odchozí identita a vlastník dat (F5)
+
+- **Odkud to přišlo:** z praktické otázky u návrhu farmy — když agent odpovídá na e-mail,
+  má odpovídat ze stejné schránky? Odpověď je ano pro **kanál** a ne pro **identitu**,
+  a předpis pro to neměl pravidlo: `§6` řešil jen identitu na **příchozí** straně.
+- **Odchozí identita: známý kanál, vlastní klíč.** Odpovídat se musí z kanálu, který
+  protistrana zná — z jiné adresy se rozpadne vlákno i doručitelnost. Z toho ale neplyne,
+  že agent má držet **tvoje** údaje. Dostane vlastní, s nejmenším rozsahem a **samostatně
+  zneplatnitelné**: vypnutí agenta je pak jeden úkon, ne změna hesla vlastníka. Tím se
+  odchozí kanál napojil na vypínač z F6.
+- **Čí jsou data v tom kanálu.** Předpis mlčky předpokládal, že vlastník agenta je i
+  vlastníkem dat. **U firemní schránky to neplatí** — agent z ní píše jménem firmy, čte
+  cizí data a posílá je do modelu třetí strany. To není rozhodnutí vlastníka agenta.
+  Nově se u každého kanálu vyplňuje vlastník dat, a když se liší, **kdo dal souhlas
+  a v jakém rozsahu**.
+- **Opraven i rozpor s `B8`.** Podmínka zněla „odchozí komunikace nese označení, že ji
+  psala AI" a `§6` k tomu tvrdil „vyžaduje to AI Act" bez kvalifikace. Nově se označení
+  řídí **režimem schválení**: co odchází bez člověka, se označuje; u odpovědi, kterou
+  člověk přečetl a schválil, nese odpovědnost on. A je výslovně napsané, že je to **naše
+  pravidlo, ne citace zákona**.
+- **Návrhový list** má u vstupů dva nové sloupce (*čí jsou data* · *souhlas dal*) a novou
+  tabulku **odchozích kanálů** (adresa navenek · vlastní údaj agenta · **jak se zneplatní**
+  · označení AI). Sloupec „jak se zneplatní" je zároveň vypínač z F6 — nesmí to být změna
+  hesla vlastníka.
+- **Ověřeno:** `dvojice.py` i `brany.py` zelené. Podmínek je nově **47** (F5 ze 4 na 6),
+  a **nemusel jsem to nikam napsat** — počítá se to. To je první praktický užitek včerejšího
+  inventáře.
+- **Zbývá:** první vyplněný protokol pro JobWatch · test opakovatelnosti (dva měřiči) ·
+  `A2` rozsah platnosti · `N1` pětice v předpisu · `N4` · `A6` · `A4` · `N6`.
+
 ## 2026-09-01 (6) — z metodiky etalon: měřicí protokol a inventář bran
 
 - **Proč:** etalon není dobrý text, je to **měřidlo**. Audit psaný volným textem je čtivý

@@ -174,8 +174,18 @@ Practical rules:
   permission to rearrange the calendar than he does.
 - **Foreign input never triggers an action directly.** An e-mail from an unknown sender
   passes through intent recognition and ends up in the daily digest, not in a process.
-- **The agent admits it is an AI.** The AI Act requires it, and in practice it works
-  better than the alternative.
+- **The agent admits it is an AI** when it writes outward **without human approval**. For a
+  reply a person has read and approved, the responsibility is theirs and the label is their
+  choice. The legal minimum differs by role and jurisdiction; this is our rule, not a
+  quotation of the law.
+- **Outgoing identity: a known channel, an own key.** Reply from the channel the other side
+  knows (otherwise threading and deliverability fall apart), but **under the agent's own
+  credential**, revocable on its own. Switching the agent off is then one action, not a
+  change of your password.
+- **For every channel it must be clear whose data it is.** A company mailbox is not your
+  mailbox: the agent writes in the company's name and reads other people's data. When the
+  owner of the data is not the owner of the agent, it must be recorded who gave consent and
+  for what scope.
 
 ---
 

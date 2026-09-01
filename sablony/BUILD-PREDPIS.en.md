@@ -245,12 +245,31 @@ gets punished: in 2024 Klarna replaced around 700 support staff with a chatbot, 
 volume shot up, and in 2025 it was hiring people back. Just as important is the way back —
 a means of taking authority away from the agent when it turns out it cannot handle it.
 
+**Outgoing identity: a known channel, an own key.** Replies have to go from the channel the
+other side knows — from another address, threading and deliverability both fall apart. That
+does not mean the agent should hold **your** credentials. It gets its own, with the smallest
+scope it needs and **revocable on its own**: switching the agent off is then one action, not
+a change of the owner's password. Every outgoing message carries a traceable marker (a
+header, the case ID) and a copy linked to the case.
+
+**Whose data is in that channel?** The specification long assumed silently that the owner of
+the agent is also the owner of the data. For a company mailbox that does not hold: the agent
+writes **in the company's name** and reads other people's data, which it also sends to a
+third-party model. That is not the agent owner's decision to make. When the owner of the data
+and the owner of the agent differ, it must be recorded **who gave consent and for what
+scope** — otherwise the question is never asked, because technically nothing prevents it.
+
 **Gate**
 
 - [ ] An irreversible action above the limit cannot happen without human approval
 - [ ] Impersonating another user is handled at the channel level
 - [ ] A gate with no answer within X hours has defined behaviour
-- [ ] Outgoing communication is labelled as written by an AI
+- [ ] Outgoing communication that leaves **without human approval** is labelled as written by
+      an AI. For an approved reply, the responsibility is the approver's
+- [ ] For every outgoing channel the agent holds its **own credential**, revocable on its own
+      and with the smallest scope it needs — not the owner's credential
+- [ ] For every channel the **owner of the data** is stated; when that is not the owner of the
+      agent, it is recorded who gave consent and for what scope
 
 ---
 
