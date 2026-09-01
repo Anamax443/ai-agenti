@@ -63,8 +63,9 @@ and the flowchart are set up for A4 printing.
 
 The model gets three kinds of task — intent recognition, structure extraction, text
 synthesis. Everything else is deterministic code. What that produces is a system with only
-two possible endings: it fails with a report, or it goes well. The third branch, where it
-does something nobody asked for, is removed by design.
+ending you can see: it fails with a report, it goes well, or it records that it does not
+know and resolves that. The silent branch, where it does something nobody asked for and
+nobody finds out, is removed by design.
 
 ---
 

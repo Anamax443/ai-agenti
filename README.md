@@ -62,8 +62,9 @@ Manažerské shrnutí a vývojový diagram jsou nastavené na tisk A4.
 
 Model dostává tři typy úloh — rozpoznání záměru, extrakci struktury,
 syntézu textu. Všechno ostatní je deterministický kód. Tím vzniká
-systém, který má jen dva možné konce: selže s hlášením, nebo dopadne dobře.
-Třetí větev, kdy udělá něco, co nikdo nechtěl, je odstraněná návrhem.
+systém, jehož každý konec je vidět: selže s hlášením, dopadne dobře, nebo si zapíše,
+že neví, a řeší to. Tichá větev, kdy udělá něco, co nikdo nechtěl a nikdo se to
+nedozví, je odstraněná návrhem.
 
 ---
 

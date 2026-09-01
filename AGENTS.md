@@ -74,8 +74,8 @@ Pořadí není doporučení, je to předpis:
 
 1. **`sablony/navrhovy-list.md` vyplněný dřív** než vznikne první řádek kódu.
 2. **F1** — jádro ověřené na reálném vzorku, ne na vymyšleném.
-3. **F3** — deterministická páteř se dvěma konci (selže s hlášením / dopadne dobře),
-   ještě bez modelu.
+3. **F3** — deterministická páteř s pozorovatelným koncem (selže s hlášením / dopadne
+   dobře / zapíše neznámý výsledek a řeší ho), ještě bez modelu.
 4. **F6** — vypínač, který běh opravdu zastaví.
 
 Tyhle čtyři se nepřeskakují. Zbylé fáze a jejich brány jsou

@@ -80,8 +80,8 @@ The order is not a recommendation, it is the specification:
 
 1. **`sablony/navrhovy-list.en.md` filled in before** the first line of code exists.
 2. **F1** — the core verified against a real sample, not an invented one.
-3. **F3** — a deterministic backbone with two outcomes (fails with a report / goes well),
-   still without a model.
+3. **F3** — a deterministic backbone with an observable outcome (fails with a report /
+   goes well / records an unknown outcome and resolves it), still without a model.
 4. **F6** — a kill switch that actually stops the run.
 
 These four are not skipped. The remaining phases and their gates are in

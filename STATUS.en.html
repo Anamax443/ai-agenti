@@ -75,7 +75,7 @@
     <tr><th>F0 · design on paper</th><td>A closed list of scenarios, the model/code split, a measurable “done”.</td></tr>
     <tr><th>F1 · verify the core</th><td>The riskiest step measured <b>against a real sample</b> — accuracy, cost and time as numbers. A short, synthetic sample lies systematically in your favour.</td></tr>
     <tr><th>F2 · skeleton and contracts</th><td>Modules run on their own; the test environment physically has no outbound channels.</td></tr>
-    <tr><th>F3 · deterministic backbone</th><td>The process passes with manual input, still without a model. Only two endings: it failed and you know, or it went well.</td></tr>
+    <tr><th>F3 · deterministic backbone</th><td>The process passes with manual input, still without a model. Every ending is visible: it failed and you know, it went well, or the unknown outcome is recorded and resolved.</td></tr>
     <tr><th>F4 · model and evals</th><td>The model does only its three jobs. Evals in CI, the tool recall/precision and parameter accuracy metrics. Hostile input cannot push the agent off-scenario.</td></tr>
     <tr><th>F5 · gates and limits</th><td>The mode follows the reversibility of the mistake, not trust. Identity from the channel. Least possible power for tools. Autonomy grows over time and can be taken back.</td></tr>
     <tr><th>F6 · failure and kill switch</th><td>A report goes <b>to a person</b>, not just to a log. The kill switch is one action, tested.</td></tr>
@@ -83,7 +83,7 @@
     <tr><th>F8 · operation and growth</th><td>Every error and every successful pass goes into the evals. Watch distribution shift, not just the error rate.</td></tr>
   </table>
   <div class="note">
-    <b>The minimum that is never skipped</b>, even for the smallest agent: <b>F1</b> a real sample · <b>F3</b> two outcomes · <b>F6</b> a kill switch.
+    <b>The minimum that is never skipped</b>, even for the smallest agent: <b>F1</b> a real sample · <b>F3</b> an observable outcome · <b>F6</b> a kill switch.
     These are the three whose missing versions are recognised only from the damage.
   </div>
 

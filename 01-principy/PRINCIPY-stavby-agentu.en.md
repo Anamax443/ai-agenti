@@ -23,12 +23,22 @@ reasons about.
 
 The same idea produces the security property that makes the whole thing worth doing:
 
-> Either the process fails and a report arrives, or it goes well.
-> **There is no third possibility.**
+> Every attempt ends in an **observable** state: known success, known failure, or a
+> recorded unknown outcome.
+> **There is no silent branch.**
 
 An agent that decides for itself how to carry out a task does not have this property.
-It can succeed, fail, or do something nobody asked for. That third branch is the source
-of most of the “the assistant e-mailed fifty people” stories.
+It can succeed, fail, or do something nobody asked for — and nobody finds out. That
+silent branch is the source of most of the “the assistant e-mailed fifty people” stories.
+
+**Why three states and not two.** Until 1 Sep 2026 this read “either it fails with a
+report or it goes well; there is no third possibility”. For a remote call that does not
+hold: the send goes through, the reply is lost, and the agent does not know whether to
+retry. The outcome is neither known success nor known failure — it is **unknown**, and
+that is a proper state, not a defect. The defect is hiding it or blindly retrying: the
+first loses the effect, the second does it twice. An unknown outcome therefore has its own
+next step — query the target system, retry idempotently, or queue it for a person. The
+original sentence stays true in what it meant: **no ending may be silent.**
 
 ---
 
@@ -247,6 +257,10 @@ when **a question or a task follows from it** — not merely when something happ
   An agent that says nothing looks exactly like an agent that is working.
 - **Idempotence.** Every channel delivers more than once. Key off the message ID, not the
   content.
+- **An unknown outcome is a state, not an error.** The remote call goes through, the reply
+  is lost — the agent does not know what happened. That state is **recorded** (`unknown`,
+  `reconciliation_required`) and resolved by querying the target system, retrying
+  idempotently, or queueing it for a person. Never by a blind retry, and never as `ok`.
 - **Expiry.** Waiting for approval has a deadline; after it the task is dropped and
   announced.
 - **The log contains decisions, not just results.** In a month there will be no other way
@@ -350,12 +364,13 @@ BUILD ORDER:          what comes first, what blocks what
 
 | Anti-pattern | Why it is wrong |
 |---|---|
-| **An agent with free access to every tool** | decides about things it has no context for; the third failure branch |
+| **An agent with free access to every tool** | decides about things it has no context for; the silent failure branch |
 | **AI where an `if` would do** | expensive, slow, unreliable |
 | **Trust instead of reversibility** | “I trust the model” is not a security measure |
 | **Identity from a name in the text** | anyone can claim to be anyone |
 | **The whole memory in the prompt** | cost and error rate grow over time |
 | **Silent failure** | a broken agent looks like a working one |
+| **An unknown outcome recorded as success** | a lost reply hides inside `ok`; the damage shows up at the other end |
 | **Automatic prompt rewriting** | it drifts and nobody notices |
 | **Integration before the modules are tested** | you are debugging two unknowns at once |
 | **A persona hand-written in ten minutes** | flat, generic, useless |
@@ -366,7 +381,7 @@ BUILD ORDER:          what comes first, what blocks what
 ## 16. One-page summary
 
 1. AI recognises, code executes.
-2. Either the process fails with a report, or it goes well. The third branch must not exist.
+2. Every ending is visible: success, failure, or a recorded unknown outcome. The silent branch must not exist.
 3. The model gets three kinds of job only: intent, structure, text.
 4. The persona is generated from sources, not written from memory.
 5. Identity is bound to the channel, not to a name.

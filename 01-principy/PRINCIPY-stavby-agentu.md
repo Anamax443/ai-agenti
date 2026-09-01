@@ -22,12 +22,23 @@ a odeslání platby jsou pevný proces, nad kterým už žádný model nepřemý
 
 Ze stejné myšlenky plyne bezpečnostní vlastnost, kvůli které to celé stojí za to:
 
-> Buď proces selže a přijde hlášení, nebo dopadne dobře.
-> **Třetí možnost neexistuje.**
+> Každý pokus skončí **pozorovatelným** stavem: známý úspěch, známé selhání,
+> nebo zaznamenaný neznámý výsledek.
+> **Tichá větev neexistuje.**
 
 Agent, který si sám rozhoduje, jak úkol splní, tuhle vlastnost nemá. Může
-uspět, selhat, nebo udělat něco, co nikdo nechtěl. Ta třetí větev je zdrojem
-většiny příběhů typu „asistent rozeslal e-mail padesáti lidem".
+uspět, selhat, nebo udělat něco, co nikdo nechtěl — a nikdo se to nedozví.
+Ta tichá větev je zdrojem většiny příběhů typu „asistent rozeslal e-mail
+padesáti lidem".
+
+**Proč tři stavy, a ne dva.** Do 1. 9. 2026 tu stálo „buď selže s hlášením, nebo
+dopadne dobře; třetí možnost neexistuje". U vzdáleného volání to neplatí: odeslání
+proběhne, odpověď se ztratí, agent neví, jestli má opakovat. Výsledek není ani známý
+úspěch, ani známé selhání — je **neznámý**, a je to řádný stav, ne vada. Vada je,
+když se neznámý výsledek zamlčí nebo se naslepo zopakuje: první ztratí účinek, druhé
+ho udělá dvakrát. Neznámý výsledek proto má vlastní další krok — dotaz na stav cílového
+systému, idempotentní opakování, nebo fronta pro člověka. Původní věta zůstává platná
+v tom, co chtěla říct: **žádný konec nesmí být tichý.**
 
 ---
 
@@ -249,6 +260,10 @@ něco stalo.
   zpráva. Agent, který mlčí, vypadá stejně jako agent, který pracuje.
 - **Idempotence.** Každý kanál doručuje opakovaně. Klíč z ID zprávy,
   ne z obsahu.
+- **Neznámý výsledek je stav, ne chyba.** Vzdálené volání proběhne, odpověď se
+  ztratí — agent neví, co se stalo. Ten stav se **zapisuje** (`neznamy`,
+  `ceka_na_smireni`) a řeší se dotazem na cílový systém, idempotentním opakováním,
+  nebo frontou pro člověka. Nikdy opakováním naslepo a nikdy zápisem `ok`.
 - **Vypršení.** Čekání na schválení má lhůtu, po ní se úkol zahodí
   a oznámí.
 - **Log obsahuje rozhodnutí, ne jen výsledky.** Proč agent spustil
@@ -351,12 +366,13 @@ POŘADÍ STAVBY:        co první, co blokuje co
 
 | Antivzor | Proč je špatný |
 |---|---|
-| **Agent s volným přístupem ke všem nástrojům** | rozhoduje, na co nemá kontext; třetí větev selhání |
+| **Agent s volným přístupem ke všem nástrojům** | rozhoduje, na co nemá kontext; tichá větev selhání |
 | **AI tam, kde stačí `if`** | drahé, pomalé, nespolehlivé |
 | **Důvěra místo vratnosti** | „modelu věřím" není bezpečnostní opatření |
 | **Identita podle jména v textu** | kdokoli se za kohokoli vydá |
 | **Celá paměť do promptu** | náklady i chybovost rostou s časem |
 | **Tiché selhání** | nefunkční agent vypadá jako funkční |
+| **Neznámý výsledek zapsaný jako úspěch** | ztracená odpověď se schová do `ok`; škoda se pozná až u protistrany |
 | **Automatické přepisování promptů** | rozjede se a nikdo si nevšimne |
 | **Integrace před otestováním modulů** | ladíš dvě neznámé naráz |
 | **Osobnost napsaná ručně za deset minut** | plochá, obecná, k ničemu |
@@ -367,7 +383,7 @@ POŘADÍ STAVBY:        co první, co blokuje co
 ## 16. Shrnutí na jednu stránku
 
 1. AI rozpoznává, kód vykonává.
-2. Buď proces selže s hlášením, nebo dopadne dobře. Třetí větev nesmí existovat.
+2. Každý konec je vidět: úspěch, selhání, nebo zaznamenaný neznámý výsledek. Tichá větev nesmí existovat.
 3. Model dostává jen tři typy úloh: záměr, struktura, text.
 4. Osobnost se generuje ze zdrojů, ne píše z hlavy.
 5. Identita se váže na kanál, ne na jméno.

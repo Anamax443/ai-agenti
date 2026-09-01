@@ -104,8 +104,8 @@ takovým, jaký by jinak vyrobil model. Tohle je ta část, která nese následk
 zápis do databáze, platba, odeslání. Musí být hotová a otestovaná dřív,
 než k ní model dostane přístup.
 
-**„Dva konce" se prokazují vyvoláním, ne tvrzením.** Unit testy nad čistými funkcemi sem
-nedosáhnou: vada nebývá v kroku, ale v orchestraci kolem něj. Doložený případ — u JobWatche
+**Pozorovatelný konec se prokazuje vyvoláním, ne tvrzením.** Unit testy nad čistými
+funkcemi sem nedosáhnou: vada nebývá v kroku, ale v orchestraci kolem něj. Doložený případ — u JobWatche
 neodhalilo 159 testů, 15 kontrol regionu ani 26 evalů čtyři vady naráz: selhání všech zdrojů
 skončilo zeleným během, neodeslaná notifikace se už nikdy nezopakovala, dva souběžné běhy si
 přepsaly stop příznak a zastavený běh se v historii tvářil jako úspěšný.
@@ -114,10 +114,15 @@ přepsaly stop příznak a zastavený běh se v historii tvářil jako úspěšn
 
 - [ ] S1 projde od začátku do konce s ručním vstupem
 - [ ] Když se něco nepovede, proces **spadne s hlášením** — ne potichu
-- [ ] Existují jen dva konce: selhalo a víš o tom, nebo dopadlo dobře
+- [ ] Každý konec je **pozorovatelný**: známý úspěch, známé selhání, nebo zaznamenaný
+      neznámý výsledek — žádná tichá větev
+- [ ] Neznámý výsledek (volání proběhlo, odpověď se ztratila) má vlastní stav a další
+      krok: dotaz na cílový systém, idempotentní opakování, nebo fronta pro člověka.
+      Nikdy opakování naslepo a nikdy zápis `ok`
 - [ ] Opakovaný běh nedělá věc dvakrát (idempotence u nevratných kroků)
 - [ ] Každý konec je **vyvolaný acceptance testem**, ne jen popsaný: všechny zdroje dolů ·
-      selhání po zápisu a před odesláním · dva souběžné běhy · zastavení uprostřed
+      selhání po zápisu a před odesláním · **timeout po odeslání a před zápisem** ·
+      dva souběžné běhy · zastavení uprostřed
 - [ ] Dva běhy si nemůžou přepsat stav — buď druhý běh nejde spustit, nebo má běh zámek
 
 ---
@@ -299,6 +304,6 @@ páteř a vypínač. Zbytek se dá zeštíhlit:
 | F5 | jeden globální limit místo tabulky režimů |
 | F7 | bez commit hashe, ale pořád s ruční kontrolou prvního týdne |
 
-Co se přeskočit **nedá nikdy**: reálný vzorek v F1, dva konce procesu v F3
+Co se přeskočit **nedá nikdy**: reálný vzorek v F1, pozorovatelný konec procesu v F3
 a vypínač v F6. Tohle jsou ty tři věci, jejichž chybějící verze se pozná
 až podle škody.

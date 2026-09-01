@@ -201,10 +201,11 @@ footer a{color:var(--plum);text-decoration:none}
       </div>
     </div>
     <p class="killed">
-      <b>The third outcome is removed by design.</b> An agent that decides for itself how to
-      carry out a task can succeed, fail — or do something nobody asked for. That third branch
-      is the source of every “the assistant emailed fifty people” story. This way of building
-      has nowhere to get it from.
+      <b>The silent outcome is removed by design.</b> An agent that decides for itself how to
+      carry out a task can succeed, fail — or do something nobody ever finds out about. That
+      silent branch is the source of every “the assistant emailed fifty people” story. This way
+      of building has nowhere to get it from. A lost reply from a remote service is recorded as
+      an unknown outcome and resolved — not hidden, not blindly retried.
     </p>
   </section>
 
@@ -257,7 +258,7 @@ footer a{color:var(--plum);text-decoration:none}
     <p class="legend">
       A gate is a list of conditions at the end of a phase. Until all of them hold, the next
       phase does not start. <b>The three highlighted ones are never skipped</b> — verification
-      on real data (F1), a process with two outcomes before any model is involved (F3), and a
+      on real data (F1), a process with an observable outcome before any model is involved (F3), and a
       working kill switch (F6). When these are missing, you find out from the damage.
     </p>
   </section>

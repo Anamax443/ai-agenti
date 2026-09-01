@@ -74,7 +74,7 @@
     <tr><th>F0 · návrh na papíře</th><td>Uzavřený seznam scénářů, dělba model/kód, měřitelné „hotovo".</td></tr>
     <tr><th>F1 · ověření jádra</th><td>Nejrizikovější krok změřen <b>na reálném vzorku</b> — přesnost, cena, čas jako čísla. Krátký a syntetický vzorek systematicky lže ve tvůj prospěch.</td></tr>
     <tr><th>F2 · kostra a kontrakty</th><td>Moduly se spustí samostatně, testovací prostředí fyzicky nemá odesílací kanály.</td></tr>
-    <tr><th>F3 · deterministická páteř</th><td>Proces projde s ručním vstupem, ještě bez modelu. Jen dva konce: selhalo a víš o tom, nebo dopadlo dobře.</td></tr>
+    <tr><th>F3 · deterministická páteř</th><td>Proces projde s ručním vstupem, ještě bez modelu. Každý konec je vidět: selhalo a víš o tom, dopadlo dobře, nebo je zapsané, že se neví — a řeší se to.</td></tr>
     <tr><th>F4 · model a evaly</th><td>Model dělá jen svoje tři úlohy. Evaly v CI, metriky tool recall/precision, parameter accuracy. Nepřátelský vstup neposune agenta mimo scénář.</td></tr>
     <tr><th>F5 · brány a limity</th><td>Režim podle vratnosti chyby, ne podle důvěry. Identita z kanálu. Nejmenší možná moc nástrojů. Autonomie roste v čase a jde odebrat.</td></tr>
     <tr><th>F6 · selhání a vypínač</th><td>Hlášení jde <b>člověku</b>, ne jen do logu. Vypínač = jeden úkon, vyzkoušený.</td></tr>
@@ -82,7 +82,7 @@
     <tr><th>F8 · provoz a růst</th><td>Každá chyba i každý povedený průchod do evalů. Sledovat posun rozdělení, ne jen chybovost.</td></tr>
   </table>
   <div class="note">
-    <b>Nepřeskočitelné minimum</b> i u nejmenšího agenta: <b>F1</b> reálný vzorek · <b>F3</b> dva konce procesu · <b>F6</b> vypínač.
+    <b>Nepřeskočitelné minimum</b> i u nejmenšího agenta: <b>F1</b> reálný vzorek · <b>F3</b> pozorovatelný konec procesu · <b>F6</b> vypínač.
     To jsou ty tři věci, jejichž chybějící verze se pozná až podle škody.
   </div>
 

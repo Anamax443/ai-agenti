@@ -2,6 +2,35 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-01 (3) — nosná věta opravena: tři stavy místo dvou; oponentura našla, co osm vlastních nálezů nenašlo
+
+- **Proč:** tři externí posudky podkladu. Nejostřejší nález (`A1`) říká, že věta „buď proces
+  selže s hlášením, nebo dopadne dobře; **třetí možnost neexistuje**" je u vzdáleného volání
+  technicky nepravdivá: odeslání proběhne, odpověď se ztratí, agent neví, jestli opakovat.
+  Výsledek není ani známý úspěch, ani známé selhání. Metodika si navíc odporovala — audit
+  JobWatche už žádal stavy `failed`/`degraded`/`notification_pending`, tedy víc než dva konce.
+- **Hotové — nosná věta přeformulována** (CS i EN, 15 souborů, 18 zásahů): úspěch · selhání ·
+  **zaznamenaný neznámý výsledek**; *tichá* větev neexistuje. Původní tvrzení zůstává platné
+  v tom, co chtělo říct — žádný konec nesmí být tichý. Změněno v `PRINCIPY` (§1, §11, §15, §16),
+  `BUILD-PREDPIS` (F3 + nepřeskočitelné minimum), `README`, `AGENTS`, `STATUS`, `mapa-mysleni`,
+  `manazerske-shrnuti`, `vyvojovy-diagram`.
+- **Brána F3 dostala dvě položky:** neznámý výsledek má vlastní stav a další krok (dotaz na
+  cílový systém / idempotentní opakování / fronta pro člověka — nikdy naslepo a nikdy `ok`),
+  a mezi vyvolaná selhání přibyl **timeout po odeslání a před zápisem**.
+- **Nový antivzor:** *Neznámý výsledek zapsaný jako úspěch.*
+- **Nezměněno záměrně:** citace v `00-zdroje/ZDROJE.md` (záznam toho, co řekl zdroj, ne naše
+  tvrzení) a znění brány citované v `02-pripady/AUDIT-job-watch.md` (historický stav auditu).
+- **Uzavřeno taky `B1`:** commit `62d4b38` byl pushnutý až po prvním kole oponentury. Podklad
+  ho uváděl jako verzi předmětu, přitom na `origin/main` byl `ed0b7bb` — oponent nemohl nic
+  reprodukovat. **Poučení: verze citovaná v dokumentu pro třetí stranu musí být venku dřív
+  než dokument.**
+- **Ověřeno:** `python kontrola/dvojice.py` — zelené.
+- **Zbývá:** sjednotit počet podmínek bran (po dnešní změně je jich **42**, z toho 3 s ověřitelným
+  artefaktem a **39** prokazovaných tvrzením — podklad uváděl chybně 38/37); vrátit „důkazní čtveřici"
+  na **pětici** včetně artefaktu (příkaz sám není důkaz, důkazem je jeho výstup); rozšířit
+  model rizika o systémovou osu vedle vratnosti akce; oddělit regresní / challenge / skrytou
+  eval sadu; kvalifikovat tvrzení o AI Actu. A pořád: druhý audit na agentovi jiné třídy.
+
 ## 2026-09-01 (večer, 2) — oprava se rozvedla do souhrnů; předpis dostal acceptance testy a těžké zápory
 
 - **Proč:** commit `ed0b7bb` opravil tělo auditu, ale zelené tvrzení zůstalo tam, kam se čtenář

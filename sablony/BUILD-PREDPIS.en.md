@@ -109,8 +109,9 @@ Take scenario S1 and run it end to end with **hand-written input** — the kind 
 would otherwise produce. This is the part that carries consequences: the database write,
 the payment, the send. It has to be finished and tested before the model gets access to it.
 
-**"Two outcomes" is proven by provocation, not by assertion.** Unit tests over pure functions
-cannot reach here: the defect is rarely in a step, it is in the orchestration around it.
+**An observable outcome is proven by provocation, not by assertion.** Unit tests over pure
+functions cannot reach here: the defect is rarely in a step, it is in the orchestration
+around it.
 A documented case — in JobWatch, 159 tests, 15 region checks and 26 evals missed four defects at
 once: a total source failure ended as a green run, an unsent notification was never retried, two
 concurrent runs overwrote each other's stop flag, and a stopped run looked successful in history.
@@ -119,10 +120,15 @@ concurrent runs overwrote each other's stop flag, and a stopped run looked succe
 
 - [ ] S1 passes from start to finish with manual input
 - [ ] When something goes wrong, the process **fails with a report** — not silently
-- [ ] There are only two outcomes: it failed and you know, or it went well
+- [ ] Every ending is **observable**: known success, known failure, or a recorded unknown
+      outcome — no silent branch
+- [ ] An unknown outcome (the call went through, the reply was lost) has its own state and
+      next step: query the target system, retry idempotently, or queue it for a person.
+      Never a blind retry, and never written as `ok`
 - [ ] A repeated run does not do the thing twice (idempotence on irreversible steps)
 - [ ] Every outcome is **provoked by an acceptance test**, not merely described: all sources down ·
-      failure after the write and before the send · two concurrent runs · a stop mid-run
+      failure after the write and before the send · **a timeout after the send and before the
+      write** · two concurrent runs · a stop mid-run
 - [ ] Two runs cannot overwrite each other's state — either a second run cannot start, or a run
       holds a lease
 
@@ -306,6 +312,6 @@ backbone and the kill switch. The rest can be trimmed:
 | F5 | a single global limit instead of a table of modes |
 | F7 | no commit hash, but still with the manual review of the first week |
 
-What can **never** be skipped: the real sample in F1, the two outcomes in F3 and the kill
-switch in F6. These are the three whose missing versions are recognised only from the
+What can **never** be skipped: the real sample in F1, the observable outcome in F3 and the
+kill switch in F6. These are the three whose missing versions are recognised only from the
 damage.

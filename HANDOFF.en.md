@@ -5,6 +5,38 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-01 (3) — the core sentence corrected: three states instead of two; the review found what eight self-findings did not
+
+- **Why:** three external reviews of the dossier. The sharpest finding (`A1`) is that the
+  sentence “either the process fails with a report or it goes well; **there is no third
+  possibility**” is technically false for a remote call: the send goes through, the reply is
+  lost, and the agent does not know whether to retry. The outcome is neither known success nor
+  known failure. The methodology also contradicted itself — the JobWatch audit already asked
+  for `failed`/`degraded`/`notification_pending`, which is more than two outcomes.
+- **Done — the core sentence reformulated** (CS and EN, 15 files, 18 edits): success · failure ·
+  **a recorded unknown outcome**; there is no *silent* branch. The original claim stays true in
+  what it meant — no ending may be silent. Changed in `PRINCIPY` (§1, §11, §15, §16),
+  `BUILD-PREDPIS` (F3 and the never-skipped minimum), `README`, `AGENTS`, `STATUS`,
+  `mapa-mysleni`, `manazerske-shrnuti`, `vyvojovy-diagram`.
+- **Gate F3 gained two items:** an unknown outcome has its own state and next step (query the
+  target system / retry idempotently / queue for a person — never blindly, never as `ok`), and
+  the provoked failures now include **a timeout after the send and before the write**.
+- **New anti-pattern:** *An unknown outcome recorded as success.*
+- **Deliberately unchanged:** the quotation in `00-zdroje/ZDROJE.md` (a record of what the
+  source said, not our claim) and the gate wording quoted in `02-pripady/AUDIT-job-watch.md`
+  (the historical state of the audit).
+- **`B1` closed too:** commit `62d4b38` was pushed only after the first round of review. The
+  dossier cited it as the version under review while `origin/main` was still `ed0b7bb` — the
+  reviewer could reproduce nothing. **Lesson: the version cited in a document for a third party
+  must be public before the document is.**
+- **Verified:** `python kontrola/dvojice.py` — green.
+- **Remaining:** reconcile the number of gate conditions (after today's change there are **42**, of which 3
+  have a verifiable artefact and **39** are proven by assertion — the dossier wrongly said 38/37);
+  restore the “evidence quadruple” to a **quintuple** including the artefact (a command is not
+  evidence; its output is); extend the risk model with a system axis alongside action
+  reversibility; separate regression / challenge / held-out eval sets; qualify the AI Act
+  claims. And still: a second audit on an agent of a different class.
+
 ## 2026-09-01 (evening, 2) — the correction propagated into the summaries; the specification gained acceptance tests and hard negatives
 
 - **Why:** commit `ed0b7bb` corrected the body of the audit, but the green claim stayed exactly
