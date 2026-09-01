@@ -93,7 +93,7 @@
   <table>
     <tr><th>Vypínač</th><td>Tlačítko Stop uzavřelo záznam běhu, ale pipeline žádný stop příznak nečetla a běžela dál. <span class="pill live">opraveno 31. 8.</span></td></tr>
     <tr><th>Tichý pád</th><td>Výjimka skončila v logu; notifikace se posílaly jen na nálezy, takže „nic nenašel" a „spadlo to" vypadaly zvenčí stejně. <span class="pill live">opraveno 31. 8.</span></td></tr>
-    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. Obal dostala jen cesta skórování; <code>enrich.ts</code> a <code>discover.ts</code> pouštějí cizí text do modelu s <code>web_search</code>/<code>web_fetch</code> dál bez hranice. <span class="pill prep">z poloviny 1. 9.</span></td></tr>
+    <tr><th>Cizí text</th><td>Text inzerátu psaný cizími lidmi šel do modelu bez obalu. Obal nejdřív dostala jen cesta skórování; od 1. 9. večer je na všech třech cestách volání modelu včetně těch s <code>web_search</code>/<code>web_fetch</code>, a hlídají ho invarianty v testech. Injection jako třída tím uzavřená není — chybí allowlist nástrojů a domén, validace argumentů a testy exfiltrace. <span class="pill prep">obal hotov, třída otevřená</span></td></tr>
     <tr><th>Neměřitelný prompt</th><td>Prompty bez verze a bez evaluační sady — změnu nebylo proti čemu měřit. <span class="pill live">opraveno 1. 9.</span></td></tr>
   </table>
   <p><b>A F1 dostalo číslo — ale slabé.</b> Audit psal, že přesnost skórování číslo nemá. 1. 9. změřeno na 23 reálných

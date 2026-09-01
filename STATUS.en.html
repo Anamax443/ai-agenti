@@ -94,7 +94,7 @@
   <table>
     <tr><th>Kill switch</th><td>The Stop button closed the run record, but the pipeline read no stop flag and carried on. <span class="pill live">fixed 31 Aug</span></td></tr>
     <tr><th>Silent crash</th><td>The exception ended up in the log; notifications were sent only on findings, so “found nothing” and “crashed” looked identical from outside. <span class="pill live">fixed 31 Aug</span></td></tr>
-    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. Only the scoring path got the wrapper; <code>enrich.ts</code> and <code>discover.ts</code> still feed foreign text to a model armed with <code>web_search</code>/<code>web_fetch</code>, with no boundary. <span class="pill prep">half, 1 Sep</span></td></tr>
+    <tr><th>Foreign text</th><td>Listing text written by other people went into the model unwrapped. The wrapper first covered the scoring path only; since the evening of 1 Sep it is on all three model-call paths including those armed with <code>web_search</code>/<code>web_fetch</code>, guarded by invariants in the tests. That does not close injection as a class — no tool/domain allowlist, no argument validation, no exfiltration tests. <span class="pill prep">wrapper done, class open</span></td></tr>
     <tr><th>Unmeasurable prompt</th><td>Prompts without a version and without an evaluation set — a change had nothing to be measured against. <span class="pill live">fixed 1 Sep</span></td></tr>
   </table>
   <p><b>And F1 got its number — but a weak one.</b> The audit said scoring accuracy had none. On 1 Sep it was measured on 23 real

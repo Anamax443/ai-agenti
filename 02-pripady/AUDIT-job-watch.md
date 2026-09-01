@@ -126,7 +126,7 @@ Tenhle záznam je tu proto, že teprve dohra ukazuje, jestli byl audit k něčem
 |---|---|---|
 | Vypínač nevypínal | F6 | ✅ příznak v `meta`, běh ho čte před každou dávkou (31. 8.) |
 | Pád běhu byl tichý | F6 | ✅ z `catch` do Telegramu; zabití zvenčí chytá hlídač nedoběhlých běhů |
-| Cizí text bez obalu | F4 | ⚠️ **jen z poloviny** — značka `<inzerat>` a věta o nedůvěryhodných datech jsou pouze ve `score.ts`; `enrich.ts` a `discover.ts` hranici nemají (viz Oprava níž) |
+| Cizí text bez obalu | F4 | ⚠️ **obal ano, třída nálezu ne** — do 1. 9. večer byl obal jen ve `score.ts`; od `job-watch@2b0cd2c` je na všech třech cestách volání modelu a hlídají ho dva invarianty v testech. **Injection jako třída uzavřená není** (chybí allowlist nástrojů a domén, validace argumentů, výstupní kontrola, testy exfiltrace). Stupeň **U2**, ne U4 |
 | Změna promptu neměřitelná | F4 | ✅ `PROMPT_VERSION` v každém běhu, brána v CI, sada 23 případů |
 
 **F1 dostalo číslo — ale slabé.** Audit psal „přesnost skórování nemá číslo; chyby se našly

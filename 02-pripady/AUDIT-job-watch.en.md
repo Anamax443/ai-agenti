@@ -141,7 +141,7 @@ anything.
 |---|---|---|
 | The kill switch did not kill | F6 | ✅ a flag in `meta`, read before every batch (31 Aug) |
 | A crashed run was silent | F6 | ✅ from `catch` to Telegram; an external kill is caught by a watchdog for unfinished runs |
-| Foreign text unwrapped | F4 | ⚠️ **half only** — the tag and the untrusted-data sentence live in `score.ts` alone; `enrich.ts` and `discover.ts` have no such boundary (see the correction below) |
+| Foreign text unwrapped | F4 | ⚠️ **wrapper yes, the class of finding no** — until the evening of 1 Sep the wrapper lived in `score.ts` alone; since `job-watch@2b0cd2c` it is on all three model-call paths, guarded by two invariants in the tests. **Injection as a class is not closed** (no tool/domain allowlist, no argument validation, no output control, no exfiltration tests). Level **U2**, not U4 |
 | Prompt change unmeasurable | F4 | ✅ `PROMPT_VERSION` in every run, a CI gate, a set of 23 cases |
 
 **F1 got its number — but a weak one.** The audit said "scoring accuracy has no number; the bugs
