@@ -1,16 +1,16 @@
-# RELEASE v0.10 — 2 September 2026
+# RELEASE v0.11 — 2 September 2026
 
 > 🇬🇧 English · [🇨🇿 Čeština](VYDANI.md) — **the Czech version is the authoritative one.**
 
 | | |
 |---|---|
-| **Version** | `v0.10` |
+| **Version** | `v0.11` |
 | **Date** | 2 Sep 2026 |
-| **Scope** | 49 conditions across nine gates, F0–F8 |
+| **Scope** | 50 conditions across nine gates, F0–F8 |
 | **Known error** | **a catch rate of 4 out of 8** on the single documented case |
 | **Repeatability** | **not measured** |
-| **Previous release** | `v0.9` (1 Sep 2026) |
-| **Target of the second audit** | **`v0.10`** — the `audit-2-freeze` tag is superseded, see below |
+| **Previous release** | `v0.10` (2 Sep 2026) |
+| **Target of the second audit** | **`v0.11`** — the `audit-2-freeze` tag is superseded, see below |
 
 This is not a final document and deliberately does not call itself one. It is a **release**: a
 fixed point to measure against, with its own error written down and with a boundary beyond
@@ -18,7 +18,31 @@ which it does not hold.
 
 ---
 
-## Changes since v0.9
+## Changes since v0.10 — multi-tenancy
+
+The goal for the farms is **one farm, many customers**. Until now the whole specification was
+written for a single owner, and the text never admitted it.
+
+| Change | Why |
+|---|---|
+| **F3** — the provoked failures gained *a query without tenant scoping*, which must **fail**, not return someone else's data | the most typical and most expensive defect of multi-tenant systems |
+| **F5** — a new condition: tenant scoping is **enforced in the query, not in the prompt**, and no shared layer carries context between tenants | a hard criterion belongs in code; the documented reason is JobWatch's region filter |
+| **Principles §6** — *a shared model is a shared context* | prompt caches, shared case memory and the model ladder can carry context between customers **with no attacker involved** |
+
+There are now **50** conditions (F5 from 6 to 7).
+
+**What this does to the scope of validity.** In the JobWatch measurement five conditions came out
+`nelze` — the approval gate, the deadline with no answer, the AI label for a third party, the
+share of escalations. For a multi-tenant farm those are **real requirements**, not gates that do
+not apply. The etalon widens exactly where it was narrowest.
+
+> **The origin of the finding is uncomfortable:** tenant isolation was raised by review P2 on
+> 1 Sep under question `Q3` and **never made it into the documentation**. Only the corrupted model
+> response and the partial dependency failure did. It took a statement of direction to bring it
+> back — not a check. That is our own `N8` ("a tick outlives the finding") in another shape:
+> **a finding that was never written down stopped existing.**
+
+## Changes in v0.10 since v0.9
 
 Release `v0.9` was cut on the evening of 1 Sep and **the next day the first agent was measured
 against it**. The measurement found no new defect in the subject; it found three in the
@@ -49,7 +73,7 @@ meet requirements a good text does not, and two of them are unmet:
 - **The evidence base is N = 1.** One audit, on the methodology author's own agent, which writes
   into no other system and communicates with no strangers.
 
-The number 1.0 would claim more than is documented. Hence 0.10.
+The number 1.0 would claim more than is documented. Hence 0.11.
 
 ## Known error: 4 out of 8
 
@@ -138,7 +162,7 @@ Specifically missing:
 ## How to measure against this release
 
 ```bash
-python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.11 > 02-pripady/MERENI-<agent>.md
 ```
 
 The rules for filling it in are in [`sablony/MERENI.en.md`](sablony/MERENI.en.md). What matters:
@@ -166,6 +190,7 @@ it is named for what it is.
 
 | Version | Date | Note |
 |---|---|---|
-| `audit-2-freeze` | 1 Sep 2026 | frozen for the second audit; **superseded** — the target is `v0.10` |
+| `audit-2-freeze` | 1 Sep 2026 | frozen for the second audit; **superseded** — the target is `v0.11` |
 | `v0.9` | 1 Sep 2026 | the first numbered release: three states, two axes of risk, the state model, the measurement protocol, layers of checks |
 | `v0.10` | 2 Sep 2026 | the protocol after its first trial: the `neměřeno` result, a level for `ne`, the origin of strictness |
+| `v0.11` | 2 Sep 2026 | multi-tenancy: tenant isolation in F3 and F5, a shared model is a shared context |

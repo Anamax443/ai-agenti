@@ -25,6 +25,39 @@ the open case until it is finished — even when an answer takes days to arrive.
 
 In the sketch every specialist has a `Gets / Returns / **Must not**` contract.
 
+### 1.1 The goal: farms are multi-tenant
+
+The sketch above is written for **one owner and their three mailboxes**. The goal, however, is
+to build **multi-tenant farms** — one farm, many customers. That does not change a detail, it
+changes the risk model, and it is honest to write it down here rather than discover it with the
+first customer.
+
+| What changes | Single-tenant | Multi-tenant |
+|---|---|---|
+| **Owner of the data** | one, the same as the agent's owner | **one per tenant**, each with their own consent |
+| **Cost of a mistake** | your company and private mail get mixed up | **a leak between customers** |
+| **Case boundary** | the mailbox (a convention) | **the tenant, enforced** — `tenant_id` in the query, not in the prompt |
+| **Strictness** | Z | **V** always: strangers, other people's data, thousands of cases, mistakes noticed only at the other end |
+| **Simplifying phases** | allowed at strictness N | **not allowed** |
+
+**Five gates stop being `nelze`.** In the JobWatch measurement five conditions came out as "does
+not apply to this agent": the approval gate, the deadline with no answer, the AI label for a third
+party, the share of escalations to a person. For a multi-tenant farm those are **real
+requirements**. The etalon's scope of validity widens by those five conditions.
+
+**A new class of failure the specification did not have:** *a query without tenant scoping returns
+someone else's data*. It is the most typical and most expensive defect of multi-tenant systems.
+Added to F3 in release `v0.11`.
+
+**And the most insidious one: a shared model is a shared context.** Prompt caches, shared case
+memory, the model ladder — anywhere, one customer's context can end up in another's answer. That
+is a different class from injection: no attacker is needed, only carelessness in the design.
+Added to F5.
+
+> **A note on origin.** Tenant isolation was already raised in review P2 (`Q3`) as a missing
+> provoked-failure scenario. It did not make it into the documentation at the time — only the
+> corrupted model response and the partial dependency failure did. This corrects that omission.
+
 ## 2. What the design got right
 
 Measured against the [build specification](../../sablony/BUILD-PREDPIS.en.md), not in general:
@@ -425,3 +458,4 @@ The order is deliberate and follows from the specification, not from the urge to
 | **OA3** | Who else uses the application password on `maxla@seznam.cz`? | deploying Seznam |
 | **OA4** | Does axima.cz stay out, or is consent requested? Who gives it and for what scope? | `FA2`, F5 |
 | **OA5** | Where does the schema generator come from — JobWatch as the first case? | chapter 7 |
+| **OA6** | Target of the second audit: `faxx-hr` (breaks the risk model — read-only, yet decides about people), or `aukce` (multi-tenant, writes data, has tokens)? | verifying `v0.11` |

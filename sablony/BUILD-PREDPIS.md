@@ -157,7 +157,8 @@ vzor beztak použije špatně.
 - [ ] Opakovaný běh nedělá věc dvakrát (idempotence u nevratných kroků)
 - [ ] Každý konec je **vyvolaný acceptance testem**, ne jen popsaný: všechny zdroje dolů ·
       selhání po zápisu a před odesláním · **timeout po odeslání a před zápisem** ·
-      dva souběžné běhy · zastavení uprostřed
+      dva souběžné běhy · zastavení uprostřed · u vícenájemního systému **dotaz bez rozlišení
+      nájemce** (musí selhat, ne vrátit cizí data)
 - [ ] Dva běhy si nemůžou přepsat stav — buď druhý běh nejde spustit, nebo má běh zámek
 
 ---
@@ -257,6 +258,8 @@ rozsahu** — jinak se ta otázka nikdy nepoloží, protože technicky nic nebr�
       zneplatnitelný a s nejmenším potřebným rozsahem — ne údaj vlastníka
 - [ ] U každého kanálu je uvedený **vlastník dat**; když to není vlastník agenta, je
       zaznamenané, kdo dal souhlas a v jakém rozsahu
+- [ ] U vícenájemního systému je **rozlišení nájemce vynucené v dotazu**, ne v promptu — a žádná
+      sdílená vrstva (cache promptů, paměť případů, žebřík modelů) nepřenese kontext mezi nájemci
 
 ---
 

@@ -182,6 +182,10 @@ Practical rules:
   knows (otherwise threading and deliverability fall apart), but **under the agent's own
   credential**, revocable on its own. Switching the agent off is then one action, not a
   change of your password.
+- **A shared model is a shared context.** In a multi-tenant system one customer's context can
+  end up in another's answer through a prompt cache, shared case memory or the model ladder. No
+  attacker is needed, only carelessness. Tenant scoping therefore belongs **in the query**, not
+  in the prompt — it is a hard criterion like any other.
 - **For every channel it must be clear whose data it is.** A company mailbox is not your
   mailbox: the agent writes in the company's name and reads other people's data. When the
   owner of the data is not the owner of the agent, it must be recorded who gave consent and

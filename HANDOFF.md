@@ -2,6 +2,34 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-02 (3) — vydání `v0.11`: farmy jsou vícenájemní, a předpis to nevěděl
+
+- **Zadání směru:** cílem farem je **jedna farma, víc zákazníků**. Celý předpis byl přitom psaný
+  pro jednoho vlastníka a nikde se k tomu nepřiznával. Kontrola grepem to potvrdila — jediné
+  výskyty slova „tenant" se týkaly souhlasu správce O365 u `axima.cz`.
+- **Co se změnilo v předpisu** (podmínek je nově **50**, F5 ze 6 na 7):
+  - **F3** — mezi vyvolaná selhání přibyl *dotaz bez rozlišení nájemce*, který musí **selhat**,
+    ne vrátit cizí data. Je to nejtypičtější a nejdražší vada vícenájemních systémů.
+  - **F5** — nová podmínka: rozlišení nájemce **vynucené v dotazu, ne v promptu**, a žádná
+    sdílená vrstva nepřenese kontext mezi nájemci.
+  - **Principy §6** — *sdílený model je sdílený kontext*. Cache promptů, sdílená paměť případů
+    a žebřík příček můžou přenést kontext mezi zákazníky **bez útočníka**; stačí nepozornost.
+- **Zadání farmy má novou kapitolu 1.1** s tabulkou, co se u vícenájemnosti mění: vlastník dat
+  je jeden **na nájemce**, cena chyby je **únik mezi zákazníky**, hranice případu přestává být
+  konvence a stává se vynucenou, a přísnost je **V** vždycky.
+- **Rozšířil se rozsah platnosti etalonu tam, kde byl nejužší.** V měření JobWatche vyšlo pět
+  podmínek jako `nelze` — schvalovací brána, lhůta bez odpovědi, označení AI u třetí strany,
+  podíl eskalací. **U vícenájemní farmy jsou to reálné požadavky**, ne nesedící brány.
+- **Nepříjemný původ nálezu, a je zapsaný ve vydání:** izolaci mezi nájemci zmínil posudek P2
+  už 1. 9. u otázky `Q3` a **do dokumentace se nepřenesla** — zapsala se z ní jen poškozená
+  odpověď modelu a částečné selhání závislostí. Připomnělo to až zadání směru, ne kontrola.
+  Je to vlastní nález `N8` v jiné podobě: **nález, který se nikam nezapsal, přestal existovat.**
+- **Ověřeno:** `dvojice.py` (31 dvojic) i `brany.py` (50 podmínek) zelené. Tag `v0.11`.
+- **Otevřená otázka `OA6`:** cílem druhého auditu má být `faxx-hr` (rozbíjí model rizika — jen
+  čte, a přesto rozhoduje o lidech), nebo **`aukce`** (vícenájemní, zapisuje data, má tokeny)?
+  Po dnešní změně je `aukce` relevantnější — ověřila by přesně ty fáze, které `VYDANI.md`
+  označuje za neověřené. **Rozhodnutí je na vlastníkovi.**
+
 ## 2026-09-02 (2) — vydání `v0.10`: měřidlo opravené podle prvního měření
 
 - **Co se změnilo:** `M1`, `M2` a `M3` z prvního protokolu zapracovány týž den.

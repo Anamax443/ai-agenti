@@ -168,7 +168,8 @@ it anyway.
 - [ ] A repeated run does not do the thing twice (idempotence on irreversible steps)
 - [ ] Every outcome is **provoked by an acceptance test**, not merely described: all sources down ·
       failure after the write and before the send · **a timeout after the send and before the
-      write** · two concurrent runs · a stop mid-run
+      write** · two concurrent runs · a stop mid-run · in a multi-tenant system **a query without
+      tenant scoping** (it must fail, not return someone else's data)
 - [ ] Two runs cannot overwrite each other's state — either a second run cannot start, or a run
       holds a lease
 
@@ -272,6 +273,9 @@ scope** — otherwise the question is never asked, because technically nothing p
       and with the smallest scope it needs — not the owner's credential
 - [ ] For every channel the **owner of the data** is stated; when that is not the owner of the
       agent, it is recorded who gave consent and for what scope
+- [ ] In a multi-tenant system the **tenant scoping is enforced in the query**, not in the prompt
+      — and no shared layer (prompt cache, case memory, model ladder) carries context between
+      tenants
 
 ---
 

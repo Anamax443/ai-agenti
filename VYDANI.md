@@ -1,23 +1,46 @@
-# VYDÁNÍ v0.10 — 2. 9. 2026
+# VYDÁNÍ v0.11 — 2. 9. 2026
 
 > 🇨🇿 Čeština · [🇬🇧 English](VYDANI.en.md)
 
 | | |
 |---|---|
-| **Verze** | `v0.10` |
+| **Verze** | `v0.11` |
 | **Datum** | 2. 9. 2026 |
-| **Rozsah** | 49 podmínek v devíti branách, F0–F8 |
+| **Rozsah** | 50 podmínek v devíti branách, F0–F8 |
 | **Známá chyba** | **záchytnost 4 z 8** na jediném doloženém případu |
 | **Opakovatelnost** | **neměřena** |
-| **Předchozí vydání** | `v0.9` (1. 9. 2026) |
-| **Cíl druhého auditu** | **`v0.10`** — značka `audit-2-freeze` je překonaná, viz níž |
+| **Předchozí vydání** | `v0.10` (2. 9. 2026) |
+| **Cíl druhého auditu** | **`v0.11`** — značka `audit-2-freeze` je překonaná, viz níž |
 
 Tohle není finální dokument a záměrně se tak nejmenuje. Je to **vydání**: pevný bod, proti
 kterému se dá měřit, se zapsanou vlastní chybou a s hranicí, za kterou neplatí.
 
 ---
 
-## Změny proti v0.9
+## Změny proti v0.10 — vícenájemnost
+
+Cílem farem je **jedna farma, víc zákazníků**. Dosud byl celý předpis psaný pro jednoho
+vlastníka, a to se v textu nikde nepřiznávalo.
+
+| Změna | Proč |
+|---|---|
+| **F3** — mezi vyvolaná selhání přibyl *dotaz bez rozlišení nájemce*, který musí **selhat**, ne vrátit cizí data | nejtypičtější a nejdražší vada vícenájemních systémů |
+| **F5** — nová podmínka: rozlišení nájemce je **vynucené v dotazu, ne v promptu**, a žádná sdílená vrstva nepřenese kontext mezi nájemci | tvrdé kritérium patří do kódu; doložený důvod je filtr regionu z JobWatche |
+| **Principy §6** — *sdílený model je sdílený kontext* | cache promptů, sdílená paměť případů a žebřík příček můžou přenést kontext mezi zákazníky **bez útočníka** |
+
+Podmínek je nově **50** (F5 ze 6 na 7).
+
+**Co to dělá s rozsahem platnosti.** V měření JobWatche vyšlo pět podmínek jako `nelze` —
+schvalovací brána, lhůta bez odpovědi, označení AI u třetí strany, podíl eskalací. U vícenájemní
+farmy jsou to **reálné požadavky**, ne nesedící brány. Etalon se tím rozšiřuje tam, kde byl
+dosud nejužší.
+
+> **Původ nálezu je nepříjemný:** izolaci mezi nájemci zmínil posudek P2 už 1. 9. u otázky `Q3`
+> a **do dokumentace se nepřenesla**. Zapsala se z ní jen poškozená odpověď modelu a částečné
+> selhání závislostí. Připomnělo to až zadání směru — ne kontrola. To je vlastní `N8`
+> („fajfka přežije nález") v jiné podobě: **nález, který se nikam nezapsal, přestal existovat.**
+
+## Změny ve v0.10 proti v0.9
 
 Vydání `v0.9` vzniklo večer 1. 9. a **druhý den se na něm změřil první agent**. Měření nenašlo
 novou vadu v předmětu, zato našlo tři v samotném měřidle:
@@ -46,7 +69,7 @@ text splňovat nemusí, a dvě z nich splněné nejsou:
 - **Důkazní základna je N = 1.** Jeden audit, na agentovi autora metodiky, který nic nezapisuje
   do cizích systémů a nekomunikuje s cizími lidmi.
 
-Číslo 1.0 by tvrdilo víc, než je doložené. Proto 0.10.
+Číslo 1.0 by tvrdilo víc, než je doložené. Proto 0.11.
 
 ## Známá chyba: 4 z 8
 
@@ -130,7 +153,7 @@ Konkrétně chybí:
 ## Jak se proti tomuto vydání měří
 
 ```bash
-python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.11 > 02-pripady/MERENI-<agent>.md
 ```
 
 Pravidla vyplňování jsou v [`sablony/MERENI.md`](sablony/MERENI.md). Podstatné je:
@@ -157,6 +180,7 @@ jmenuje se to tak, jak to je.
 
 | Verze | Datum | Poznámka |
 |---|---|---|
-| `audit-2-freeze` | 1. 9. 2026 | zmrazeno pro druhý audit; **překonáno** — cílem je `v0.10` |
+| `audit-2-freeze` | 1. 9. 2026 | zmrazeno pro druhý audit; **překonáno** — cílem je `v0.11` |
 | `v0.9` | 1. 9. 2026 | první číslované vydání: tři stavy, dvě osy rizika, stavový model, měřicí protokol, kontrolní vrstvy |
 | `v0.10` | 2. 9. 2026 | protokol po první zkoušce: výsledek `neměřeno`, stupeň i u `ne`, původ přísnosti |
+| `v0.11` | 2. 9. 2026 | vícenájemnost: izolace nájemců ve F3 a F5, sdílený model = sdílený kontext |

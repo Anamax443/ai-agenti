@@ -11,7 +11,7 @@ This sheet is therefore a form, not an essay.
 ## The blank form is generated, not copied
 
 ```bash
-python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.11 > 02-pripady/MERENI-<agent>.md
 ```
 
 The form is derived directly from [`BUILD-PREDPIS.en.md`](BUILD-PREDPIS.en.md)'s Czech
@@ -116,7 +116,7 @@ its number is worse.
 A measurement refers to a release, not to a branch:
 
 ```
-Etalon: ai-agenti v0.10  (git tag v0.10)
+Etalon: ai-agenti v0.11  (git tag v0.11)
 ```
 
 Positional identifiers (`F3.4`) hold **within a release**. They shift when a condition is

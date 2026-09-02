@@ -24,13 +24,13 @@ Použití
 -------
     python kontrola/brany.py                     kontrola (CI)
     python kontrola/brany.py --seznam            inventář s identifikátory
-    python kontrola/brany.py --protokol v0.10    prázdný měřicí protokol na stdout
+    python kontrola/brany.py --protokol v0.11    prázdný měřicí protokol na stdout
 
 Identifikátory
 --------------
 `F3.4` = čtvrtá podmínka brány F3. Jsou **poziční**, ne trvalé: co je F3.4 dnes, může být
 F3.5 po vložení nové podmínky. To není vada — měření se vždycky odkazuje na **vydání
-etalonu** (`ai-agenti v0.10`), a to jeho význam pevně určuje. Tak to dělají i normy:
+etalonu** (`ai-agenti v0.11`), a to jeho význam pevně určuje. Tak to dělají i normy:
 `ISO 27001:2013 A.9.2.3` znamená něco jiného než tentýž kód ve vydání 2022.
 """
 import io

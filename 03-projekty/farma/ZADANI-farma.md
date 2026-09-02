@@ -25,6 +25,36 @@ případ, dokud není dokončený — i když se na odpověď čeká několik dn
 
 Každý specialista má v náčrtu kontrakt `Dostane / Vrátí / **Nesmí**`.
 
+### 1.1 Cíl: farmy jsou vícenájemní
+
+Náčrt výše je psaný pro **jednoho vlastníka a jeho tři schránky**. Cílem ale je stavět
+**vícenájemní farmy** — jedna farma, víc zákazníků. To nemění detail, mění model rizika, a je
+poctivé to napsat sem, ne to objevit při prvním zákazníkovi.
+
+| Co se změní | Jednonájemní | Vícenájemní |
+|---|---|---|
+| **Vlastník dat** | jeden, totožný s vlastníkem agenta | **jeden na nájemce**, každý s vlastním souhlasem |
+| **Cena chyby** | smíchá se ti firemní a soukromá pošta | **únik mezi zákazníky** |
+| **Hranice případu** | schránka (konvence) | **nájemce, vynuceně** — `tenant_id` v dotazu, ne v promptu |
+| **Přísnost** | Z | **V** vždycky: cizí lidé, cizí data, rozsah v tisících, chyba se pozná až u protistrany |
+| **Zjednodušení fází** | u přísnosti N povolené | **zakázané** |
+
+**Pět bran přestává být `nelze`.** V měření JobWatche vyšlo pět podmínek jako „na tohohle agenta
+nesedí": schvalovací brána, lhůta bez odpovědi, označení AI u třetí strany, podíl eskalací na
+člověka. U vícenájemní farmy jsou to **reálné požadavky**. Rozsah platnosti etalonu se tím
+o těch pět podmínek rozšiřuje.
+
+**Nová třída selhání, kterou předpis neměl:** *dotaz bez rozlišení nájemce vrátí cizí data*.
+Je to nejtypičtější a nejdražší vada vícenájemních systémů. Doplněno do F3 ve vydání `v0.11`.
+
+**A nejzrádnější: sdílený model je sdílený kontext.** Cache promptů, sdílená paměť případů,
+žebřík příček — všude může kontext jednoho zákazníka doputovat do odpovědi druhému. To je jiná
+třída než injection: útočník tam není potřeba, stačí nepozornost v návrhu. Doplněno do F5.
+
+> **Poznámka k původu.** Izolace mezi nájemci zazněla už v posudku P2 (`Q3`) jako chybějící
+> scénář vyvolaných selhání. Do dokumentace se tehdy nepřenesla — zapsala se z ní jen poškozená
+> odpověď modelu a částečné selhání závislostí. Tohle je oprava toho opomenutí.
+
 ## 2. Co na návrhu obstálo
 
 Měřeno proti [build předpisu](../../sablony/BUILD-PREDPIS.md), ne obecně:
@@ -404,3 +434,4 @@ Pořadí je vědomé a plyne z předpisu, ne z chuti stavět.
 | **OA3** | Kdo další používá heslo pro aplikace u `maxla@seznam.cz`? | nasazení Seznamu |
 | **OA4** | Zůstává axima.cz mimo, nebo se žádá souhlas? Kdo ho dá a v jakém rozsahu? | `FA2`, F5 |
 | **OA5** | Kde vznikne generátor schématu — v JobWatchi jako první případ? | kapitola 7 |
+| **OA6** | Cíl druhého auditu: `faxx-hr` (rozbíjí model rizika — jen čte, ale rozhoduje o lidech), nebo `aukce` (vícenájemní, zapisuje data, má tokeny)? | ověření `v0.11` |

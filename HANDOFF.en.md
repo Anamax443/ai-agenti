@@ -5,6 +5,37 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-02 (3) — release `v0.11`: the farms are multi-tenant, and the specification did not know
+
+- **A statement of direction:** the goal for the farms is **one farm, many customers**. The whole
+  specification, meanwhile, was written for a single owner and never admitted it. A grep confirmed
+  it — the only occurrences of "tenant" concerned O365 admin consent for `axima.cz`.
+- **What changed in the specification** (there are now **50** conditions, F5 from 6 to 7):
+  - **F3** — the provoked failures gained *a query without tenant scoping*, which must **fail**,
+    not return someone else's data. It is the most typical and most expensive defect of
+    multi-tenant systems.
+  - **F5** — a new condition: tenant scoping **enforced in the query, not in the prompt**, and no
+    shared layer carries context between tenants.
+  - **Principles §6** — *a shared model is a shared context*. Prompt caches, shared case memory
+    and the model ladder can carry context between customers **with no attacker**; carelessness
+    suffices.
+- **The farm brief has a new chapter 1.1** with a table of what multi-tenancy changes: the owner
+  of the data is one **per tenant**, the cost of a mistake is **a leak between customers**, the
+  case boundary stops being a convention and becomes enforced, and the strictness is **V** always.
+- **The etalon's scope widened exactly where it was narrowest.** In the JobWatch measurement five
+  conditions came out `nelze` — the approval gate, the deadline with no answer, the AI label for a
+  third party, the share of escalations. **For a multi-tenant farm those are real requirements.**
+- **An uncomfortable origin, recorded in the release:** tenant isolation was raised by review P2
+  on 1 Sep under `Q3` and **never made it into the documentation** — only the corrupted model
+  response and the partial dependency failure did. It took a statement of direction to bring it
+  back, not a check. It is our own `N8` in another shape: **a finding never written down stopped
+  existing.**
+- **Verified:** `dvojice.py` (31 pairs) and `brany.py` (50 conditions) green. Tag `v0.11`.
+- **Open question `OA6`:** should the second audit target `faxx-hr` (it breaks the risk model —
+  read-only, yet it decides about people) or **`aukce`** (multi-tenant, writes data, has tokens)?
+  After today's change `aukce` is the more relevant one — it would verify exactly the phases
+  `VYDANI.en.md` marks as unverified. **The decision is the owner's.**
+
 ## 2026-09-02 (2) — release `v0.10`: the instrument fixed by its first measurement
 
 - **What changed:** `M1`, `M2` and `M3` from the first protocol, applied the same day.

@@ -4,7 +4,7 @@
 
 Metodika stavby AI agentů a rozpracované projekty.
 
-> **Vydání [`v0.10`](VYDANI.md)** · 2. 9. 2026 · 49 podmínek v devíti branách.
+> **Vydání [`v0.11`](VYDANI.md)** · 2. 9. 2026 · 50 podmínek v devíti branách.
 > Stav: **použitelné, neověřené** — jeden doložený případ (N = 1), měřeno autorem.
 > **Známá chyba etalonu: záchytnost 4 z 8.** Proč to není 1.0 a co by ji odemklo,
 > je v [poznámce k vydání](VYDANI.md).

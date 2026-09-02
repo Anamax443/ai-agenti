@@ -182,6 +182,10 @@ Praktická pravidla:
   zná (jinak se rozpadne vlákno a doručitelnost), ale **pod vlastním přihlašovacím údajem
   agenta**, který jde zneplatnit samostatně. Vypnout agenta pak je jeden úkon, ne změna
   tvého hesla.
+- **Sdílený model je sdílený kontext.** U vícenájemního systému může kontext jednoho zákazníka
+  doputovat do odpovědi druhému přes cache promptů, sdílenou paměť případů nebo žebřík modelů.
+  Není k tomu potřeba útočník, stačí nepozornost. Rozlišení nájemce proto patří **do dotazu**,
+  ne do promptu — je to tvrdé kritérium jako každé jiné.
 - **U každého kanálu musí být jasné, čí jsou data.** Firemní schránka není tvoje schránka:
   agent z ní píše jménem firmy a čte cizí data. Když vlastník dat není vlastník agenta,
   musí být zapsané, kdo dal souhlas a v jakém rozsahu.

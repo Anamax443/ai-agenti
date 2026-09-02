@@ -11,7 +11,7 @@ Tenhle list je proto formulář, ne esej.
 ## Prázdný formulář se generuje, neopisuje
 
 ```bash
-python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.11 > 02-pripady/MERENI-<agent>.md
 ```
 
 Formulář se odvozuje přímo z [`BUILD-PREDPIS.md`](BUILD-PREDPIS.md). **Druhý seznam podmínek
@@ -108,7 +108,7 @@ na jednom vzorku je slabé číslo — ale etalon, který svoje číslo nemá, j
 Měření se odkazuje na vydání, ne na větev:
 
 ```
-Etalon: ai-agenti v0.10  (git tag v0.10)
+Etalon: ai-agenti v0.11  (git tag v0.11)
 ```
 
 Poziční identifikátory (`F3.4`) platí **uvnitř vydání**. Po vložení nové podmínky se posunou,
