@@ -5,6 +5,48 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-02 — the first filled-in measurement protocol: testing the form on a known case
+
+- **Why JobWatch and not faxx-hr straight away.** The riskiest step is not "how will an outside
+  agent score" but **"can the form even be filled in honestly"**. That takes an hour on a known
+  case, not three days on an unknown one. F1 reasoning applied to the etalon itself.
+- **A correction of our own step:** `audit-2-freeze` (`85a45cd`) **is no longer the right audit
+  target**. It was frozen in the morning, before the two-axis risk model, the state model, the
+  measurement protocol and the layers of checks. Measuring against a version that no longer
+  exists would waste the audit. **The target is `v0.9`.** The tag stays as history.
+- **Done:** [`02-pripady/MERENI-job-watch.md`](02-pripady/MERENI-job-watch.md) — all 49
+  conditions filled in. Listed in `bez-prekladu.txt`: a filled-in measurement is a **record of a
+  specific agent**, not a methodology document.
+- **Result: yes 19 · no 22 · cannot 5 · not measured 3.** Of the nineteen `ano`, only **eleven**
+  stand at `U2` or above.
+- **Five findings against the etalon** (not against JobWatch):
+  - **`M1` the result "not measured" is missing.** The form has `ano`/`ne`/`nelze` but not *"it
+    is measurable and I did not verify it"*. Without it the measurer is pushed into `ne`, which
+    is a different claim. Three items needed it. **The share of "not measured" is also a metric
+    of honesty** — nothing but yes/no is suspicious.
+  - **`M2` the level is filled in only for `ano`.** For `ne` there is no telling "I provoked it"
+    from "I read the code". Six items in F3 are documented production defects, the rest is
+    reading — and the form cannot tell them apart.
+  - **`M3` the strictness is decided during measurement.** `F0.4` came out `ne`, and yet I had
+    to decide strictness **Z** in order to fill in the rest. The etalon requires an input it
+    produces itself.
+  - **`M4` eight `ano` do not meet their own strictness.** Strictness Z requires closure at
+    `U2` or above; eight items stand at `U0`/`U1`. **Formally JobWatch fails even the conditions
+    it has ticked** — and a free-text audit did not show that.
+  - **`M5` the form is fillable.** 49 items, not one incomprehensible. Five `nelze` are honest
+    (the agent has no escalations and no third-party communication).
+- **The strongest result:** the protocol **found no new defect** — and is still worth it, because
+  on known defects it showed the **difference between "it holds" and "we have shown it holds"**.
+  That is exactly what free text could not do.
+- **Scope of validity measured for the first time on a concrete agent:** 44 of 49 conditions
+  make sense, 5 do not.
+- **A correction of our own error:** the farm brief said "the paid model's recall 83 %";
+  JobWatch's `NAVRH.md` states **100 %** on the eval set. The number came from memory instead of
+  the source. Fixed in CS and EN.
+- **Remaining:** add `neměřeno` and a level for `ne` in the next release (`M1`, `M2`) · only then
+  **the second audit on an agent of a different class** against `v0.9`, with predictions written
+  down in advance.
+
 ## 2026-09-01 (11) — release `v0.9`: a fixed point with its own error written down
 
 - **Why not "final documentation".** In this state there is no standing behind a document by

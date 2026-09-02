@@ -371,7 +371,7 @@ that follow, and which are **not yet in the specification**:
   about. That is the answer to both robustness and price: for an orchestrator running on every
   incoming e-mail, the biggest saving is the query never made.
 
-A documented precedent from JobWatch: **the free model's recall 50 %, the paid one's 83 %** —
+A documented precedent from JobWatch: **the free model's recall 50 %, the paid one's 100 %** on the eval set —
 and twice the eval set measured a different rung than the one deciding in production. For a farm
 with six agendas and three rungs that trap is six times larger.
 

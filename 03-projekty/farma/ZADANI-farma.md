@@ -352,7 +352,7 @@ z toho plynou a zatím **nejsou v předpisu**:
   zároveň odpověď na robustnost i na cenu: u orchestrátoru běžícího na každý příchozí e-mail
   je největší úspora ten dotaz, který se vůbec nepoloží.
 
-Doložený precedens z JobWatche: **free model recall 50 %, placený 83 %** — a sada dvakrát
+Doložený precedens z JobWatche: **free model recall 50 %, placený 100 %** na eval sadě — a sada dvakrát
 měřila jinou příčku, než která rozhodovala v produkci. U farmy se šesti agendami a třemi
 příčkami je ta past šestkrát větší.
 

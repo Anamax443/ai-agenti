@@ -5,3 +5,7 @@
 # Ceka na smazani (viz HANDOFF.md) - prekladat nedodelany prototyp nema smysl.
 # Az slozka zmizi, kontrola tenhle radek ohlasi jako zbytecnou vyjimku.
 03-projekty/prepisovac/kod/README.md
+
+# Vyplnene mereni je ZAZNAM konkretniho agenta, ne dokument metodiky. Prekladat se bude,
+# az bude merit nekdo, kdo cesky necte - do te doby by anglicka kopie jen zastarala.
+02-pripady/MERENI-job-watch.md

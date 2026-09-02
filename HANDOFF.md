@@ -2,6 +2,44 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-02 — první vyplněný měřicí protokol: zkouška formuláře na známém případu
+
+- **Proč JobWatch a ne rovnou faxx-hr.** Nejrizikovější krok není „jak dopadne cizí agent", ale
+  **„je ten formulář vůbec poctivě vyplnitelný"**. To se pozná za hodinu na známém případu, ne
+  za tři dny na neznámém. F1 uvažování aplikované na etalon samotný.
+- **Oprava vlastního kroku:** `audit-2-freeze` (`85a45cd`) **už není správný cíl auditu**.
+  Zmrazil jsem ho ráno, tedy před dvouosým rizikem, stavovým modelem, měřicím protokolem
+  i kontrolními vrstvami. Měřit proti verzi, která už neexistuje, by audit zahodilo.
+  **Cílem je `v0.9`.** Značka zůstává jako historie.
+- **Hotové:** [`02-pripady/MERENI-job-watch.md`](02-pripady/MERENI-job-watch.md) — všech
+  49 podmínek vyplněných. Vedeno v `bez-prekladu.txt`: vyplněné měření je **záznam konkrétního
+  agenta**, ne dokument metodiky.
+- **Výsledek: ano 19 · ne 22 · nelze 5 · neměřeno 3.** Z devatenácti `ano` jich jen **jedenáct**
+  stojí na `U2` a výš.
+- **Pět nálezů proti etalonu** (ne proti JobWatchi):
+  - **`M1` chybí výsledek „neměřeno".** Formulář má `ano`/`ne`/`nelze`, ale ne *„je to
+    měřitelné a já to neověřil"*. Bez toho se měřič tlačí do `ne`, což je jiné tvrzení. Tři
+    položky to potřebovaly. **Podíl `neměřeno` je navíc metrika poctivosti měření** — samá
+    `ano`/`ne` je podezřelé.
+  - **`M2` stupeň se vyplňuje jen u `ano`.** U `ne` nejde rozlišit „zkusil jsem to" od „přečetl
+    jsem kód". Šest položek ve F3 jsou doložené vady z provozu, ostatní jen čtení — a formulář
+    to nerozliší.
+  - **`M3` přísnost se určuje až při měření.** `F0.4` vyšlo `ne`, a přitom jsem přísnost **Z**
+    musel určit, abych mohl vyplnit zbytek. Etalon žádá vstup, který sám vyrábí.
+  - **`M4` osm `ano` nesplňuje vlastní přísnost.** Přísnost Z žádá uzavírání nejméně na `U2`;
+    osm položek stojí na `U0`/`U1`. **Formálně tedy JobWatch nesplňuje ani ty podmínky, které
+    má odškrtnuté** — a v auditu psaném volným textem to vidět nebylo.
+  - **`M5` formulář je vyplnitelný.** 49 položek, ani jedna nesrozumitelná. Pět `nelze` je
+    poctivých (agent nemá eskalace ani komunikaci s třetí stranou).
+- **Nejsilnější výsledek:** protokol **nenašel žádnou novou vadu** — a přesto má cenu, protože
+  u známých vad ukázal **rozdíl mezi „platí" a „doložili jsme, že platí"**. To je přesně to,
+  co volný text neuměl.
+- **Rozsah platnosti změřen poprvé na konkrétním agentovi:** 44 ze 49 podmínek dává smysl, 5 ne.
+- **Opravena vlastní chyba:** v zadání farmy stálo „placený recall 83 %"; `NAVRH.md` JobWatche
+  uvádí **100 %** na eval sadě. Číslo jsem vzal z paměti místo ze zdroje. Opraveno v CS i EN.
+- **Zbývá:** doplnit `neměřeno` a stupeň u `ne` do dalšího vydání (`M1`, `M2`) · pak teprve
+  **druhý audit na agentovi jiné třídy** proti `v0.9`, s predikcemi zapsanými předem.
+
 ## 2026-09-01 (11) — vydání `v0.9`: pevný bod se zapsanou vlastní chybou
 
 - **Proč ne „finální dokumentace".** Za dokument, který se tak jmenuje, se v tomhle stavu
