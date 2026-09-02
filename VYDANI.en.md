@@ -1,21 +1,42 @@
-# RELEASE v0.9 — 1 September 2026
+# RELEASE v0.10 — 2 September 2026
 
 > 🇬🇧 English · [🇨🇿 Čeština](VYDANI.md) — **the Czech version is the authoritative one.**
 
 | | |
 |---|---|
-| **Version** | `v0.9` |
-| **Date** | 1 Sep 2026 |
+| **Version** | `v0.10` |
+| **Date** | 2 Sep 2026 |
 | **Scope** | 49 conditions across nine gates, F0–F8 |
 | **Known error** | **a catch rate of 4 out of 8** on the single documented case |
 | **Repeatability** | **not measured** |
-| **Previous tag** | `audit-2-freeze` — the version frozen for the second audit |
+| **Previous release** | `v0.9` (1 Sep 2026) |
+| **Target of the second audit** | **`v0.10`** — the `audit-2-freeze` tag is superseded, see below |
 
 This is not a final document and deliberately does not call itself one. It is a **release**: a
 fixed point to measure against, with its own error written down and with a boundary beyond
 which it does not hold.
 
 ---
+
+## Changes since v0.9
+
+Release `v0.9` was cut on the evening of 1 Sep and **the next day the first agent was measured
+against it**. The measurement found no new defect in the subject; it found three in the
+instrument:
+
+| Finding | Change |
+|---|---|
+| `M1` the result **"not measured"** was missing — the measurer was pushed into `ne`, a different claim | a fourth value; the share of `neměřeno` is now a **metric of the measurement's honesty** |
+| `M2` **the level was filled in only for `ano`** — for `ne` there was no telling "I provoked it" from "I read the code" | the level is filled in for `ne` too; the scale keeps asking one thing: *how do you know* |
+| `M3` **the strictness was decided during measurement**, although F0.4 demands it | the protocol header gains an *origin of strictness* row; if the measurer sets it, that is simultaneously a `ne` on F0.4 |
+
+The number of conditions is unchanged (**49**) and so is the wording of the gates. What changed
+is the **instrument** — and that is enough for a new release, because measurements taken with the
+old and the new form are not comparable.
+
+**The `audit-2-freeze` tag is superseded.** It froze the state before the two-axis risk model, the
+state model, the measurement protocol and the layers of checks. Measuring against a version that
+no longer exists would waste the second audit. The target is `v0.10`; the tag stays as history.
 
 ## Why not 1.0
 
@@ -28,7 +49,7 @@ meet requirements a good text does not, and two of them are unmet:
 - **The evidence base is N = 1.** One audit, on the methodology author's own agent, which writes
   into no other system and communicates with no strangers.
 
-The number 1.0 would claim more than is documented. Hence 0.9.
+The number 1.0 would claim more than is documented. Hence 0.10.
 
 ## Known error: 4 out of 8
 
@@ -69,9 +90,9 @@ claim is not documented, and this release narrows it.
 This is not a list of where the methodology fails. It is a list of where we **do not know**
 whether it works.
 
-## What is new in this release
+## What release v0.9 brought
 
-All of it arose on 1 Sep 2026 from the audit, its aftermath and three external reviews.
+All of it arose on 1 Sep 2026 from the audit, its aftermath and three external reviews. It holds unchanged in v0.10.
 
 | Change | Origin |
 |---|---|
@@ -93,8 +114,10 @@ Specifically missing:
 
 - the acceptance test "a timeout after the send and before the write" — it exists in no project,
 - a filled-in state model for an agent with an irreversible action,
-- the first filled-in measurement protocol,
 - a documented catch for the new layers of checks.
+
+**The first filled-in protocol now exists** — [`MERENI-job-watch.md`](02-pripady/MERENI-job-watch.md),
+2 Sep 2026. It found no new defect in the subject but three in the instrument; they are in v0.10.
 
 ## What the release does not claim
 
@@ -115,7 +138,7 @@ Specifically missing:
 ## How to measure against this release
 
 ```bash
-python kontrola/brany.py --protokol v0.9 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
 ```
 
 The rules for filling it in are in [`sablony/MERENI.en.md`](sablony/MERENI.en.md). What matters:
@@ -143,5 +166,6 @@ it is named for what it is.
 
 | Version | Date | Note |
 |---|---|---|
-| `audit-2-freeze` | 1 Sep 2026 | the version frozen for the second audit; catch rate 4/8 |
+| `audit-2-freeze` | 1 Sep 2026 | frozen for the second audit; **superseded** — the target is `v0.10` |
 | `v0.9` | 1 Sep 2026 | the first numbered release: three states, two axes of risk, the state model, the measurement protocol, layers of checks |
+| `v0.10` | 2 Sep 2026 | the protocol after its first trial: the `neměřeno` result, a level for `ne`, the origin of strictness |

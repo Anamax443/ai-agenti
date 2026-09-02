@@ -5,6 +5,38 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-02 (2) — release `v0.10`: the instrument fixed by its first measurement
+
+- **What changed:** `M1`, `M2` and `M3` from the first protocol, applied the same day.
+  - **`neměřeno`** (not measured) as a fourth result. `nelze` = the gate does not apply to this
+    agent; `neměřeno` = it could be measured but the measurer did not. Folding both into `ne` is
+    an error, because `ne` claims the agent violates the condition. **The share of `neměřeno` is
+    now a metric of the measurement's honesty** — a protocol with nothing but `ano`/`ne` is
+    suspicious.
+  - **The level is filled in for `ne` too.** The scale stopped being called "closure of a
+    finding" and started asking one thing: *how do you know*. That question applies to both
+    answers.
+  - **The origin of the strictness** in the protocol header. If the measurer sets it instead of
+    the design sheet, that is simultaneously a `ne` on F0.4 — otherwise the etalon demands an
+    input it produces itself.
+- **Why a new release when the wording of the gates did not change.** The count is still 49 and
+  so is the text. What changed is the **instrument** — and measurements taken with the old and
+  the new form are not comparable. That alone warrants a release.
+- **`audit-2-freeze` is officially superseded.** Recorded in `VYDANI.md`: the target of the
+  second audit is `v0.10`; the tag stays as history.
+- **The measurement is not rewritten.** `MERENI-job-watch.md` was taken against `v0.9` and stays
+  as it is — including the fact that three items had to use a value that did not exist then. An
+  aftermath section at the end explains it. Correcting the result afterwards would erase the
+  evidence that the finding was real.
+- **An irony in our own tool fixed:** `kontrola/brany.py` exists to prevent hand-written counts,
+  and its docstring said "45 conditions". Replaced by a sentence saying the exact count
+  deliberately does not live there, because the script prints it.
+- **Verified:** `dvojice.py` (31 pairs, 2 listed exceptions) and `brany.py` (49 conditions) green.
+  Tagged `v0.10`.
+- **Remaining:** the second audit on an agent of a different class against `v0.10`, **with
+  predictions written down in advance** · a repeatability test · evidencing JobWatch's eight
+  `ano` at `U2` (finding `M4`).
+
 ## 2026-09-02 — the first filled-in measurement protocol: testing the form on a known case
 
 - **Why JobWatch and not faxx-hr straight away.** The riskiest step is not "how will an outside

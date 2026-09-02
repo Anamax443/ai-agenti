@@ -4,7 +4,9 @@
 
 Proč to existuje
 ----------------
-Předpis má 45 podmínek v devíti branách. Dokud se jejich počet psal ručně, rozešel se:
+Předpis má devět bran a v nich několik desítek podmínek — přesný počet **schválně nestojí
+tady**, protože by to byl další ručně psaný počet, který se rozejde. Vypíše ho tenhle skript.
+Dokud se psal ručně, rozešel se:
 podklad pro oponenturu uváděl postupně 38, 37, 41 a 42 na čtyřech různých místech, a nikdo
 si toho nevšiml, dokud to nenašla externí recenze. **Ručně psaný počet opakovaný ve třech
 souhrnech se rozejde vždycky.**
@@ -22,13 +24,13 @@ Použití
 -------
     python kontrola/brany.py                     kontrola (CI)
     python kontrola/brany.py --seznam            inventář s identifikátory
-    python kontrola/brany.py --protokol v0.9     prázdný měřicí protokol na stdout
+    python kontrola/brany.py --protokol v0.10    prázdný měřicí protokol na stdout
 
 Identifikátory
 --------------
 `F3.4` = čtvrtá podmínka brány F3. Jsou **poziční**, ne trvalé: co je F3.4 dnes, může být
 F3.5 po vložení nové podmínky. To není vada — měření se vždycky odkazuje na **vydání
-etalonu** (`ai-agenti v0.9`), a to jeho význam pevně určuje. Tak to dělají i normy:
+etalonu** (`ai-agenti v0.10`), a to jeho význam pevně určuje. Tak to dělají i normy:
 `ISO 27001:2013 A.9.2.3` znamená něco jiného než tentýž kód ve vydání 2022.
 """
 import io
@@ -125,19 +127,28 @@ def protokol(verze):
     a("| **Měřič** | <kdo — a jestli je totožný s autorem předmětu> |")
     a("| **Datum** | <kdy> |")
     a("| **Přísnost** | N / Z / V *(osa systému, principy §7)* |")
+    a("| **Původ přísnosti** | z návrhového listu / **určena měřičem** *(vyplň které — když ji "
+      "určuje měřič, je to zároveň výsledek `ne` u F0.4)* |")
     a("| **Podmínek** | %d |" % celkem)
     a("")
-    a("**Výsledek:** `ano` splněno · `ne` nesplněno · `nelze` nelze na tomto agentovi měřit")
+    a("**Výsledek:** `ano` splněno · `ne` nesplněno · `nelze` nelze na tomto agentovi měřit ·")
+    a("`neměřeno` měřič to neověřil")
     a("")
-    a("**Stupeň:** `U0` tvrzeno · `U1` v kódu · `U2` kryto testem · `U3` vyvoláno")
-    a("v prostředí · `U4` nezávisle uzavřeno")
+    a("**Stupeň — jak dobře je výsledek doložený**, ať už je `ano`, nebo `ne`:")
+    a("`U0` tvrzeno · `U1` z kódu · `U2` kryto testem · `U3` vyvoláno v prostředí ·")
+    a("`U4` nezávisle")
     a("")
-    a("> **`nelze` je plnohodnotný výsledek.** Bez něj se měřič tlačí do ano/ne i tam, kde")
-    a("> brána na daného agenta nesedí — a přesně tak vznikl spor o bránu F4 u agenta,")
-    a("> jehož backend existuje jen za běhu. U `nelze` je poznámka povinná.")
+    a("> **`nelze` a `neměřeno` jsou plnohodnotné výsledky, a nejsou totéž.** `nelze` =")
+    a("> brána na tohohle agenta nesedí. `neměřeno` = dala by se změřit, ale měřič to")
+    a("> neudělal. Bez nich se měřič tlačí do `ne`, což je třetí, jiné tvrzení. U obou")
+    a("> je poznámka povinná.")
     a("")
-    a("> **U `ano` je povinný důkaz.** Příkaz sám není důkaz; důkazem je jeho výstup,")
-    a("> soubor, nebo test. Bez důkazu platí nejvýš `U0`.")
+    a("> **Stupeň se vyplňuje i u `ne`.** „Nesplňuje, protože jsem to vyvolal\" a")
+    a("> „nesplňuje, protože jsem si přečetl kód\" nejsou totéž. Stupnice se ptá pořád")
+    a("> na jedno: čím to víš?")
+    a("")
+    a("> **U `ano` i `ne` je povinný důkaz.** Příkaz sám není důkaz; důkazem je jeho")
+    a("> výstup, soubor, nebo test. Bez důkazu platí nejvýš `U0`.")
     a("")
     a("## Souhrn *(vyplň až nakonec)*")
     a("")
@@ -146,7 +157,11 @@ def protokol(verze):
     a("| ano | |")
     a("| ne | |")
     a("| nelze | |")
-    a("| z toho na stupni U2 a výš | |")
+    a("| neměřeno | |")
+    a("| z toho `ano` na stupni U2 a výš | |")
+    a("")
+    a("Podíl `neměřeno` je **metrika poctivosti měření**, ne ostuda. Protokol, ve kterém")
+    a("jsou samá `ano` a `ne`, je podezřelý — 49 podmínek nikdo neověří všechny.")
     a("")
     a("**Nálezy, které měření nenašlo** *(doplň, až se nějaké objeví jinudy — tenhle řádek")
     a("je kalibrace etalonu, ne ostuda měřiče):*")

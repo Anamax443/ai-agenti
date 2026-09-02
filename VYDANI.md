@@ -1,20 +1,39 @@
-# VYDÁNÍ v0.9 — 1. 9. 2026
+# VYDÁNÍ v0.10 — 2. 9. 2026
 
 > 🇨🇿 Čeština · [🇬🇧 English](VYDANI.en.md)
 
 | | |
 |---|---|
-| **Verze** | `v0.9` |
-| **Datum** | 1. 9. 2026 |
+| **Verze** | `v0.10` |
+| **Datum** | 2. 9. 2026 |
 | **Rozsah** | 49 podmínek v devíti branách, F0–F8 |
 | **Známá chyba** | **záchytnost 4 z 8** na jediném doloženém případu |
 | **Opakovatelnost** | **neměřena** |
-| **Předchozí značka** | `audit-2-freeze` — verze zmrazená pro druhý audit |
+| **Předchozí vydání** | `v0.9` (1. 9. 2026) |
+| **Cíl druhého auditu** | **`v0.10`** — značka `audit-2-freeze` je překonaná, viz níž |
 
 Tohle není finální dokument a záměrně se tak nejmenuje. Je to **vydání**: pevný bod, proti
 kterému se dá měřit, se zapsanou vlastní chybou a s hranicí, za kterou neplatí.
 
 ---
+
+## Změny proti v0.9
+
+Vydání `v0.9` vzniklo večer 1. 9. a **druhý den se na něm změřil první agent**. Měření nenašlo
+novou vadu v předmětu, zato našlo tři v samotném měřidle:
+
+| Nález | Změna |
+|---|---|
+| `M1` chyběl výsledek **„neměřeno"** — měřič se tlačil do `ne`, což je jiné tvrzení | čtvrtá hodnota; podíl `neměřeno` je nově **metrika poctivosti měření** |
+| `M2` **stupeň se vyplňoval jen u `ano`** — u `ne` nešlo rozlišit „vyvolal jsem to" od „přečetl jsem kód" | stupeň se vyplňuje i u `ne`; stupnice se ptá pořád na jedno: *čím to víš* |
+| `M3` **přísnost se určovala až při měření**, ačkoli ji žádá F0.4 | hlavička protokolu má řádek *původ přísnosti*; určí-li ji měřič, je to zároveň `ne` u F0.4 |
+
+Počet podmínek se nezměnil (**49**), znění bran taky ne. Změnil se **měřicí přístroj** — a to
+stačí na nové vydání, protože měření se starým a novým formulářem nejsou porovnatelná.
+
+**Značka `audit-2-freeze` je překonaná.** Zmrazila stav před dvouosým rizikem, stavovým modelem,
+měřicím protokolem i kontrolními vrstvami. Měřit proti verzi, která už neexistuje, by druhý audit
+zahodilo. Cílem je `v0.10`; značka zůstává jako historie.
 
 ## Proč ne 1.0
 
@@ -27,7 +46,7 @@ text splňovat nemusí, a dvě z nich splněné nejsou:
 - **Důkazní základna je N = 1.** Jeden audit, na agentovi autora metodiky, který nic nezapisuje
   do cizích systémů a nekomunikuje s cizími lidmi.
 
-Číslo 1.0 by tvrdilo víc, než je doložené. Proto 0.9.
+Číslo 1.0 by tvrdilo víc, než je doložené. Proto 0.10.
 
 ## Známá chyba: 4 z 8
 
@@ -65,9 +84,9 @@ tvrzení není doložené a tohle vydání ho zužuje.
 
 Není to seznam toho, kde metodika nefunguje. Je to seznam toho, kde **nevíme**, jestli funguje.
 
-## Co je v tomto vydání nové
+## Co přineslo vydání v0.9
 
-Všechno vzniklo 1. 9. 2026 z auditu, jeho dohry a tří externích posudků.
+Všechno vzniklo 1. 9. 2026 z auditu, jeho dohry a tří externích posudků. Ve v0.10 to platí beze změny.
 
 | Změna | Původ |
 |---|---|
@@ -89,8 +108,10 @@ Konkrétně chybí:
 
 - acceptance test „timeout po odeslání a před zápisem" — v žádném projektu neexistuje,
 - vyplněný stavový model u agenta s nevratnou akcí,
-- první vyplněný měřicí protokol,
 - doložený úlovek u nových kontrolních vrstev.
+
+**První vyplněný protokol už existuje** — [`MERENI-job-watch.md`](02-pripady/MERENI-job-watch.md),
+2. 9. 2026. Nenašel novou vadu v předmětu, zato tři v měřidle; jsou zapracované ve v0.10.
 
 ## Co vydání netvrdí
 
@@ -109,7 +130,7 @@ Konkrétně chybí:
 ## Jak se proti tomuto vydání měří
 
 ```bash
-python kontrola/brany.py --protokol v0.9 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
 ```
 
 Pravidla vyplňování jsou v [`sablony/MERENI.md`](sablony/MERENI.md). Podstatné je:
@@ -136,5 +157,6 @@ jmenuje se to tak, jak to je.
 
 | Verze | Datum | Poznámka |
 |---|---|---|
-| `audit-2-freeze` | 1. 9. 2026 | verze zmrazená pro druhý audit; záchytnost 4/8 |
+| `audit-2-freeze` | 1. 9. 2026 | zmrazeno pro druhý audit; **překonáno** — cílem je `v0.10` |
 | `v0.9` | 1. 9. 2026 | první číslované vydání: tři stavy, dvě osy rizika, stavový model, měřicí protokol, kontrolní vrstvy |
+| `v0.10` | 2. 9. 2026 | protokol po první zkoušce: výsledek `neměřeno`, stupeň i u `ne`, původ přísnosti |

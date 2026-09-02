@@ -11,7 +11,7 @@ This sheet is therefore a form, not an essay.
 ## The blank form is generated, not copied
 
 ```bash
-python kontrola/brany.py --protokol v0.9 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
 ```
 
 The form is derived directly from [`BUILD-PREDPIS.en.md`](BUILD-PREDPIS.en.md)'s Czech
@@ -34,9 +34,26 @@ python kontrola/brany.py --seznam   # inventory with identifiers
 
 | Field | Values | When it is mandatory |
 |---|---|---|
-| **Result** | `ano` (yes) · `ne` (no) · `nelze` (cannot be measured) | always |
-| **Level** | `U0`–`U4` | when the result is `ano` |
-| **Evidence / note** | a file, a test, a command **with its output** | for `ano` and for `nelze` |
+| **Result** | `ano` (yes) · `ne` (no) · `nelze` (does not apply) · `neměřeno` (not measured) | always |
+| **Level** | `U0`–`U4` | for `ano` **and for `ne`** |
+| **Evidence / note** | a file, a test, a command **with its output** | for `ano`, `ne` and `nelze`; for `neměřeno` write what it would take |
+
+### Four results, not two and a half
+
+| Result | Means |
+|---|---|
+| `ano` | it holds, and it is evidenced at the stated level |
+| `ne` | it **does not hold** — and the level says how well you know that |
+| `nelze` | the gate **does not apply** to this agent (e.g. escalations for an agent that has none) |
+| `neměřeno` | it could be measured, but **the measurer did not do it** |
+
+`nelze` and `neměřeno` are not the same thing, and folding them into `ne` is an error: `ne`
+claims the agent violates the condition. Added on 2 Sep 2026 after the first filled-in protocol,
+where three items needed this value and it was missing.
+
+**The share of `neměřeno` is a metric of the measurement's honesty**, not the measurer's
+disgrace. A protocol with nothing but `ano`/`ne` is suspicious — nobody verifies all 49
+conditions.
 
 ### Closure levels
 
@@ -48,8 +65,18 @@ python kontrola/brany.py --seznam   # inventory with identifiers
 | **U3** | provoked in an environment — the state actually occurred | production |
 | **U4** | independently closed — verified by someone other than the author of the fix | a third party |
 
-The minimum level at which a condition may be closed is **set by the agent's strictness**
-(N → U1, Z → U2, V → U3; see [principles §7](../01-principy/PRINCIPY-stavby-agentu.en.md)).
+The minimum level at which a condition may be closed as `ano` is **set by the agent's
+strictness** (N → U1, Z → U2, V → U3; see
+[principles §7](../01-principy/PRINCIPY-stavby-agentu.en.md)).
+
+**The level is filled in for `ne` as well.** "It fails, because I provoked it" and "it fails,
+because I read the code" are not the same. The scale keeps asking one thing — **how do you know**
+— and that question applies to both answers. For `ne` no minimum is enforced; the level exists so
+the strength of the finding can be seen.
+
+**The origin of the strictness is recorded.** When it is not set by the design sheet but by the
+measurer, that is simultaneously a `ne` on condition F0.4 — otherwise the etalon would demand an
+input it produces itself.
 
 ### Two rules without which the form is worthless
 
@@ -89,7 +116,7 @@ its number is worse.
 A measurement refers to a release, not to a branch:
 
 ```
-Etalon: ai-agenti v0.9  (git tag audit-2-freeze)
+Etalon: ai-agenti v0.10  (git tag v0.10)
 ```
 
 Positional identifiers (`F3.4`) hold **within a release**. They shift when a condition is

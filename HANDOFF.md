@@ -2,6 +2,33 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-02 (2) — vydání `v0.10`: měřidlo opravené podle prvního měření
+
+- **Co se změnilo:** `M1`, `M2` a `M3` z prvního protokolu zapracovány týž den.
+  - **`neměřeno`** jako čtvrtý výsledek. `nelze` = brána na agenta nesedí; `neměřeno` = dala by
+    se změřit, ale měřič to neudělal. Slévat obojí do `ne` je chyba, protože `ne` tvrdí, že agent
+    podmínku porušuje. **Podíl `neměřeno` je nově metrika poctivosti měření** — protokol se samými
+    `ano`/`ne` je podezřelý.
+  - **Stupeň se vyplňuje i u `ne`.** Stupnice se přestala jmenovat „uzavřenost nálezu" a začala
+    se ptát na jedno: *čím to víš*. Ta otázka platí pro obě odpovědi.
+  - **Původ přísnosti** v hlavičce protokolu. Určí-li ji měřič místo návrhového listu, je to
+    zároveň výsledek `ne` u F0.4 — jinak etalon žádá vstup, který sám vyrábí.
+- **Proč nové vydání, když se znění bran nezměnilo.** Počet podmínek je pořád 49 a text bran taky.
+  Změnil se **měřicí přístroj** — a měření starým a novým formulářem nejsou porovnatelná. To samo
+  je důvod k vydání.
+- **`audit-2-freeze` je oficiálně překonaná.** Zapsáno ve `VYDANI.md`: cílem druhého auditu je
+  `v0.10`, značka zůstává jako historie.
+- **Měření se nepřepisuje.** `MERENI-job-watch.md` proběhlo proti `v0.9` a zůstává, jak je —
+  včetně toho, že tři položky musely použít hodnotu, která tehdy neexistovala. Dohra na konci to
+  vysvětluje. Kdyby se výsledek dodatečně opravil, zmizel by důkaz, že ten nález byl reálný.
+- **Opravena ironie ve vlastním nástroji:** `kontrola/brany.py` má zabránit ručně psaným počtům
+  a v dokumentačním komentáři měl napsáno „45 podmínek". Nahrazeno větou, že přesný počet tam
+  schválně nestojí, protože ho vypíše skript sám.
+- **Ověřeno:** `dvojice.py` (31 dvojic, 2 vedené výjimky) i `brany.py` (49 podmínek) zelené.
+  Označeno tagem `v0.10`.
+- **Zbývá:** druhý audit na agentovi jiné třídy proti `v0.10`, **s predikcemi zapsanými předem** ·
+  test opakovatelnosti · doložit osm `ano` z JobWatche na `U2` (nález `M4`).
+
 ## 2026-09-02 — první vyplněný měřicí protokol: zkouška formuláře na známém případu
 
 - **Proč JobWatch a ne rovnou faxx-hr.** Nejrizikovější krok není „jak dopadne cizí agent", ale

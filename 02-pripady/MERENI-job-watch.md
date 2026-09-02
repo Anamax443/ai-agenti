@@ -177,3 +177,18 @@ u známých vad ukázal **rozdíl mezi „platí" a „doložili jsme, že plat�
 u agenta bez eskalací a bez komunikace s třetí stranou brány `F4.8`, `F5.3` a `F5.4` opravdu
 nesedí. **Rozsah platnosti etalonu se tím poprvé změřil na konkrétním agentovi: 44 ze 49
 podmínek dává smysl, 5 ne.**
+
+---
+
+## Dohra — 2. 9. 2026
+
+`M1`, `M2` a `M3` **zapracovány do protokolu** týž den: přibyl čtvrtý výsledek `neměřeno`,
+stupeň se nově vyplňuje i u `ne`, a hlavička protokolu má řádek *původ přísnosti*.
+
+**Tohle měření se ale nepřepisuje.** Proběhlo proti `v0.9` a jako záznam platí tak, jak je —
+včetně toho, že tři položky musely použít hodnotu, která tehdy oficiálně neexistovala. Kdyby se
+výsledek dodatečně přepsal, zmizel by důkaz, že ten nález byl reálný.
+
+`M4` (osm `ano` nesplňuje vlastní přísnost) a `M5` zůstávají **otevřené**: `M4` je nález proti
+JobWatchi, ne proti etalonu, a řeší se doložením těch osmi položek na `U2`.
+

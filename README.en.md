@@ -4,7 +4,7 @@
 
 Methodology for building AI agents, plus work-in-progress designs.
 
-> **Release [`v0.9`](VYDANI.en.md)** · 1 Sep 2026 · 49 conditions across nine gates.
+> **Release [`v0.10`](VYDANI.en.md)** · 2 Sep 2026 · 49 conditions across nine gates.
 > State: **usable, unverified** — one documented case (N = 1), measured by the author.
 > **Known error of the etalon: a catch rate of 4 out of 8.** Why this is not a 1.0, and
 > what would unlock it, is in the [release note](VYDANI.en.md).

@@ -11,7 +11,7 @@ Tenhle list je proto formulář, ne esej.
 ## Prázdný formulář se generuje, neopisuje
 
 ```bash
-python kontrola/brany.py --protokol v0.9 > 02-pripady/MERENI-<agent>.md
+python kontrola/brany.py --protokol v0.10 > 02-pripady/MERENI-<agent>.md
 ```
 
 Formulář se odvozuje přímo z [`BUILD-PREDPIS.md`](BUILD-PREDPIS.md). **Druhý seznam podmínek
@@ -33,9 +33,25 @@ python kontrola/brany.py --seznam   # inventář s identifikátory
 
 | Pole | Hodnoty | Kdy je povinné |
 |---|---|---|
-| **Výsledek** | `ano` · `ne` · `nelze` | vždy |
-| **Stupeň** | `U0`–`U4` | u výsledku `ano` |
-| **Důkaz / poznámka** | soubor, test, příkaz **s výstupem** | u `ano` a u `nelze` |
+| **Výsledek** | `ano` · `ne` · `nelze` · `neměřeno` | vždy |
+| **Stupeň** | `U0`–`U4` | u `ano` **i u `ne`** |
+| **Důkaz / poznámka** | soubor, test, příkaz **s výstupem** | u `ano`, `ne` a `nelze`; u `neměřeno` napiš, co by bylo potřeba |
+
+### Čtyři výsledky, ne dva a půl
+
+| Výsledek | Znamená |
+|---|---|
+| `ano` | splňuje, a je to doložené na uvedeném stupni |
+| `ne` | **nesplňuje** — a stupeň říká, jak dobře to víš |
+| `nelze` | brána na tohohle agenta **nesedí** (např. eskalace u agenta, který žádné nemá) |
+| `neměřeno` | dala by se změřit, ale **měřič to neudělal** |
+
+`nelze` a `neměřeno` nejsou totéž a slévat je do `ne` je chyba: `ne` tvrdí, že agent podmínku
+porušuje. Doplněno 2. 9. 2026 po prvním vyplněném protokolu, kde tři položky tuhle hodnotu
+potřebovaly a nebyla.
+
+**Podíl `neměřeno` je metrika poctivosti měření**, ne ostuda měřiče. Protokol se samými
+`ano`/`ne` je podezřelý — 49 podmínek nikdo neověří všechny.
 
 ### Stupně uzavřenosti
 
@@ -47,8 +63,16 @@ python kontrola/brany.py --seznam   # inventář s identifikátory
 | **U3** | vyvoláno v prostředí — stav skutečně nastal | provoz |
 | **U4** | nezávisle uzavřeno — ověřil někdo jiný než autor opravy | třetí strana |
 
-Minimální stupeň, na kterém se smí podmínka uzavřít, **určuje přísnost agenta** (N → U1,
-Z → U2, V → U3; viz [principy §7](../01-principy/PRINCIPY-stavby-agentu.md)).
+Minimální stupeň, na kterém se smí podmínka uzavřít jako `ano`, **určuje přísnost agenta**
+(N → U1, Z → U2, V → U3; viz [principy §7](../01-principy/PRINCIPY-stavby-agentu.md)).
+
+**Stupeň se vyplňuje i u `ne`.** „Nesplňuje, protože jsem to vyvolal" a „nesplňuje, protože
+jsem si přečetl kód" nejsou totéž. Stupnice se ptá pořád na jedno — **čím to víš** — a ta otázka
+platí pro obě odpovědi. U `ne` se minimální stupeň nevymáhá; slouží k tomu, aby šlo poznat, jak
+pevný ten nález je.
+
+**Původ přísnosti se zapisuje.** Když ji neurčuje návrhový list, ale až měřič, je to zároveň
+výsledek `ne` u podmínky F0.4 — etalon by jinak žádal vstup, který sám vyrábí.
 
 ### Dvě pravidla, bez kterých je formulář k ničemu
 
@@ -84,7 +108,7 @@ na jednom vzorku je slabé číslo — ale etalon, který svoje číslo nemá, j
 Měření se odkazuje na vydání, ne na větev:
 
 ```
-Etalon: ai-agenti v0.9  (git tag audit-2-freeze)
+Etalon: ai-agenti v0.10  (git tag v0.10)
 ```
 
 Poziční identifikátory (`F3.4`) platí **uvnitř vydání**. Po vložení nové podmínky se posunou,
