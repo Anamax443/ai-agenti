@@ -2,6 +2,44 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-02 (4) — směr: staví se noví agenti od nuly, ne přestavují staří
+
+- **Zadání vlastníka:** budou se stavět **úplně noví agenti**. Dosavadní projekty stavbu agentů
+  a farem vůbec nezohledňovaly.
+- **Co to mění a co ne.** Audit a stavba měří **dvě různé veličiny** a jedno nenahrazuje druhé:
+
+  | | Co měří | Stav |
+  |---|---|---|
+  | audit hotového agenta | **záchytnost** — kolik vad předpis najde | změřeno: 4 z 8 |
+  | stavba nového podle předpisu | **použitelnost** — jde podle něj postavit | **nikdy nezkoušeno** |
+
+- **Podstatný důsledek: předpis se dosud nikdy nepoužil dopředu.** JobWatch běžel od 14. 6. 2026
+  a návrhový list k němu vznikl zpětně — v měření to stojí u `F0.1`: *„vznikly zpětně"*. Každý
+  dosavadní případ vstoupil do předpisu **až u F3**. Proto jsou **F0, F1 a F2 dnes nejméně
+  ověřené části celého předpisu**, přestože jsou první. Nový agent je jediný způsob, jak to zjistit.
+- **Predikce zapsané PŘED stavbou** (jinak bude cokoli, co vyjde, vypadat jako úspěch metodiky):
+  1. **F0 se ukáže jako příliš velká na jedno posezení.** Návrhový list má 15 sekcí a včera
+     přibyly stavy a přechody, odchozí kanály a přísnost. Odhad: první pokus skončí u poloviny.
+  2. **F1 bude nejtěžší, ne F3.** Reálný vzorek u nového agenta ještě neexistuje a pokušení
+     „změřím to potom" bude největší právě tady.
+  3. **Přísnost u farmy vyjde V** a bude tlak to obejít, protože to zakazuje všechna zjednodušení.
+  4. **Nejmíň jedna brána bude nesplnitelná** ve stejném smyslu jako F4 u runtime backendu —
+     bude nutit lhát nebo měřit vedle.
+  5. **Stavový model se ukáže jako nejužitečnější část**, protože u nového agenta je zdarma:
+     nakreslí se, místo aby se zpětně rekonstruoval.
+
+  Vyjde-li 1–3, předpis potřebuje **odlehčit vstup do F0**, ne přidat další sekce.
+- **Staré projekty se nepředělávají.** Zpětná přestavba je náklad bez metodického přínosu.
+  Výjimka: **`job-watch` zůstává kalibračním případem** — proti němu se měří záchytnost etalonu
+  a je jediný, u kterého známe všech osm vad. `aukce` a `faxx-hr` zůstávají kandidáty na
+  **audit** (otázka `OA6`), ne na přestavbu.
+- **První krok je pořád stejný a nevyžaduje postavit nic:** F1 na routingu orchestrátoru
+  z exportovaného vzorku — kolik z padesáti reálných e-mailů trefí agendu a kolik z připravených
+  útočných zpráv ji přehodí. Žádné oprávnění se přitom nevydává.
+- **Otevřené:** který agent se staví první. Agenda farmy s nejmenším počtem nevratných akcí dá
+  ověřenou infrastrukturu (CASE-ID, stavy, sdílená paměť) na levném případu; samostatný agent
+  mimo farmu mění přísnost i to, co z předpisu platí.
+
 ## 2026-09-02 (3) — vydání `v0.11`: farmy jsou vícenájemní, a předpis to nevěděl
 
 - **Zadání směru:** cílem farem je **jedna farma, víc zákazníků**. Celý předpis byl přitom psaný

@@ -5,6 +5,49 @@ after a break.
 
 Czech original: [HANDOFF.md](HANDOFF.md) — **the Czech version is the authoritative one.**
 
+## 2026-09-02 (4) — direction: new agents built from scratch, not old ones retrofitted
+
+- **The owner's brief:** **entirely new agents** will be built. The projects so far did not
+  account for building agents and farms at all.
+- **What that changes and what it does not.** An audit and a build measure **two different
+  quantities**, and neither replaces the other:
+
+  | | What it measures | State |
+  |---|---|---|
+  | auditing a finished agent | **catch rate** — how many defects the specification finds | measured: 4 of 8 |
+  | building a new one to the specification | **usability** — can you build to it | **never tried** |
+
+- **The substantive consequence: the specification has never been used prospectively.** JobWatch
+  has been running since 14 Jun 2026 and its design sheet was written retroactively — the
+  measurement says so at `F0.1`: *"written retroactively"*. Every case so far entered the
+  specification **at F3**. That makes **F0, F1 and F2 the least verified parts of the whole
+  specification**, despite being first. A new agent is the only way to find out.
+- **Predictions written down BEFORE the build** (otherwise whatever comes out will look like a
+  success of the methodology):
+  1. **F0 will prove too large for one sitting.** The design sheet has 15 sections and yesterday
+     gained states and transitions, outgoing channels and strictness. Estimate: the first attempt
+     stops halfway.
+  2. **F1 will be the hardest, not F3.** A real sample does not yet exist for a new agent, and
+     the temptation to "measure it later" will be greatest right here.
+  3. **The strictness for a farm will come out V** and there will be pressure to work around it,
+     because it forbids every simplification.
+  4. **At least one gate will be unsatisfiable** in the same sense as F4 with a runtime backend —
+     it will force either lying or measuring beside the point.
+  5. **The state model will prove the most useful part**, because for a new agent it is free:
+     it gets drawn rather than reconstructed afterwards.
+
+  If 1–3 hold, the specification needs a **lighter entry into F0**, not more sections.
+- **The old projects are not rebuilt.** Retrofitting is cost with no methodological return. The
+  exception: **`job-watch` stays the calibration case** — the etalon's catch rate is measured
+  against it and it is the only one where all eight defects are known. `aukce` and `faxx-hr`
+  remain candidates for an **audit** (question `OA6`), not for a rebuild.
+- **The first step is unchanged and requires building nothing:** F1 on the orchestrator's routing
+  from an exported sample — how many of fifty real e-mails hit the right agenda, and how many of
+  the prepared attack messages can flip it. No permission is issued in the process.
+- **Open:** which agent gets built first. A farm agenda with the fewest irreversible actions gives
+  verified infrastructure (CASE-ID, states, shared memory) on a cheap case; a standalone agent
+  outside the farm changes the strictness and what of the specification applies.
+
 ## 2026-09-02 (3) — release `v0.11`: the farms are multi-tenant, and the specification did not know
 
 - **A statement of direction:** the goal for the farms is **one farm, many customers**. The whole
