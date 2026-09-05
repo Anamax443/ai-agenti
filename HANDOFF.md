@@ -2,6 +2,25 @@
 
 Append-only. Nejnovější záznam nahoru. Slouží k pokračování z jiného počítače / po pauze.
 
+## 2026-09-05 (5) — návrhový list doplněn o osm řádků z agent-platform-foundation
+
+- **Zdroj:** `Anamax443/agent-platform-foundation` (v1.0-rc2.1, zmrazeno po 4 kolech oponentury) rozšiřuje
+  tuto metodiku na úroveň farmy více komponent. `PLATFORM-NOTES.md §5` tam vyjmenoval, co v návrhovém
+  listu chybí; dnes doplněno, list se nepřepisoval:
+  1. Základ: **model nasazení** a **tenant režim**.
+  2. Nepřátelský vstup: model **nemá pole, kterým rozhoduje o akci**, nebo je gateován kódem
+     (allowlist enumů, sémantický validátor u cílových polí). Doloženo 3× v evidenci reálného kódu
+     (job-watch region gate, faxx-hr rubric bez score pole, domlov whitelist).
+  3. Regulace a data: **retence per datová třída** a **originál vs. odvozenina**.
+  4. Brány: tabulka **write akcí** (sideEffects, vratnost, idempotence, riskClass).
+  5. Moduly: **capability, allowlist navrhování, verifikační profily**.
+- **BUILD-PŘEDPIS F3:** bezpečnostní invariant testy (`SEC-PRIV-001`, `SEC-INJ-001`, `ARCH-DEP-001`)
+  blokují i první prototyp.
+- **Vztah repozitářů:** `ai-agenti` = metodika jednoho agenta (F0–F8, návrhový list);
+  `agent-platform-foundation` = závazné kontrakty a verifikace pro více spolupracujících komponent;
+  `agent-platform-first-slice` = první implementace podle obou (classify → validate → stamp).
+  Predikce z 2. 9. (F0 příliš velká na jedno posezení, F1 nejtěžší, přísnost V) se ověří tam.
+
 ## 2026-09-02 (4) — směr: staví se noví agenti od nuly, ne přestavují staří
 
 - **Zadání vlastníka:** budou se stavět **úplně noví agenti**. Dosavadní projekty stavbu agentů

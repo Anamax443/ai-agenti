@@ -163,6 +163,8 @@ vzor beztak použije špatně.
 
 ---
 
+- [ ] Bezpečnostní invariant testy blokují i první prototyp: `SEC-PRIV-001` (AI identita nemůže vyvolat write), `SEC-INJ-001` (obsah vstupu nevede k privilegované akci), `ARCH-DEP-001` (modul nesahá do cizí DB). Test ID podle `agent-platform-foundation/VERIFICATION-CONTRACT.md`.
+
 ## F4 — Model na svoje tři úlohy
 
 **Cíl:** doplnit rozpoznání záměru, extrakci struktury a syntézu textu.

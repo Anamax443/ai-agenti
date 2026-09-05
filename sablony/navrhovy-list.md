@@ -14,6 +14,8 @@ zejména sekce *Scénáře*, agent není promyšlený a stavět se nemá.
 | **K čemu je** | jednou větou, konkrétně |
 | **Co nahrazuje** | co se dnes dělá ručně |
 | **Kdy je hotový** | měřitelně |
+| **Model nasazení** | `ON_PREM_SINGLE_TENANT` / `CLOUD_SINGLE_TENANT` / `CLOUD_MULTI_TENANT` / `HYBRID` |
+| **Tenant režim** | `N/A` / `SINGLE` / `MULTI_TENANT_READY` / `MULTI_TENANT_ACTIVE` |
 
 ---
 
@@ -54,6 +56,7 @@ od lidí, kteří ho nepsali pro něj. Část z nich se pokusí ho přesměrovat
 - [ ] Skrytý text (bílé písmo, metadata, komentáře) se odstraňuje před modelem
 - [ ] Nevratná akce se nikdy nespouští z toho, co bylo napsáno ve vstupu
 - [ ] Podezřelý vstup má vlastní konec scénáře: zastavit a zeptat se
+- [ ] Model **nemá pole, kterým rozhoduje o akci** — nebo je jeho výstup gateován kódem (allowlist enumů; u polí, která vybírají cíl nebo částku nevratné akce, deterministický sémantický validátor)
 
 Pravidlo: čím víc oprávnění agent má, tím míň smí věřit tomu, co čte.
 
@@ -73,6 +76,8 @@ Napsat obranu proti něčemu, co jsi nikdy nezkusil prolomit, je hádání.
 | Riziková kategorie (AI Act) | minimální / omezená / **vysoká** |
 | Retence — co se maže a kdy | |
 | Kde data fyzicky leží | |
+| Retence per datová třída (originál / odvozenina / provozní log / audit / AI trace) | každá třída má ownera a lhůtu |
+| Evidence: co je **originál** (hash, immutable, nikdy se nepřepisuje) a co **odvozenina** (`derivedFrom`) | |
 
 ### Přísnost — osa systému
 
@@ -131,6 +136,12 @@ strukturovaný? Musí být výsledek pokaždé stejný? → kód.
 | | | | auto / limit / schválení |
 
 Režim určuje vratnost chyby, ne důvěra k modelu.
+
+**Write akce** _(každá akce, která zapisuje nebo je nevratná)_
+
+| Akce | sideEffects | Vratnost | Idempotence (klíč, retence) | riskClass |
+|---|---|---|---|---|
+| | none / internal-write / external-write | REVERSIBLE / COMPENSATABLE / IRREVERSIBLE | | LOW / MEDIUM / HIGH / CRITICAL |
 
 ---
 
@@ -223,10 +234,12 @@ platba). Nevratná akce leží na **přechodu**, ne uvnitř stavu.
 
 ## Moduly
 
-| ID | Modul | Kontrakt (vstup → výstup) | Závisí na |
-|---|---|---|---|
-| M1 | | | — |
-| M2 | | | |
+| ID | Modul | Capability (poskytuje) | Smí navrhovat (allowlist) | Kontrakt (vstup → výstup) | Závisí na | Verifikační profily |
+|---|---|---|---|---|---|---|
+| M1 | | | | | — | |
+| M2 | | | | | | |
+
+Verifikační profily se odvozují z vlastností modulu (write → `WRITE_EXECUTOR`, model → `AI_CAPABILITY`, závislost → `MODULE_DEPENDENCY`) a určují povinné testy; Test ID a rodiny jsou v `agent-platform-foundation/VERIFICATION-CONTRACT.md`. Farma více komponent se řídí celým Foundation.
 
 Kontrakty se fixují jako první. Modul nesahá do cizí databáze,
 data dostane jako parametr.
